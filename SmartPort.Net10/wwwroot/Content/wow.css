@@ -1,0 +1,319 @@
+/* ============================================================
+   WOW EFFECTS — lop hieu ung cao cap phu len toan site public
+   1. Thanh tien trinh cuon dau trang (gradient)
+   2. Ken Burns zoom cham cho anh hero
+   3. Spotlight anh sang theo con tro tren hero
+   4. Tilt 3D the (card) theo con tro
+   5. Chu gradient shimmer + nut ve dau trang co vong tien trinh
+   ============================================================ */
+
+/* ---------- 1. Thanh tien trinh cuon ---------- */
+#wowProgress {
+    position: fixed; top: 0; left: 0; height: 4px; width: 0;
+    z-index: 2000; border-radius: 0 999px 999px 0;
+    background: linear-gradient(90deg, #ff7d2d, #ffb25e 40%, #22d3ee 100%);
+    box-shadow: 0 0 12px rgba(255, 125, 45, .55);
+    transition: width .08s linear;
+    pointer-events: none;
+}
+
+/* ---------- 2. Ken Burns: anh hero song dong ---------- */
+.hero-slide.active { animation: wowKenburns 8s ease-out forwards; }
+@keyframes wowKenburns {
+    from { transform: scale(1) translateY(0); }
+    to   { transform: scale(1.09) translateY(-10px); }
+}
+
+/* ---------- 3. Spotlight theo chuot tren hero ---------- */
+.hero { position: relative; }
+.hero .wow-spot {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+        radial-gradient(620px circle at var(--mx, 62%) var(--my, 38%),
+            rgba(34, 211, 238, .16), transparent 55%),
+        radial-gradient(340px circle at var(--mx, 62%) var(--my, 38%),
+            rgba(255, 178, 94, .12), transparent 60%);
+    transition: opacity .4s;
+}
+.hero .container { position: relative; z-index: 2; }
+
+/* ---------- 4. Tilt 3D cho the ---------- */
+.wow-tilt {
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform .18s ease-out, box-shadow .25s ease;
+}
+.wow-tilt.tilting { transition: transform .05s linear; }
+.wow-tilt.tilting:hover { box-shadow: 0 22px 44px rgba(4, 20, 38, .32); }
+
+/* ---------- 5a. Slogan hero shimmer ---------- */
+.hero h1 .hl {
+    background-image: linear-gradient(100deg, #ffb25e 10%, #ff7d2d 32%, #ffe9c9 50%, #ff7d2d 68%, #ffb25e 90%);
+    background-size: 220% auto;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    animation: wowShimmer 5s linear infinite;
+}
+@keyframes wowShimmer { to { background-position: 220% center; } }
+
+/* ---------- 5b. Nut ve dau trang + vong tien trinh ---------- */
+#btnWowTop {
+    position: fixed; right: 26px; bottom: 104px; z-index: 1500;
+    width: 52px; height: 52px; border-radius: 50%; border: 0;
+    background: rgba(10, 47, 87, .92); color: #ffb25e;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.15rem; cursor: pointer;
+    box-shadow: 0 10px 26px rgba(4, 20, 38, .4);
+    opacity: 0; visibility: hidden; transform: translateY(14px);
+    transition: opacity .3s, transform .3s, visibility .3s;
+    backdrop-filter: blur(4px);
+}
+#btnWowTop.show { opacity: 1; visibility: visible; transform: none; }
+#btnWowTop:hover { color: #fff; transform: translateY(-3px); }
+#btnWowTop svg {
+    position: absolute; inset: 0; transform: rotate(-90deg);
+    pointer-events: none;
+}
+#btnWowTop svg circle {
+    fill: none; stroke: #ff7d2d; stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 151;                /* 2*pi*24 */
+    stroke-dashoffset: var(--p, 151);
+    transition: stroke-dashoffset .1s linear;
+}
+
+/* ---------- Anh trong cac section: hover sang quet ---------- */
+.wow-shine { position: relative; overflow: hidden; }
+.wow-shine::after {
+    content: ""; position: absolute; top: 0; left: -80%;
+    width: 50%; height: 100%; transform: skewX(-20deg);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .34), transparent);
+    transition: left .6s ease;
+    pointer-events: none;
+}
+.wow-shine:hover::after { left: 130%; }
+
+/* ---------- Ton trong nguoi dung giam chuyen dong ---------- */
+@media (prefers-reduced-motion: reduce) {
+    .hero-slide.active { animation: none; }
+    .hero h1 .hl { animation: none; }
+    .wow-tilt { transition: none; }
+}
+
+/* ============================================================
+   HIEU UNG CANG BIEN v2 — phu chu de "cang" len toan site public
+   ============================================================ */
+
+/* ---- 1. PAGE-HEAD (bang tieu de trang con): silhouette CAU BO
+   ben phai + dai SONG BIEN troi ngang o day ---- */
+.page-head { position: relative; overflow: hidden; }
+.page-head::before {
+    content: ""; position: absolute; right: -14px; bottom: 8px;
+    width: 300px; height: 92%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 160'%3E%3Cg fill='%23ffffff'%3E%3Crect x='30' y='30' width='8' height='122'/%3E%3Crect x='150' y='30' width='8' height='122'/%3E%3Cpath d='M34 70 L154 108 M154 70 L34 108' stroke='%23ffffff' stroke-width='4'/%3E%3Crect x='0' y='22' width='220' height='9' rx='2'/%3E%3Crect x='84' y='2' width='34' height='19' rx='3'/%3E%3Crect x='99' y='31' width='4' height='34'/%3E%3Crect x='85' y='65' width='32' height='16' rx='2'/%3E%3Crect x='16' y='152' width='196' height='8' rx='2'/%3E%3C/g%3E%3C/svg%3E") right bottom / contain no-repeat;
+    opacity: .13; pointer-events: none;
+}
+.page-head::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 22px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 22'%3E%3Cpath d='M0 13 Q27 3 55 13 T110 13 T165 13 T220 13 V22 H0 Z' fill='%23ffffff'/%3E%3C/svg%3E") repeat-x bottom / 220px 22px;
+    opacity: .10; pointer-events: none;
+    animation: seaDrift 9s linear infinite;
+}
+@keyframes seaDrift { to { background-position-x: 220px; } }
+
+/* ---- 2. DAI ANH CANG THAT truoc footer (thay tau hoat hinh cu):
+   anh cang container chup tu tren cao, bo tron nhu banner thiet ke,
+   lop phu toi nhe + chip chu thich — nhin "do hoa that" ---- */
+.sea-divider {
+    position: relative; overflow: hidden; pointer-events: none;
+    width: min(1180px, 93%); height: 216px;
+    margin: 34px auto 30px; border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(7, 34, 60, .25), inset 0 1px 0 rgba(255,255,255,.25);
+}
+.sea-divider .sdv-img {
+    position: absolute; inset: 0;
+    background: url(img/dai-cang.jpg) center 58% / cover no-repeat;
+    filter: saturate(1.08) contrast(1.05);
+    transform: scale(1.02);
+    animation: sdvPan 46s ease-in-out infinite alternate;
+}
+@keyframes sdvPan { from { transform: scale(1.02) translateX(0); } to { transform: scale(1.09) translateX(-2%); } }
+.sea-divider .sdv-mo {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(6,22,38,.22) 0%, rgba(6,22,38,0) 38%, rgba(6,22,38,.44) 82%, rgba(6,22,38,.62) 100%);
+}
+.sea-divider .sdv-chip {
+    position: absolute; left: 16px; bottom: 13px;
+    display: inline-flex; align-items: center;
+    background: rgba(8,18,30,.55); border: 1px solid rgba(255,255,255,.25);
+    color: #ecf5fd; font-size: .72rem; font-weight: 700; letter-spacing: 1.4px;
+    border-radius: 15px; padding: 5px 13px;
+    backdrop-filter: blur(4px);
+    text-shadow: 0 1px 5px rgba(0,0,0,.55);
+}
+html[data-theme="dark"] .sea-divider { box-shadow: 0 16px 40px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255,255,255,.12); }
+@media (prefers-reduced-motion: reduce) { .sea-divider .sdv-img { animation: none; } }
+@media (max-width: 640px) { .sea-divider { height: 150px; } }
+
+/* ---- 3. ANH "trong that" hon: tang mau nhe + hover zoom muot ---- */
+.photo-tile img, .news-card img {
+    filter: saturate(1.10) contrast(1.04);
+    transition: transform .55s cubic-bezier(.22,1,.36,1), filter .55s;
+}
+.photo-tile:hover img, .news-card:hover img {
+    transform: scale(1.055);
+    filter: saturate(1.2) contrast(1.07);
+}
+
+/* ---- Ton trong nguoi dung tat hieu ung ---- */
+@media (prefers-reduced-motion: reduce) {
+    .page-head::after, .sea-divider::after,
+    .sea-divider .sd-ship, .sea-divider .sd-gull { animation: none; }
+    .sea-divider .sd-ship { transform: translateX(40vw); }
+}
+
+/* ============================================================
+   DO HOA "NHU THAT" v3 — chieu sau dien anh cho toan site
+   ============================================================ */
+
+/* ---- 1. HERO: vignette 4 goc + chu co bong do sau (nhu poster phim) ---- */
+.hero { position: relative; }
+.hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background:
+        radial-gradient(120% 90% at 50% 40%, transparent 58%, rgba(3, 12, 24, .38) 100%),
+        linear-gradient(180deg, rgba(3, 12, 24, .18), transparent 22%, transparent 72%, rgba(3, 12, 24, .3));
+}
+.hero .container { position: relative; z-index: 2; }
+.hero h1 { text-shadow: 0 3px 18px rgba(2, 10, 20, .55), 0 1px 3px rgba(2, 10, 20, .5); }
+.hero p, .hero .lead { text-shadow: 0 2px 10px rgba(2, 10, 20, .55); }
+
+/* ---- 2. THE (cards): bong 2 lop + duong sang 1px tren dinh —
+   ky thuat "rim light" lam the noi khoi nen nhu vat the that ---- */
+.card-stats, .svc-card, .ai-card, .news-card, .tst-card {
+    box-shadow:
+        0 1px 2px rgba(10, 30, 55, .06),
+        0 10px 28px rgba(10, 30, 55, .10);
+    border-top: 1px solid rgba(255, 255, 255, .85);
+    transition: box-shadow .3s ease, transform .3s ease;
+}
+.card-stats:hover, .svc-card:hover, .ai-card:hover, .news-card:hover, .tst-card:hover {
+    box-shadow:
+        0 2px 4px rgba(10, 30, 55, .08),
+        0 22px 48px rgba(10, 30, 55, .17);
+}
+html[data-theme="dark"] .card-stats, html[data-theme="dark"] .svc-card,
+html[data-theme="dark"] .ai-card, html[data-theme="dark"] .news-card,
+html[data-theme="dark"] .tst-card {
+    border-top: 1px solid rgba(127, 208, 245, .18);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 30px rgba(0, 0, 0, .38);
+}
+
+/* ---- 3. ANH: vignette day + vien sang ben trong (nhu anh in cao cap) ---- */
+.photo-tile { position: relative; }
+.photo-tile::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22), inset 0 -46px 46px -18px rgba(6, 20, 38, .55);
+}
+.news-card .card-img-top, .news-card img { position: relative; }
+
+/* ---- 4. PAGE-HEAD: tieu de co khoi sau ---- */
+.page-head h1 { text-shadow: 0 2px 14px rgba(2, 10, 20, .5); }
+
+/* ---- 5. Nut chinh: anh sang guong tren dinh nut ---- */
+.btn-accent, .btn-navy {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, 0) 42%);
+    background-blend-mode: overlay;
+    box-shadow: 0 6px 18px rgba(10, 30, 55, .22);
+}
+
+/* ---- 4. DOI TAU MINI tuan tra 2 ben le (wow.js muc 8) ---- */
+.doi-tau {
+    position: fixed; top: 0; bottom: 110px; width: 250px;
+    z-index: 1; pointer-events: none; overflow: hidden;
+}
+.doi-tau.dt-trai { left: 6px; }
+.doi-tau.dt-phai { right: 6px; }
+.dt-tau {
+    position: absolute; left: 0; display: block;
+    animation: dtQuaLai linear infinite;
+    will-change: transform;
+}
+.dt-tau img {
+    width: 100%; display: block;
+    filter: drop-shadow(0 7px 8px rgba(4, 20, 36, .35)) saturate(1.05);
+    animation: dtBenh 4.5s ease-in-out infinite;
+}
+/* vet song nho duoi than tau */
+.dt-tau .dt-song {
+    position: absolute; left: 6%; right: 6%; bottom: -5px; height: 8px;
+    background: radial-gradient(circle 6px at 5px -2px, transparent 4px, rgba(120, 195, 240, .5) 5px);
+    background-size: 10px 8px;
+    animation: dtSongTroi 1.6s linear infinite;
+}
+/* di chuyen QUA LAI trong lan: sang phai -> quay dau -> ve trai */
+@keyframes dtQuaLai {
+    0%   { transform: translateX(0) scaleX(1); }
+    46%  { transform: translateX(var(--duong)) scaleX(1); }
+    50%  { transform: translateX(var(--duong)) scaleX(-1); }
+    96%  { transform: translateX(0) scaleX(-1); }
+    100% { transform: translateX(0) scaleX(1); }
+}
+@keyframes dtBenh {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-3px) rotate(1deg); }
+}
+@keyframes dtSongTroi { to { background-position-x: 20px; } }
+html[data-theme="dark"] .dt-tau img { filter: drop-shadow(0 7px 9px rgba(0, 0, 0, .55)) saturate(1.02) brightness(.94); }
+/* man hinh hep: le khong du trong -> an, khong de len noi dung */
+@media (max-width: 1499px) { .doi-tau { display: none; } }
+@media (prefers-reduced-motion: reduce) { .dt-tau, .dt-tau img, .dt-tau .dt-song { animation: none; } }
+
+/* ---- 5. HAI AU luon troi (wow.js muc 9) ---- */
+.bau-troi {
+    position: fixed; left: 0; right: 0; top: 0; height: 30vh;
+    z-index: 1; pointer-events: none; overflow: hidden;
+}
+.ba-chim { position: absolute; left: 0; animation: baBay linear infinite; will-change: transform; }
+.ba-chim i {
+    display: block; width: 34px; height: 15px; opacity: .42;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 14'%3E%3Cpath d='M2 10 Q9 2 16 9 Q23 2 30 10' stroke='%2394aabb' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+    animation: baVo .75s ease-in-out infinite alternate;
+}
+.ba-chim.nho i { width: 21px; height: 10px; opacity: .32; }
+.ba-chim.nguoc { animation-name: baBayNguoc; }
+.ba-chim.nguoc i { animation-name: baVoNguoc; }
+@keyframes baBay { from { transform: translateX(-80px); } to { transform: translateX(calc(100vw + 90px)); } }
+@keyframes baBayNguoc { from { transform: translateX(calc(100vw + 90px)); } to { transform: translateX(-80px); } }
+@keyframes baVo { from { transform: scaleY(1); } to { transform: scaleY(.5) translateY(3px); } }
+@keyframes baVoNguoc { from { transform: scaleX(-1) scaleY(1); } to { transform: scaleX(-1) scaleY(.5) translateY(3px); } }
+
+/* ---- 6. PHAO LUONG hang hai cuoi lan tau: xanh trai · do phai ---- */
+.dt-phao {
+    position: absolute; bottom: 14px; left: 50%; width: 16px; margin-left: -8px;
+    animation: dpBenh 4.2s ease-in-out infinite;
+    transform-origin: 50% 100%;
+    filter: drop-shadow(0 4px 5px rgba(4, 20, 36, .4));
+}
+.dt-phao .dp-than {
+    display: block; width: 16px; height: 20px; position: relative;
+    border-radius: 6px 6px 8px 8px;
+    background: linear-gradient(180deg, #34b06a, #1d7f47);
+}
+.dt-phao .dp-than::before {
+    content: ""; position: absolute; left: 6.5px; top: -9px;
+    width: 3px; height: 10px; border-radius: 2px; background: #23543b;
+}
+.dt-phao .dp-den {
+    position: absolute; top: -15px; left: 50%; width: 8px; height: 8px; margin-left: -4px;
+    border-radius: 50%; background: #5cff9e; box-shadow: 0 0 11px #5cff9e;
+    animation: dpNhay 2.4s steps(2) infinite;
+}
+.dt-phao.do .dp-than { background: linear-gradient(180deg, #e2564a, #a83228); }
+.dt-phao.do .dp-than::before { background: #6e241d; }
+.dt-phao.do .dp-den { background: #ff6b5e; box-shadow: 0 0 11px #ff6b5e; animation-delay: -1.2s; }
+@keyframes dpBenh { 0%, 100% { transform: translateY(0) rotate(-7deg); } 50% { transform: translateY(-5px) rotate(7deg); } }
+@keyframes dpNhay { 50% { opacity: .2; } }
+@media (max-width: 991px) { .bau-troi { display: none; } }
+@media (prefers-reduced-motion: reduce) { .ba-chim, .ba-chim i, .dt-phao, .dt-phao .dp-den { animation: none; } }

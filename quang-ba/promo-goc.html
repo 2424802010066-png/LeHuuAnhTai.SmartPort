@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0b2740; font-family:"Segoe UI","Segoe UI Emoji",sans-serif; overflow:hidden; }
+#stage { position:fixed; top:0; left:0; width:800px; height:450px; overflow:hidden;
+  background:linear-gradient(180deg,#123a5e 0%,#0e3050 40%,#0d2c49 61.8%,#072033 62%,#051627 80%,#04121f 100%); }
+
+/* ============ NEN: mat troi, may, song, tau, cau truc ============ */
+.sun { position:absolute; top:18px; left:74px; width:260px; height:260px; border-radius:50%;
+  background:radial-gradient(circle,rgba(255,196,110,.5) 0%,rgba(255,170,80,.18) 42%,transparent 70%); }
+.sunCore { position:absolute; top:118px; left:178px; width:44px; height:44px; border-radius:50%;
+  background:#ffd98a; box-shadow:0 0 34px 10px rgba(255,205,130,.55); }
+.cloud { position:absolute; height:16px; border-radius:12px; background:rgba(210,235,255,.16); animation:drift 14.4s ease-in-out both; }
+.c1 { top:56px; left:420px; width:150px; } .c1::after { content:""; position:absolute; top:-9px; left:34px; width:70px; height:14px; border-radius:10px; background:rgba(210,235,255,.14); }
+.c2 { top:104px; left:600px; width:100px; animation-delay:-3s; }
+@keyframes drift { from { transform:translateX(0); } to { transform:translateX(-55px); } }
+.star { position:absolute; width:2px; height:2px; border-radius:50%; background:rgba(255,255,255,.65); }
+.gull { position:absolute; animation:flap 2.2s ease-in-out infinite alternate; }
+@keyframes flap { from { transform:translateY(0); } to { transform:translateY(-6px); } }
+.wave { position:absolute; left:-60px; right:-60px; height:22px;
+  background:radial-gradient(circle 15px at 12px -7px, transparent 13px, rgba(140,215,255,.16) 14px);
+  background-size:24px 22px; animation:wmove linear infinite; }
+.w1 { top:277px; animation-duration:2.6s; opacity:.9; }
+.w2 { top:295px; animation-duration:3.4s; opacity:.6; background-image:radial-gradient(circle 15px at 12px -7px, transparent 13px, rgba(120,200,250,.11) 14px); }
+.w3 { top:318px; animation-duration:4.4s; opacity:.45; }
+@keyframes wmove { to { transform:translateX(-24px); } }
+#shipWrap { position:absolute; top:216px; left:0; animation:sail 14.4s linear both; }
+@keyframes sail { from { transform:translateX(830px); } to { transform:translateX(-250px); } }
+#cranes { position:absolute; top:150px; right:6px; opacity:.92; }
+.brandTL { position:absolute; top:12px; left:16px; font-size:13px; font-weight:700; letter-spacing:2px; color:rgba(230,246,255,.9); z-index:50; }
+.brandBR { position:absolute; bottom:10px; right:16px; font-size:10px; letter-spacing:2.5px; color:rgba(200,228,246,.5); z-index:50; }
+
+/* ============ KHUNG CANH ============ */
+.sc { position:absolute; inset:0; opacity:0; animation:scFade var(--d) linear var(--t) both; z-index:10; }
+@keyframes scFade { 0% { opacity:0; } 10% { opacity:1; } 90% { opacity:1; } 100% { opacity:0; } }
+.pop { opacity:0; animation-name:pop; animation-duration:.45s; animation-timing-function:cubic-bezier(.2,.9,.3,1.25); animation-fill-mode:both; }
+@keyframes pop { from { opacity:0; transform:translateY(16px) scale(.94); } to { opacity:1; transform:none; } }
+.ttl { position:absolute; top:24px; left:0; right:0; text-align:center; font-size:23px; font-weight:800; letter-spacing:1px; color:#eaf6ff; text-shadow:0 2px 10px rgba(0,0,0,.5); }
+.ttl b { color:#4fd8ff; }
+.ttl::after { content:""; display:block; width:120px; height:3px; margin:7px auto 0; border-radius:2px;
+  background:linear-gradient(90deg,transparent,#4fd8ff,#ffb454,transparent); }
+.card { background:rgba(6,24,40,.78); border:1px solid rgba(120,215,255,.32); border-radius:14px;
+  box-shadow:0 10px 26px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08); color:#d7ecfa; }
+.chip { display:inline-block; background:rgba(8,30,50,.85); border:1px solid rgba(120,215,255,.4); border-radius:20px;
+  padding:6px 13px; font-size:13.5px; font-weight:600; color:#dff2ff; margin:4px; box-shadow:0 4px 12px rgba(0,0,0,.35); }
+
+/* ============ CANH 1: MO MAN ============ */
+#s1 .kicker { position:absolute; top:96px; left:0; right:0; text-align:center; }
+#s1 .kicker span { background:rgba(255,180,84,.14); border:1px solid rgba(255,180,84,.5); color:#ffd08a;
+  border-radius:20px; padding:5px 16px; font-size:13px; font-weight:700; letter-spacing:2px; }
+#s1 .logo { position:absolute; top:136px; left:0; right:0; text-align:center; font-size:64px; font-weight:900; letter-spacing:7px;
+  background:linear-gradient(180deg,#ffffff 20%,#8fdfff 60%,#4fd8ff 100%); -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; filter:drop-shadow(0 4px 14px rgba(40,170,230,.45)); }
+#s1 .sub { position:absolute; top:228px; left:0; right:0; text-align:center; font-size:19px; font-weight:600; color:#cfe9fa; letter-spacing:.5px; }
+#s1 .mods { position:absolute; top:280px; left:0; right:0; text-align:center; padding:0 40px; }
+
+/* ============ CANH 2: SMART GATE ============ */
+#gateArea { position:absolute; top:96px; left:34px; width:360px; height:250px; }
+#road { position:absolute; bottom:26px; left:0; width:360px; height:56px; background:linear-gradient(180deg,#1d3a50,#152c40);
+  border-radius:8px; border-top:2px solid rgba(140,200,240,.25); }
+#road::after { content:""; position:absolute; top:26px; left:8px; right:8px; height:3px;
+  background:repeating-linear-gradient(90deg,#ffd98a 0 26px,transparent 26px 52px); opacity:.7; }
+#barrier { position:absolute; bottom:78px; left:6px; width:8px; height:96px; background:#28516e; border-radius:4px; }
+#barrier::after { content:""; position:absolute; top:6px; left:8px; width:120px; height:9px; border-radius:5px;
+  background:repeating-linear-gradient(90deg,#ff6d5a 0 18px,#ffffff 18px 36px); transform-origin:left center; transform:rotate(-58deg);
+  animation:barUp .7s 4.5s both ease-in-out; }
+@keyframes barUp { from { transform:rotate(0deg); } to { transform:rotate(-58deg); } }
+#truckWrap { position:absolute; bottom:44px; left:88px; animation:driveIn 1s 2.5s both ease-out; }
+@keyframes driveIn { from { transform:translateX(300px); opacity:0; } 25% { opacity:1; } to { transform:none; opacity:1; } }
+#truckWrap .tk { font-size:84px; line-height:1; filter:drop-shadow(0 8px 10px rgba(0,0,0,.5)); }
+#beam { position:absolute; top:-14px; bottom:6px; left:8%; width:5px; border-radius:3px;
+  background:linear-gradient(180deg,transparent,#2ee6ff 30%,#9ff3ff 50%,#2ee6ff 70%,transparent);
+  box-shadow:0 0 18px 5px rgba(46,230,255,.75); opacity:0; animation:scan .8s 3.6s both linear; }
+@keyframes scan { 0% { left:4%; opacity:0; } 12% { opacity:1; } 88% { opacity:1; } 100% { left:94%; opacity:0; } }
+#plate { position:absolute; bottom:-10px; left:118px; white-space:nowrap; background:#fff; color:#0a1420; font-family:Consolas,monospace;
+  font-size:21px; font-weight:700; padding:3px 12px; border-radius:6px; border:2.5px solid #12293d;
+  box-shadow:0 6px 16px rgba(0,0,0,.5), 0 0 14px rgba(46,230,255,.5); }
+#plate i { font-style:normal; color:#0d9e56; margin-left:7px; }
+#gateList { position:absolute; top:92px; right:34px; width:352px; padding:14px 16px; }
+#gateList h3 { font-size:15.5px; color:#ffd08a; letter-spacing:1px; margin-bottom:8px; }
+#gateList .it { display:flex; align-items:center; gap:9px; font-size:14.5px; padding:5.5px 0; border-bottom:1px dashed rgba(120,200,240,.16); }
+#gateList .it:last-child { border-bottom:none; }
+#gateList .ic { font-size:19px; }
+#gateList .hl { color:#7fe6a8; font-weight:700; }
+
+/* ============ CANH 3: KHO & QC ============ */
+#camCard { position:absolute; top:92px; left:34px; width:368px; height:238px; padding:12px; }
+#camHead { display:flex; justify-content:space-between; font-size:11.5px; color:#9fc6de; letter-spacing:1.5px; margin-bottom:8px; }
+#camHead .rec { color:#ff6d6d; font-weight:700; animation:blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity:.25; } }
+#belt { position:relative; height:118px; background:#05121e; border-radius:10px; overflow:hidden; border:1px solid rgba(110,190,235,.25); }
+#belt::after { content:""; position:absolute; bottom:0; left:0; right:0; height:22px; background:#0e2436;
+  border-top:2px solid #1d4258; }
+#beltRow { position:absolute; bottom:14px; left:0; display:flex; gap:20px; animation:belt 2.5s linear infinite; }
+@keyframes belt { to { transform:translateX(-140px); } }
+.bx { position:relative; font-size:48px; line-height:1; padding:3px 4px 0; border:2.5px solid transparent; border-radius:8px; }
+.bok { border-color:#38e08a; }
+.bok::after { content:"OK"; position:absolute; top:-16px; left:50%; transform:translateX(-50%); font-size:10.5px; font-weight:800;
+  color:#062; background:#38e08a; border-radius:4px; padding:0 5px; }
+.bng { border-color:#ff5566; animation:blink .9s steps(2) infinite; }
+.bng::after { content:"MÓP ✗"; position:absolute; top:-16px; left:50%; transform:translateX(-50%); font-size:10.5px; font-weight:800;
+  color:#fff; background:#ff5566; border-radius:4px; padding:0 5px; white-space:nowrap; }
+#camSub { margin-top:10px; font-size:12.8px; color:#bcd9ec; line-height:1.45; }
+#cntCard { position:absolute; top:92px; right:34px; width:340px; height:238px; padding:16px 18px; text-align:center; }
+#cntCard h3 { font-size:14px; letter-spacing:2.5px; color:#9fc6de; }
+#cntNums { position:relative; height:64px; margin-top:10px; }
+.num { position:absolute; left:0; right:0; top:0; font-family:Consolas,monospace; font-size:46px; font-weight:800; color:#4fd8ff;
+  text-shadow:0 0 18px rgba(79,216,255,.45); opacity:0; }
+.n1, .n2 { animation:holdSwap .75s linear both; }
+.n3 { animation:pop .4s 6.55s both; color:#7fe6a8; text-shadow:0 0 18px rgba(127,230,168,.5); }
+@keyframes holdSwap { 0% { opacity:0; } 12% { opacity:1; } 86% { opacity:1; } 100% { opacity:0; } }
+#pbar { height:12px; border-radius:7px; background:rgba(10,32,52,.9); border:1px solid rgba(110,190,235,.3); overflow:hidden; margin-top:8px; }
+#pfill { height:100%; border-radius:7px; background:linear-gradient(90deg,#2fb9e8,#38e08a); transform-origin:left; transform:scaleX(0);
+  animation:pfill 1.55s 5.15s both ease-in-out; }
+@keyframes pfill { to { transform:scaleX(1); } }
+#doneBadge { display:inline-block; margin-top:13px; background:rgba(56,224,138,.16); border:1.5px solid #38e08a; color:#8df0b8;
+  font-size:15px; font-weight:800; border-radius:22px; padding:7px 18px; letter-spacing:.5px; }
+#cntSub { margin-top:11px; font-size:12.3px; color:#bcd9ec; line-height:1.45; }
+
+/* ============ CANH 4: AN NINH + DMS ============ */
+#secRow { position:absolute; top:94px; left:0; right:0; display:flex; justify-content:center; gap:15px; padding:0 26px; }
+.secCard { width:240px; padding:14px 13px; text-align:center; }
+.secCard .ico { font-size:38px; }
+.secCard h4 { font-size:15.5px; color:#eaf6ff; margin:6px 0 5px; }
+.secCard p { font-size:12.6px; color:#bcd9ec; line-height:1.45; min-height:54px; }
+.alertBad { display:inline-block; margin-top:7px; background:#ff4455; color:#fff; font-size:12.5px; font-weight:800;
+  border-radius:16px; padding:5px 13px; animation:pop .45s 8.3s both, pulse 1s 8.8s infinite; }
+@keyframes pulse { 0%,100% { transform:scale(1); box-shadow:0 0 0 rgba(255,70,90,.0); } 50% { transform:scale(1.06); box-shadow:0 0 18px rgba(255,70,90,.8); } }
+.okChip { display:inline-block; margin-top:7px; background:rgba(79,216,255,.13); border:1px solid rgba(79,216,255,.5); color:#9fe8ff;
+  font-size:12px; font-weight:700; border-radius:16px; padding:5px 11px; }
+.tiltBox { display:inline-block; font-size:34px; transform:rotate(33deg); filter:drop-shadow(0 4px 6px rgba(0,0,0,.5)); }
+.deg { color:#ffb454; font-weight:800; font-size:15px; }
+
+/* ============ CANH 5: VAN HANH SO ============ */
+#dashCard { position:absolute; top:96px; left:40px; width:330px; height:226px; padding:15px 17px; }
+#dashCard h4 { font-size:14px; color:#9fc6de; letter-spacing:1.5px; }
+#bars { display:flex; align-items:flex-end; gap:20px; height:118px; margin:16px 10px 0; border-bottom:2px solid rgba(120,200,240,.3);
+  padding:0 6px; }
+.bar { width:44px; border-radius:6px 6px 0 0; transform-origin:bottom; transform:scaleY(0); animation:grow .7s both cubic-bezier(.2,.8,.3,1.1); }
+@keyframes grow { to { transform:scaleY(1); } }
+#bars .b1 { height:44%; background:linear-gradient(180deg,#4fd8ff,#1f7fae); }
+#bars .b2 { height:72%; background:linear-gradient(180deg,#ffb454,#c67322); }
+#bars .b3 { height:56%; background:linear-gradient(180deg,#38e08a,#158b4e); }
+#bars .b4 { height:92%; background:linear-gradient(180deg,#7fa8ff,#3c5fc2); }
+#dashCard .lbl { display:flex; gap:20px; padding:6px 16px 0; font-size:11px; color:#9fc6de; }
+#dashCard .lbl span { width:44px; text-align:center; }
+#opsList { position:absolute; top:96px; right:36px; width:352px; }
+#opsList .chip { display:block; text-align:left; margin:0 0 8px; padding:8px 14px; font-size:13.6px; }
+#opsList .chip b { color:#ffd08a; }
+
+/* ============ CANH 6: KET ============ */
+#s6 .glow { position:absolute; top:70px; left:250px; width:300px; height:300px; border-radius:50%;
+  background:radial-gradient(circle,rgba(79,216,255,.22),transparent 65%); }
+#s6 .logo2 { position:absolute; top:118px; left:0; right:0; text-align:center; font-size:56px; font-weight:900; letter-spacing:6px;
+  background:linear-gradient(180deg,#ffffff 20%,#8fdfff 60%,#4fd8ff 100%); -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; filter:drop-shadow(0 4px 14px rgba(40,170,230,.5)); }
+#s6 .tag { position:absolute; top:198px; left:0; right:0; text-align:center; font-size:18px; font-weight:800; letter-spacing:3.5px; color:#ffd08a; }
+#s6 .line { position:absolute; top:236px; left:0; right:0; text-align:center; font-size:13.5px; color:#bcd9ec; letter-spacing:.5px; }
+#s6 .cta { position:absolute; top:272px; left:0; right:0; text-align:center; }
+#s6 .cta span { display:inline-block; background:linear-gradient(90deg,#22b8e6,#2f7fd6); color:#fff; font-size:15.5px; font-weight:800;
+  border-radius:26px; padding:10px 26px; letter-spacing:1px; box-shadow:0 8px 24px rgba(34,150,220,.5); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <!-- NEN -->
+  <div class="sun"></div><div class="sunCore"></div>
+  <div class="cloud c1"></div><div class="cloud c2"></div>
+  <div class="star" style="top:34px;left:520px;"></div><div class="star" style="top:60px;left:660px;"></div>
+  <div class="star" style="top:26px;left:380px;"></div><div class="star" style="top:80px;left:740px;"></div>
+  <svg class="gull" style="top:70px;left:300px;" width="30" height="12" viewBox="0 0 30 12"><path d="M1 9 Q8 1 15 8 Q22 1 29 9" stroke="rgba(230,246,255,.75)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+  <svg class="gull" style="top:96px;left:352px;animation-delay:-1.1s;" width="22" height="10" viewBox="0 0 30 12"><path d="M1 9 Q8 1 15 8 Q22 1 29 9" stroke="rgba(230,246,255,.55)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+  <div id="shipWrap">
+    <svg width="200" height="66" viewBox="0 0 200 66">
+      <rect x="146" y="8" width="26" height="30" rx="2" fill="#c8dfee"/>
+      <rect x="150" y="12" width="18" height="5" fill="#2a4d66"/><rect x="150" y="20" width="18" height="5" fill="#2a4d66"/>
+      <rect x="171" y="2" width="3" height="36" fill="#9db8ca"/>
+      <rect x="18" y="24" width="20" height="14" fill="#e07b39"/><rect x="40" y="24" width="20" height="14" fill="#3aa6b9"/>
+      <rect x="62" y="24" width="20" height="14" fill="#c94f4f"/><rect x="84" y="24" width="20" height="14" fill="#d9a441"/>
+      <rect x="106" y="24" width="20" height="14" fill="#3f7fbf"/>
+      <rect x="18" y="10" width="20" height="12" fill="#3f7fbf"/><rect x="40" y="10" width="20" height="12" fill="#d9a441"/>
+      <rect x="62" y="10" width="20" height="12" fill="#e07b39"/>
+      <rect x="10" y="38" width="178" height="8" rx="2" fill="#16405e"/>
+      <path d="M4 46 L196 46 L178 64 L22 64 Z" fill="#0d2f47"/>
+      <text x="96" y="59" font-size="9" fill="#7fb6d6" font-family="Consolas" text-anchor="middle" letter-spacing="2">SMARTPORT</text>
+    </svg>
+  </div>
+  <svg id="cranes" width="250" height="132" viewBox="0 0 250 132">
+    <g fill="#082036">
+      <rect x="150" y="20" width="92" height="10" rx="2"/><rect x="152" y="30" width="10" height="100"/>
+      <rect x="226" y="30" width="10" height="100"/><rect x="150" y="30" width="92" height="4" opacity=".7"/>
+      <path d="M150 25 L118 42 L150 42 Z"/>
+      <rect x="180" y="30" width="4" height="26"/><rect x="171" y="56" width="22" height="14" fill="#0a2a42"/>
+      <rect x="30" y="44" width="74" height="8" rx="2"/><rect x="32" y="52" width="8" height="80"/>
+      <rect x="90" y="52" width="8" height="80"/><path d="M30 48 L8 62 L30 62 Z"/>
+      <rect x="56" y="52" width="3" height="20"/><rect x="48" y="72" width="19" height="12" fill="#0a2a42"/>
+    </g>
+  </svg>
+  <div class="brandTL">⚓ SMARTPORT</div>
+  <div class="brandBR">AI PORT MANAGEMENT PLATFORM</div>
+
+  <!-- CANH 1: MO MAN 0-2.4s -->
+  <section class="sc" id="s1" style="--t:0s;--d:2.4s;">
+    <div class="kicker pop" style="animation-delay:.2s;"><span>⚓ GIỚI THIỆU SẢN PHẨM</span></div>
+    <div class="logo pop" style="animation-delay:.4s;">SMARTPORT</div>
+    <div class="sub pop" style="animation-delay:.7s;">Nền tảng AI quản lý cảng Logistics toàn diện</div>
+    <div class="mods">
+      <span class="chip pop" style="animation-delay:.95s;">🚛 Cổng AI</span>
+      <span class="chip pop" style="animation-delay:1.1s;">📦 Kho &amp; QC</span>
+      <span class="chip pop" style="animation-delay:1.25s;">🛡️ An ninh</span>
+      <span class="chip pop" style="animation-delay:1.4s;">😴 Giám sát tài xế</span>
+      <span class="chip pop" style="animation-delay:1.55s;">💳 Thanh toán</span>
+      <span class="chip pop" style="animation-delay:1.7s;">🤖 PortBot</span>
+    </div>
+  </section>
+
+  <!-- CANH 2: SMART GATE 2.2-5.0s -->
+  <section class="sc" id="s2" style="--t:2.2s;--d:2.8s;">
+    <div class="ttl pop" style="animation-delay:2.35s;">🚛 CỔNG THÔNG MINH — <b>SMART GATE</b></div>
+    <div id="gateArea">
+      <div id="road"></div>
+      <div id="barrier"></div>
+      <div id="truckWrap">
+        <div class="tk">🚛</div>
+        <div id="beam"></div>
+        <div id="plate" class="pop" style="animation-delay:4.35s;">51C-638.72<i>✓</i></div>
+      </div>
+    </div>
+    <div id="gateList" class="card">
+      <h3 class="pop" style="animation-delay:2.85s;">AI XỬ LÝ TRONG 2 GIÂY</h3>
+      <div class="it pop" style="animation-delay:3.05s;"><span class="ic">📸</span> Đọc biển số <b class="hl">trắng &amp; vàng</b> — OCR 2 lớp</div>
+      <div class="it pop" style="animation-delay:3.3s;"><span class="ic">🖼️</span> Lưu ảnh xe · bấm là xem phóng to</div>
+      <div class="it pop" style="animation-delay:3.55s;"><span class="ic">🔎</span> Soi ngoại quan: phát hiện <b style="color:#ff9a9a">móp / trầy</b></div>
+      <div class="it pop" style="animation-delay:3.8s;"><span class="ic">🅿️</span> Điều phối bến đỗ tự động → <b class="hl">DOCK D2</b></div>
+    </div>
+  </section>
+
+  <!-- CANH 3: KHO & QC 4.8-7.6s -->
+  <section class="sc" id="s3" style="--t:4.8s;--d:2.8s;">
+    <div class="ttl pop" style="animation-delay:4.95s;">📦 KHO &amp; QC — <b>ĐẾM HÀNG BẰNG AI</b></div>
+    <div id="camCard" class="card pop" style="animation-delay:5.1s;">
+      <div id="camHead"><span>CAM-QC-01 · BĂNG CHUYỀN A</span><span class="rec">● REC</span></div>
+      <div id="belt">
+        <div id="beltRow">
+          <span class="bx bok">📦</span><span class="bx">📦</span><span class="bx bok">📦</span>
+          <span class="bx bng">📦</span><span class="bx bok">📦</span><span class="bx">📦</span>
+          <span class="bx bok">📦</span><span class="bx">📦</span><span class="bx bok">📦</span>
+        </div>
+      </div>
+      <div id="camSub">Đăng ký mẫu bằng <b style="color:#ffd08a">4–6 ảnh hoặc video</b> — AI chỉ đếm đúng sản phẩm đó; hàng lạ lọt vào → 🚨 còi + cảnh báo giọng nói.</div>
+    </div>
+    <div id="cntCard" class="card pop" style="animation-delay:5.2s;">
+      <h3>ĐANG ĐẾM THEO ĐƠN HÀNG</h3>
+      <div id="cntNums">
+        <div class="num n1" style="animation-delay:5.25s;">0 / 500</div>
+        <div class="num n2" style="animation-delay:5.95s;">248 / 500</div>
+        <div class="num n3">500 / 500</div>
+      </div>
+      <div id="pbar"><div id="pfill"></div></div>
+      <div id="doneBadge" class="pop" style="animation-delay:6.85s;">✅ ĐỦ SỐ LƯỢNG — HOÀN TẤT</div>
+      <div id="cntSub">Kiểm đếm không cần dừng chuyền · phát hiện thùng lỗi ngay lập tức</div>
+    </div>
+  </section>
+
+  <!-- CANH 4: AN NINH + DMS 7.4-10.2s -->
+  <section class="sc" id="s4" style="--t:7.4s;--d:2.8s;">
+    <div class="ttl pop" style="animation-delay:7.55s;">🛡️ AN NINH &amp; <b>GIÁM SÁT TÀI XẾ (DMS)</b></div>
+    <div id="secRow">
+      <div class="secCard card pop" style="animation-delay:7.75s;">
+        <div class="ico">🧍</div>
+        <h4>Camera khu vực</h4>
+        <p>Phát hiện <b style="color:#ff9a9a">người ngã</b> (xác nhận 3 nhịp, không báo oan) · đột nhập ngoài giờ</p>
+        <span class="alertBad">⚠ NGÃ — BÁO ĐỘNG NGAY</span>
+      </div>
+      <div class="secCard card pop" style="animation-delay:8.1s;">
+        <div class="ico">😴</div>
+        <h4>Buồng lái xe nâng / đầu kéo</h4>
+        <p>Nhận diện <b style="color:#ffd08a">ngủ gật · ngáp · dùng điện thoại</b> · mất tập trung khi lái</p>
+        <span class="okChip">Mắt nhắm 1.4s → 🔊 báo thức</span>
+      </div>
+      <div class="secCard card pop" style="animation-delay:8.45s;">
+        <div class="ico tiltBox">📦</div>
+        <h4>Hàng hóa trên xe</h4>
+        <p>Đo góc nghiêng kiện hàng — lệch <span class="deg">33° &gt; 25°</span> là cảnh báo rơi đổ</p>
+        <span class="okChip">📐 Giám sát liên tục 24/7</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CANH 5: VAN HANH SO 10.0-12.4s -->
+  <section class="sc" id="s5" style="--t:10s;--d:2.4s;">
+    <div class="ttl pop" style="animation-delay:10.15s;">💼 VẬN HÀNH SỐ — <b>MỘT NỀN TẢNG DUY NHẤT</b></div>
+    <div id="dashCard" class="card pop" style="animation-delay:10.3s;">
+      <h4>📊 DOANH THU &amp; SẢN LƯỢNG THEO QUÝ</h4>
+      <div id="bars">
+        <div class="bar b1" style="animation-delay:10.55s;"></div>
+        <div class="bar b2" style="animation-delay:10.7s;"></div>
+        <div class="bar b3" style="animation-delay:10.85s;"></div>
+        <div class="bar b4" style="animation-delay:11s;"></div>
+      </div>
+      <div class="lbl"><span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span></div>
+    </div>
+    <div id="opsList">
+      <span class="chip pop" style="animation-delay:10.5s;">💳 <b>VietQR động</b> — quét là chuyển đúng số tiền</span>
+      <span class="chip pop" style="animation-delay:10.7s;">🧾 Booking &amp; duyệt lệnh giao nhận online</span>
+      <span class="chip pop" style="animation-delay:10.9s;">🤖 <b>PortBot</b> — trợ lý ảo tra cứu container 24/7</span>
+      <span class="chip pop" style="animation-delay:11.1s;">📑 Xuất số liệu kế toán chuẩn <b>MISA</b></span>
+      <span class="chip pop" style="animation-delay:11.3s;">🔐 Bảo mật nhiều lớp · phân quyền chặt chẽ</span>
+    </div>
+  </section>
+
+  <!-- CANH 6: KET 12.2-14.4s -->
+  <section class="sc" id="s6" style="--t:12.2s;--d:2.2s;">
+    <div class="glow pop" style="animation-delay:12.3s;"></div>
+    <div class="logo2 pop" style="animation-delay:12.4s;">SMARTPORT</div>
+    <div class="tag pop" style="animation-delay:12.7s;">CẢNG THÔNG MINH TRONG TẦM TAY</div>
+    <div class="line pop" style="animation-delay:12.95s;">6 module AI · Giao diện tiếng Việt 100% · Triển khai nhanh cho cảng, depot &amp; kho hàng</div>
+    <div class="cta pop" style="animation-delay:13.2s;"><span>📩 LIÊN HỆ DEMO NGAY</span></div>
+  </section>
+</div>
+<script>
+function setT(ms) {
+  var as = document.getAnimations();
+  for (var i = 0; i < as.length; i++) { try { as[i].pause(); as[i].currentTime = ms; } catch (e) {} }
+  return as.length;
+}
+(function () {
+  var m = location.search.match(/t=(\d+)/);
+  if (!m) return;
+  var t = +m[1];
+  var apply = function () { setT(t); };
+  if (document.readyState === 'complete') apply();
+  else window.addEventListener('load', apply);
+  requestAnimationFrame(apply);
+  setTimeout(apply, 30);
+  setTimeout(apply, 150);
+  setTimeout(apply, 350);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+﻿@model SmartPort.Models.KhachHang
+@{
+    ViewBag.Title = Model.MaKH == 0 ? "Thêm khách hàng" : "Sửa khách hàng";
+}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card-sp">
+            <div class="card-header"><i class="bi bi-buildings me-2 text-primary"></i>@ViewBag.Title</div>
+            <div class="p-4">
+                @using (Html.BeginForm("Save", "Customers", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.MaKH)
+                    @Html.HiddenFor(m => m.NgayTao)
+                    @Html.ValidationSummary(true)
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label class="form-label">Tên công ty <span class="text-danger">*</span></label>
+                            @Html.TextBoxFor(m => m.TenCongTy, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.TenCongTy)
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Mã số thuế</label>
+                            @Html.TextBoxFor(m => m.MaSoThue, new { @class = "form-control" })
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Địa chỉ</label>
+                            @Html.TextBoxFor(m => m.DiaChi, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Người liên hệ</label>
+                            @Html.TextBoxFor(m => m.NguoiLienHe, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Email</label>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Số điện thoại</label>
+                            @Html.TextBoxFor(m => m.SoDienThoai, new { @class = "form-control" })
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-accent px-4" type="submit"><i class="bi bi-save me-1"></i>Lưu</button>
+                            <a class="btn btn-outline-secondary" href="@Url.Action("Index")">Quay lại</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

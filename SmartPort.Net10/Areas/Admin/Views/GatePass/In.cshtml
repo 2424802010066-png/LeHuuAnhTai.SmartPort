@@ -1,0 +1,69 @@
+﻿@model SmartPort.Models.LenhGiaoNhan
+@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>@Model.SoLenh — Lệnh giao nhận</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Segoe UI", Arial, sans-serif; color: #111827; background: #eef2f6; padding: 24px; }
+        .to { max-width: 640px; margin: 0 auto; background: #fff; border: 1px solid #cbd5e1; padding: 24px 28px; }
+        .dau { display: flex; justify-content: space-between; border-bottom: 3px double #0a2f57; padding-bottom: 10px; }
+        .dau h1 { font-size: 16px; color: #0a2f57; }
+        .dau .ct { font-size: 11px; color: #475569; }
+        h2 { text-align: center; font-size: 17px; margin: 14px 0 2px; color: #0a2f57; letter-spacing: 1px; }
+        .en { text-align: center; font-size: 10.5px; color: #64748b; margin-bottom: 12px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+        th, td { border: 1px solid #94a3b8; padding: 6px 9px; font-size: 12.5px; text-align: left; }
+        th { background: #f1f5f9; width: 34%; font-weight: 600; color: #334155; }
+        .pin { text-align: center; background: #fff7ed; border: 2px dashed #f59e0b; border-radius: 10px; padding: 10px; margin-bottom: 12px; }
+        .pin b { font-size: 26px; letter-spacing: 8px; font-family: Consolas, monospace; color: #b45309; }
+        .pin span { display: block; font-size: 10.5px; color: #92400e; }
+        .luuY { font-size: 10.5px; color: #64748b; border-top: 1px dashed #cbd5e1; padding-top: 8px; }
+        .nutin { position: fixed; top: 14px; right: 16px; }
+        .nutin button { background: #0d4f8b; color: #fff; border: 0; border-radius: 8px; padding: 9px 18px; font-weight: 700; cursor: pointer; }
+        @@media print { body { background: #fff; padding: 0; } .to { border: 0; max-width: none; } .nutin { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="nutin"><button onclick="window.print()">🖨 In lệnh</button></div>
+    <div class="to">
+        <div class="dau">
+            <div>
+                <h1>⚓ CẢNG QUỐC TẾ SMARTPORT</h1>
+                <div class="ct">Khu bến cảng Cát Lái, TP. Thủ Đức · Hotline 0387 562 579</div>
+            </div>
+            <div style="text-align:right;font-size:11.5px;">
+                Số lệnh:<br /><b style="font-size:15px;font-family:Consolas,monospace;color:#b91c1c;">@Model.SoLenh</b>
+            </div>
+        </div>
+
+        <h2>LỆNH GIAO NHẬN CONTAINER</h2>
+        <div class="en">ELECTRONIC GATE PASS — xuất trình khi vào cổng cảng</div>
+
+        <div class="pin">
+            <span>MÃ PIN XÁC THỰC TẠI CỔNG</span>
+            <b>@Model.MaPin</b>
+        </div>
+
+        <table>
+            <tr><th>Loại lệnh</th><td><b>@Model.TenLoaiLenh</b></td></tr>
+            <tr><th>Biển số xe</th><td style="font-size:15px;font-weight:800;">@Model.BienSoXe</td></tr>
+            <tr><th>Số container</th><td style="font-family:Consolas,monospace;">@(string.IsNullOrEmpty(Model.SoCont) ? "—" : Model.SoCont)</td></tr>
+            <tr><th>Tài xế</th><td>@Model.TenTaiXe @(string.IsNullOrEmpty(Model.SdtTaiXe) ? "" : " · " + Model.SdtTaiXe)</td></tr>
+            <tr><th>Khách hàng</th><td>@(Model.KhachHang != null ? Model.KhachHang.TenCongTy : "—")</td></tr>
+            <tr><th>Khung giờ hẹn</th><td><b>@Model.HenTuLuc.ToString("HH:mm") – @Model.HenDenLuc.ToString("HH:mm dd/MM/yyyy")</b></td></tr>
+            <tr><th>Trạng thái</th><td>@Model.TrangThai</td></tr>
+            @if (!string.IsNullOrEmpty(Model.GhiChu)) { <tr><th>Ghi chú</th><td>@Model.GhiChu</td></tr> }
+        </table>
+
+        <div class="luuY">
+            • Tài xế <b>check-in online</b> trước khi đến cảng tại: <b>smartport.vn/TaiXe</b> (nhập số lệnh + mã PIN).<br />
+            • Xe đến cổng trong khung giờ hẹn — camera ALPR tự đối chiếu biển số với lệnh.<br />
+            • Quá giờ hẹn lệnh tự chuyển "Quá hạn", cần liên hệ điều độ gia hạn.<br />
+            • Lệnh phát hành @Model.NgayTao.ToString("HH:mm dd/MM/yyyy") · tra cứu bằng số lệnh trên hệ thống SmartPort.
+        </div>
+    </div>
+</body>
+</html>

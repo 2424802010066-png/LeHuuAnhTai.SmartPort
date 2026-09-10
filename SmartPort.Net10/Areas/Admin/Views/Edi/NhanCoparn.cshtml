@@ -1,0 +1,119 @@
+﻿@{ ViewBag.Title = "Nhận COPARN từ hãng tàu"; }
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <div>
+        <a class="btn btn-sm btn-outline-sp" href="@Url.Action("Index")"><i class="bi bi-arrow-left me-1"></i>EDI</a>
+        <span class="fs-5 fw-bold ms-2" style="color:#0a2f57;"><i class="bi bi-inbox me-1"></i>Nhận COPARN</span>
+    </div>
+</div>
+
+@if (TempData["Loi"] != null)
+{
+    <div class="alert alert-danger py-2"><i class="bi bi-exclamation-triangle me-1"></i>@TempData["Loi"]</div>
+}
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="card-sp p-3">
+            @using (Html.BeginForm("XemTruocCoparn", "Edi", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <h6 class="fw-bold mb-2" style="color:#7c3aed;"><i class="bi bi-file-earmark-arrow-up me-1"></i>Nội dung bản tin</h6>
+
+                <label class="form-label small fw-semibold">CÁCH 1 — TẢI TỆP .EDI HÃNG TÀU GỬI</label>
+                <input class="form-control mb-3" type="file" name="tep" accept=".edi,.txt,.edifact" />
+
+                <label class="form-label small fw-semibold">CÁCH 2 — DÁN THẲNG NỘI DUNG</label>
+                <textarea class="form-control mb-3" name="noiDung" rows="12"
+                          style="font-family:Consolas,monospace;font-size:.8rem;"
+                          placeholder="UNB+UNOA:2+MAEU:ZZZ+SMARTPORT:ZZZ+260904:1200+REF001'&#10;UNH+1+COPARN:D:95B:UN'&#10;..."></textarea>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">HÃNG TÀU GỬI</label>
+                        <select class="form-select" name="maHangTau">
+                            <option value="">— Chưa xác định —</option>
+                            @foreach (var h in (SelectList)ViewBag.HangList)
+                            {
+                                <option value="@h.Value">@h.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">LOẠI LỆNH SẼ TẠO</label>
+                        <select class="form-select" name="loaiLenh">
+                            <option value="LayRong">Lấy container rỗng</option>
+                            <option value="TraRong">Trả container rỗng</option>
+                            <option value="GiaoCont">Giao container (khách nhận hàng)</option>
+                            <option value="HaCont">Hạ container vào bãi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn btn-accent w-100" type="submit"><i class="bi bi-search me-1"></i>Đọc &amp; xem trước</button>
+                <div class="small text-muted mt-2">
+                    Hệ thống <b>chỉ đọc và hiển thị</b> ở bước này — chưa tạo lệnh nào.
+                    Bạn xem kỹ rồi mới bấm xác nhận ở màn hình tiếp theo.
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-question-circle me-1"></i>COPARN là gì</h6>
+            <p class="small text-muted mb-2">
+                Là bản tin hãng tàu <b>báo trước</b> cho depot: sắp có xe đến lấy/trả những container này.
+                Có nó thì lúc xe tới cổng, hệ thống đã sẵn lệnh để đối chiếu — bảo vệ không phải gọi điện hỏi.
+            </p>
+            <div class="small fw-semibold mb-1" style="color:#0a2f57;">Hệ thống lấy gì từ bản tin</div>
+            <ul class="small text-muted" style="line-height:1.9;padding-left:18px;">
+                <li><code>EQD</code> → số container + mã kích thước ISO + rỗng/có hàng</li>
+                <li><code>RFF+BN</code> → số booking</li>
+                <li><code>DTM</code> → thời điểm hẹn</li>
+                <li><code>TDT</code> → biển số xe (nếu hãng có ghi)</li>
+            </ul>
+            <div class="alert alert-light border small mb-0 mt-2">
+                Container <b>chưa có trong hệ thống sẽ được khai báo tự động</b> ở trạng thái
+                “Chờ về” — nếu không, lúc xe tới cổng sẽ không khớp được lệnh.
+            </div>
+        </div>
+
+        <div class="card-sp p-3 mt-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-lightbulb me-1"></i>Chưa có bản tin thật để thử?</h6>
+            <div class="small text-muted mb-2">Dán mẫu này vào ô bên trái để xem hệ thống đọc ra sao:</div>
+            <pre class="edi-mau" id="mau">UNB+UNOA:2+MAEU:ZZZ+SMARTPORT:ZZZ+260904:0800+TEST001'
+UNH+1+COPARN:D:95B:UN'
+BGM+126+BK2609001+9'
+DTM+137:202609040800:203'
+NAD+MS+MAEU::ZZZ'
+NAD+MR+SMARTPORT::ZZZ'
+EQD+CN+MAEU1234567+22G1:102:5++2+4'
+RFF+BN:BK2609001'
+DTM+2:202609051000:203'
+EQD+CN+MAEU7654321+45G1:102:5++2+4'
+RFF+BN:BK2609002'
+DTM+2:202609051400:203'
+CNT+16:2'
+UNT+13+1'
+UNZ+1+TEST001'</pre>
+            <button class="btn btn-sm btn-outline-sp w-100 mt-2" type="button" onclick="dungMau()">
+                <i class="bi bi-clipboard-check me-1"></i>Điền mẫu vào ô bên trái
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .edi-mau { background:#0f172a; color:#c4b5fd; padding:11px 13px; border-radius:9px;
+               font-size:.7rem; line-height:1.6; max-height:230px; overflow:auto; margin:0; white-space:pre; }
+</style>
+
+<script>
+    function dungMau() {
+        var ta = document.querySelector('textarea[name="noiDung"]');
+        ta.value = document.getElementById('mau').textContent;
+        ta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        ta.focus();
+    }
+</script>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+  html,body{margin:0;padding:0;background:#ffffff;}
+  svg{display:block;}
+  text{font-family:'Segoe UI',Arial,sans-serif;fill:#0A2F57;}
+  .b{fill:#ffffff;stroke:#0A2F57;stroke-width:2.5;rx:10;}
+  .tier{fill:#F1F5FA;stroke:#0A2F57;stroke-width:2;rx:14;}
+  .ai{fill:#FFF4EC;stroke:#FF7D2D;stroke-width:2.5;rx:10;}
+  .ext{fill:#F7F7F7;stroke:#8a8a8a;stroke-width:2;stroke-dasharray:6 5;rx:10;}
+  .cyl{fill:#0A2F57;}
+  .lbl{font-size:22px;font-weight:700;}
+  .sub{font-size:16px;fill:#33475b;}
+  .small{font-size:14.5px;fill:#33475b;}
+  .tiertitle{font-size:20px;font-weight:700;fill:#0A2F57;}
+  .arrow{stroke:#0A2F57;stroke-width:3;fill:none;marker-end:url(#ah);}
+  .darrow{stroke:#FF7D2D;stroke-width:2.5;fill:none;stroke-dasharray:7 5;marker-end:url(#ao);}
+</style></head>
+<body>
+<svg width="1500" height="980" viewBox="0 0 1500 980" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="ah" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0A2F57"/></marker>
+  <marker id="ao" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#FF7D2D"/></marker>
+</defs>
+
+<!-- TIER 1: CLIENT -->
+<rect class="tier" x="40" y="30" width="1420" height="250"/>
+<text class="tiertitle" x="64" y="64">TẦNG TRÌNH DUYỆT (CLIENT)</text>
+
+<rect class="b" x="60" y="90" width="440" height="160"/>
+<text class="lbl" x="280" y="130" text-anchor="middle" font-size="18">Giao diện người dùng</text>
+<text class="small" x="280" y="160" text-anchor="middle">HTML5 · Bootstrap 5 · CSS3</text>
+<text class="small" x="280" y="184" text-anchor="middle">Razor View Engine (.cshtml)</text>
+<text class="small" x="280" y="208" text-anchor="middle">Dark/Light mode · Responsive</text>
+
+<rect class="b" x="530" y="90" width="440" height="160"/>
+<text class="lbl" x="750" y="130" text-anchor="middle" font-size="18">JavaScript nghiệp vụ</text>
+<text class="small" x="750" y="160" text-anchor="middle">site.js · chatbot.js · ocr.js</text>
+<text class="small" x="750" y="184" text-anchor="middle">vision.js · ailab.js</text>
+<text class="small" x="750" y="208" text-anchor="middle">Fetch API (AJAX/JSON)</text>
+
+<rect class="ai" x="1000" y="90" width="440" height="160"/>
+<text class="lbl" x="1220" y="130" text-anchor="middle" font-size="18" fill="#B85400">AI suy luận biên (Edge AI)</text>
+<text class="small" x="1220" y="160" text-anchor="middle">ONNX Runtime Web — YOLOv10</text>
+<text class="small" x="1220" y="184" text-anchor="middle">Tesseract.js (OCR) · TensorFlow.js</text>
+<text class="small" x="1220" y="208" text-anchor="middle">Chạy hoàn toàn trên trình duyệt</text>
+
+<path class="arrow" d="M750,280 L750,335"/>
+<text class="small" x="770" y="315">HTTPS Request / Response (Razor HTML, JSON)</text>
+
+<!-- TIER 2: APP -->
+<rect class="tier" x="40" y="340" width="1420" height="320"/>
+<text class="tiertitle" x="64" y="374">TẦNG ỨNG DỤNG — ASP.NET MVC 5 (IIS / IIS Express)</text>
+
+<rect class="b" x="70" y="400" width="300" height="90"/>
+<text class="lbl" x="220" y="435" text-anchor="middle" font-size="17">Controllers</text>
+<text class="small" x="220" y="460" text-anchor="middle">24 controller (Public + Admin)</text>
+
+<rect class="b" x="70" y="530" width="300" height="90"/>
+<text class="lbl" x="220" y="565" text-anchor="middle" font-size="17">Views</text>
+<text class="small" x="220" y="590" text-anchor="middle">Razor .cshtml (44 giao diện)</text>
+
+<rect class="b" x="410" y="400" width="300" height="90"/>
+<text class="lbl" x="560" y="435" text-anchor="middle" font-size="17">Models / ViewModels</text>
+<text class="small" x="560" y="460" text-anchor="middle">Entity Framework 6 — Code First</text>
+
+<rect class="ai" x="410" y="530" width="300" height="90"/>
+<text class="lbl" x="560" y="558" text-anchor="middle" font-size="17" fill="#B85400">AppServices (AI)</text>
+<text class="small" x="560" y="580" text-anchor="middle">Chatbot·Forecast·Berth·Yard</text>
+<text class="small" x="560" y="600" text-anchor="middle">Alert · Cost</text>
+
+<rect class="b" x="750" y="400" width="290" height="220"/>
+<text class="lbl" x="895" y="432" text-anchor="middle" font-size="17">Bảo mật &amp; Phân quyền</text>
+<text class="small" x="895" y="460" text-anchor="middle">AppAuthorizeAttribute</text>
+<text class="small" x="895" y="484" text-anchor="middle">Session-based Authentication</text>
+<text class="small" x="895" y="515" text-anchor="middle" font-weight="600">3 vai trò:</text>
+<text class="small" x="895" y="538" text-anchor="middle">Admin · Nhân viên · Khách hàng</text>
+<text class="small" x="895" y="570" text-anchor="middle">Areas: /Admin tách biệt cổng công khai</text>
+
+<path class="arrow" d="M220,490 L220,530"/>
+<path class="arrow" d="M370,445 L410,445"/>
+<path class="arrow" d="M370,575 L410,575"/>
+<path class="arrow" d="M710,470 L750,460"/>
+
+<rect class="ext" x="1080" y="400" width="350" height="220"/>
+<text class="tiertitle" font-size="16" x="1104" y="428" fill="#555">DỊCH VỤ NGOÀI (External)</text>
+<rect class="b" x="1100" y="445" width="310" height="75"/>
+<text class="small" x="1255" y="470" text-anchor="middle" font-weight="600">Google Gemini API</text>
+<text class="small" x="1255" y="492" text-anchor="middle">(chatbot tư vấn nâng cao)</text>
+<rect class="b" x="1100" y="530" width="310" height="75"/>
+<text class="small" x="1255" y="555" text-anchor="middle" font-weight="600">SMTP Email Server</text>
+<text class="small" x="1255" y="577" text-anchor="middle">(gửi hóa đơn tự động)</text>
+
+<path class="darrow" d="M710,575 L1095,482"/>
+<path class="darrow" d="M710,590 L1095,567"/>
+
+<path class="arrow" d="M750,670 L750,725"/>
+<text class="small" x="770" y="705">LINQ to Entities (Entity Framework 6)</text>
+
+<!-- TIER 3: DATA -->
+<rect class="tier" x="40" y="735" width="1420" height="210"/>
+<text class="tiertitle" x="64" y="769">TẦNG DỮ LIỆU</text>
+
+<g transform="translate(600,800)">
+  <ellipse class="cyl" cx="150" cy="0" rx="150" ry="24"/>
+  <rect x="0" y="0" width="300" height="90" fill="#0A2F57"/>
+  <ellipse cx="150" cy="90" rx="150" ry="24" fill="#0A2F57"/>
+  <ellipse cx="150" cy="0" rx="150" ry="24" fill="#12417a"/>
+  <text x="150" y="45" text-anchor="middle" fill="white" font-size="19" font-weight="700">SQL Server</text>
+  <text x="150" y="70" text-anchor="middle" fill="#dce8fb" font-size="15">SmartPortDB — 14 bảng dữ liệu</text>
+</g>
+</svg>
+</body></html>

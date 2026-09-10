@@ -1,0 +1,70 @@
+﻿@model List<SmartPort.Models.TaiKhoan>
+@{
+    ViewBag.Title = "Quản lý tài khoản";
+}
+<div class="card-sp">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-people me-2 text-primary"></i>Tài khoản hệ thống</span>
+        <a class="btn btn-sm btn-accent" href="@Url.Action("Form")"><i class="bi bi-plus-lg me-1"></i>Tạo tài khoản</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-sp">
+            <thead>
+                <tr><th>Tên đăng nhập</th><th>Họ tên</th><th>Vai trò</th><th>Khách hàng liên kết</th><th>Email / SĐT</th><th class="text-center">Trạng thái</th><th class="text-end">Thao tác</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@t.TenDangNhap</td>
+                        <td>@t.HoTen</td>
+                        <td>
+                            @if (t.VaiTro == "Admin")
+                            {
+                                <span class="badge-st st-run">Quản trị viên</span>
+                            }
+                            else if (t.VaiTro == "NhanVien")
+                            {
+                                <span class="badge-st st-info">Nhân viên</span>
+                            }
+                            else
+                            {
+                                <span class="badge-st st-ok">Khách hàng</span>
+                            }
+                        </td>
+                        <td class="small">@(t.KhachHang != null ? t.KhachHang.TenCongTy : "—")</td>
+                        <td class="small">@t.Email<br />@t.SoDienThoai</td>
+                        <td class="text-center">
+                            @if (t.KichHoat)
+                            {
+                                <span class="badge-st st-ok">Hoạt động</span>
+                            }
+                            else
+                            {
+                                <span class="badge-st st-off">Bị khóa</span>
+                            }
+                        </td>
+                        <td class="text-end" style="white-space:nowrap;">
+                            @using (Html.BeginForm("ResetPassword", "Accounts", new { id = t.MaTK }, FormMethod.Post, null, new { @class = "d-inline", onsubmit = "return confirm('Đặt lại mật khẩu của " + t.TenDangNhap + " về 123456?');" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-sm btn-outline-warning" type="submit" title="Đặt lại mật khẩu"><i class="bi bi-key"></i></button>
+                            }
+                            @using (Html.BeginForm("ToggleActive", "Accounts", new { id = t.MaTK }, FormMethod.Post, null, new { @class = "d-inline" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-sm btn-outline-secondary" type="submit" title="@(t.KichHoat ? "Khóa" : "Mở khóa")"><i class="bi @(t.KichHoat ? "bi-lock" : "bi-unlock")"></i></button>
+                            }
+                            <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Form", new { id = t.MaTK })"><i class="bi bi-pencil"></i></a>
+                            @using (Html.BeginForm("Delete", "Accounts", new { id = t.MaTK }, FormMethod.Post, null, new { @class = "d-inline", onsubmit = "return confirm('Xóa tài khoản " + t.TenDangNhap + "?');" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i></button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

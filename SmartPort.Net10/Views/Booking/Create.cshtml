@@ -1,0 +1,100 @@
+﻿@model SmartPort.Models.BookingCreateVM
+@{
+    ViewBag.Title = "Đặt dịch vụ cảng";
+    List<DichVu> dichVus = ViewBag.DichVus;
+}
+<div class="page-head">
+    <div class="container">
+        <h1><i class="bi bi-plus-circle me-2"></i>Đặt dịch vụ cảng trực tuyến</h1>
+        <nav><ol class="breadcrumb mt-2"><li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li><li class="breadcrumb-item active">Đặt dịch vụ</li></ol></nav>
+    </div>
+</div>
+
+<div class="container mb-5">
+    @using (Html.BeginForm("Create", "Booking", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card-sp p-4">
+                    <h5 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-list-check me-2"></i>Chọn dịch vụ (nhập số lượng)</h5>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr class="table-light">
+                                    <th>Dịch vụ</th>
+                                    <th style="width:14%;">Đơn vị</th>
+                                    <th style="width:18%;" class="text-end">Đơn giá</th>
+                                    <th style="width:14%;">Số lượng</th>
+                                    <th style="width:18%;" class="text-end">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < dichVus.Count; i++)
+                                {
+                                    var dv = dichVus[i];
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="Items[@i].MaDV" value="@dv.MaDV" />
+                                            <div class="fw-semibold">@dv.TenDV</div>
+                                            <div class="text-muted small">@dv.NhomDV</div>
+                                        </td>
+                                        <td>@dv.DonViTinh</td>
+                                        <td class="text-end">@Ui.Vnd(dv.DonGia)</td>
+                                        <td>
+                                            <input type="number" name="Items[@i].SoLuong" value="0" min="0" max="10000"
+                                                   class="form-control form-control-sm qty-input text-center" data-price="@dv.DonGia" />
+                                        </td>
+                                        <td class="text-end fw-semibold row-total">0 ₫</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card-sp p-4" style="position:sticky;top:84px;">
+                    <h5 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-receipt me-2"></i>Thông tin booking</h5>
+                    <div class="mb-3">
+                        <label class="form-label">Ngày cần thực hiện</label>
+                        <input type="datetime-local" class="form-control" name="NgayCanThucHien" required
+                               min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ghi chú</label>
+                        <textarea class="form-control" name="GhiChu" rows="3" placeholder="VD: số container liên quan, yêu cầu đặc biệt..."></textarea>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center border-top pt-3 mb-3">
+                        <span class="text-muted">Tổng tạm tính</span>
+                        <span class="fs-4 fw-bold" style="color:#e5691d;" id="grandTotal">0 ₫</span>
+                    </div>
+                    <button class="btn btn-accent w-100 btn-lg" type="submit"><i class="bi bi-send me-1"></i>Gửi yêu cầu</button>
+                    <div class="text-muted small mt-2"><i class="bi bi-info-circle me-1"></i>Sau khi gửi, bộ phận khai thác sẽ duyệt booking và liên hệ xác nhận.</div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts {
+<script>
+    (function () {
+        var inputs = document.querySelectorAll('.qty-input');
+        function fmt(n) { return n.toLocaleString('vi-VN') + ' ₫'; }
+        function recalc() {
+            var sum = 0;
+            inputs.forEach(function (inp) {
+                var qty = parseInt(inp.value || '0', 10);
+                if (qty < 0 || isNaN(qty)) qty = 0;
+                var price = parseFloat(inp.getAttribute('data-price'));
+                var total = qty * price;
+                sum += total;
+                inp.closest('tr').querySelector('.row-total').textContent = fmt(total);
+            });
+            document.getElementById('grandTotal').textContent = fmt(sum);
+        }
+        inputs.forEach(function (inp) { inp.addEventListener('input', recalc); });
+    })();
+</script>
+}

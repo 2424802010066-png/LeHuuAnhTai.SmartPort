@@ -1,0 +1,283 @@
+@{
+    ViewBag.Title = "Thống kê lưu lượng — Camera AI";
+    var theoGio = ViewBag.TheoGio as List<SmartPort.Models.ThongKeGioVM>;
+    var theoNgay = ViewBag.TheoNgay as List<SmartPort.Models.ThongKeNgayVM>;
+    var coCau = ViewBag.CoCauDoiTuong as List<SmartPort.Models.CoCauDoiTuongVM>;
+    var theoViTri = ViewBag.TheoViTri as List<SmartPort.Models.CoCauDoiTuongVM>;
+    int soNgay = ViewBag.SoNgay ?? 7;
+    int maxGio = theoGio != null && theoGio.Any() ? Math.Max(1, theoGio.Max(g => g.SoXeTai)) : 1;
+    int maxCoCau = coCau != null && coCau.Any() ? Math.Max(1, coCau.Max(c => c.SoLuong)) : 1;
+}
+
+<div class="ai-box mb-3">
+    <span class="ai-tag"><i class="bi bi-graph-up-arrow"></i> BUSINESS INTELLIGENCE · CAMERA AI</span>
+    <div class="row align-items-center mt-2">
+        <div class="col-lg-9">
+            <h5 class="fw-bold mb-1">Thống kê lưu lượng cổng cảng từ dữ liệu nhận diện YOLO26</h5>
+            <div style="color:#c9dcef;font-size:.9rem;">
+                Mỗi lần Camera AI nhận diện, hệ thống <strong>lưu lại vào cơ sở dữ liệu</strong>. Từ đó phân tích khung giờ cao điểm,
+                cảnh báo ùn tắc và xuất báo cáo phục vụ <strong>bố trí nhân lực — mở làn cổng — tối ưu khai thác</strong>.
+            </div>
+        </div>
+        <div class="col-lg-3 text-lg-end mt-2 mt-lg-0">
+            <a class="btn btn-sm btn-warning fw-semibold" href="@Url.Action("ExportExcel", new { ngay = soNgay })">
+                <i class="bi bi-file-earmark-excel me-1"></i>Xuất báo cáo Excel
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+    <div class="btn-group btn-group-sm">
+        @foreach (var n in new[] { 1, 7, 30 })
+        {
+            <a class="btn @(soNgay == n ? "btn-navy" : "btn-outline-sp")" href="@Url.Action("Analytics", new { ngay = n })">
+                @(n == 1 ? "Hôm nay" : n + " ngày")
+            </a>
+        }
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-sm btn-outline-sp" href="@Url.Action("History")"><i class="bi bi-clock-history me-1"></i>Nhật ký nhận diện</a>
+        <a class="btn btn-sm btn-outline-sp" href="@Url.Action("Index")"><i class="bi bi-camera-video me-1"></i>Về Camera AI</a>
+    </div>
+</div>
+
+<!-- ===== Chỉ số ===== -->
+<div class="row g-3 mb-3">
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#0a2f57,#1c5fa8);">
+            <div class="ps-num">@ViewBag.TongXeTai</div>
+            <div class="ps-lbl">Lượt xe tải/đầu kéo</div>
+            <i class="bi bi-truck"></i>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#7c3aed,#a855f7);">
+            <div class="ps-num">@ViewBag.TongLuot</div>
+            <div class="ps-lbl">Lượt AI quét</div>
+            <i class="bi bi-cpu"></i>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#dc2626,#f87171);">
+            <div class="ps-num">@ViewBag.SoUnTac</div>
+            <div class="ps-lbl">Cảnh báo ùn tắc</div>
+            <i class="bi bi-exclamation-triangle"></i>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#15803d,#22c55e);">
+            <div class="ps-num">@ViewBag.TinCayTB%</div>
+            <div class="ps-lbl">Độ tin cậy TB · @ViewBag.TgXuLyTB ms</div>
+            <i class="bi bi-patch-check"></i>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Khuyến nghị AI ===== -->
+<div class="card-sp p-3 mb-3" style="border-left:5px solid var(--accent);">
+    <div class="fw-bold mb-1" style="color:#0a2f57;"><i class="bi bi-lightbulb-fill me-1" style="color:var(--accent);"></i>Khuyến nghị điều phối từ dữ liệu</div>
+    <div style="font-size:.92rem;">
+        Khung giờ cao điểm: <strong style="color:var(--accent);">@ViewBag.GioCaoDiem</strong>
+        (@ViewBag.XeCaoDiem lượt xe tải) — nên <strong>bố trí thêm nhân sự và mở thêm làn cổng</strong> trong khung này.
+        @if ((int)ViewBag.SoUnTac > 0)
+        {
+            <text>Đã ghi nhận <strong class="text-danger">@ViewBag.SoUnTac lần ùn tắc</strong> (từ 5 xe tải/khung hình) trong @soNgay ngày qua.</text>
+        }
+        else
+        {
+            <text>Chưa ghi nhận tình trạng ùn tắc nghiêm trọng.</text>
+        }
+    </div>
+</div>
+
+<div class="row g-3">
+    <!-- ===== Biểu đồ theo giờ ===== -->
+    <div class="col-lg-7">
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-bar-chart-line me-1"></i>Lưu lượng xe tải theo khung giờ</h6>
+            <div class="hour-chart">
+                @if (theoGio != null)
+                {
+                    foreach (var g in theoGio)
+                    {
+                        var h = (int)Math.Round(g.SoXeTai * 100.0 / maxGio);
+                        var caoDiem = g.SoXeTai >= maxGio * 0.75 && g.SoXeTai > 0;
+                        <div class="hc-col" title="@g.Gio:00 — @g.SoXeTai xe tải, @g.SoLuot lượt quét">
+                            <div class="hc-bar @(caoDiem ? "peak" : "")" style="height:@(Math.Max(h, g.SoXeTai > 0 ? 4 : 1))%;">
+                                @if (g.SoXeTai > 0)
+                                {
+                                    <span class="hc-val">@g.SoXeTai</span>
+                                }
+                            </div>
+                            <div class="hc-lbl">@g.Gio</div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="text-center text-muted small mt-2">Trục ngang: giờ trong ngày (0–23) · Cột cam = khung giờ cao điểm</div>
+        </div>
+
+        <!-- ===== DU BAO MAMBA-SSM (Selective State Space Model) ===== -->
+        <div class="card-sp p-3 mt-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+                <h6 class="fw-bold mb-0" style="color:#0a2f57;">
+                    <i class="bi bi-activity me-1"></i>Dự báo lưu lượng 6 giờ tới
+                    <span class="badge" style="background:linear-gradient(90deg,#7c3aed,#a855f7);font-size:.6rem;">MAMBA · SSM</span>
+                </h6>
+                <span id="ssmTong" class="small fw-semibold text-primary"></span>
+            </div>
+            <div id="ssmChart" class="d-flex align-items-end gap-2" style="height:110px;"></div>
+            <div class="small text-muted mt-2" style="font-size:.76rem;">
+                Mô hình <b>không gian trạng thái chọn lọc</b> (cài đặt tối giản lấy cảm hứng từ kiến trúc
+                <b>Mamba — Selective SSM, 2023</b>): quét chuỗi thời gian tuyến tính O(n) với cổng chọn lọc
+                Δ điều biến trạng thái ẩn theo từng đầu vào — hướng kiến trúc mới thay thế attention cho chuỗi dài.
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Cơ cấu đối tượng ===== -->
+    <div class="col-lg-5">
+        <div class="card-sp p-3 mb-3">
+            <h6 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-pie-chart me-1"></i>Cơ cấu đối tượng nhận diện</h6>
+            @if (coCau != null && coCau.Any())
+            {
+                foreach (var c in coCau)
+                {
+                    var pct = (int)Math.Round(c.SoLuong * 100.0 / maxCoCau);
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span style="min-width:110px;font-size:.85rem;">@c.Nhan</span>
+                        <div class="flex-grow-1" style="height:10px;background:var(--line);border-radius:999px;overflow:hidden;">
+                            <span style="display:block;height:100%;width:@pct%;background:linear-gradient(90deg,#0a2f57,#1c5fa8);border-radius:999px;"></span>
+                        </div>
+                        <strong style="min-width:44px;text-align:right;font-size:.85rem;">@c.SoLuong</strong>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-muted small">Chưa có dữ liệu.</div>
+            }
+        </div>
+
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-geo-alt me-1"></i>Xe tải theo vị trí camera</h6>
+            @if (theoViTri != null && theoViTri.Any())
+            {
+                foreach (var v in theoViTri)
+                {
+                    <div class="d-flex justify-content-between py-1 border-bottom" style="font-size:.88rem;">
+                        <span>@v.Nhan</span><strong>@v.SoLuong lượt</strong>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<!-- ===== Bảng theo ngày ===== -->
+<div class="card-sp p-3 mt-3">
+    <h6 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-calendar3 me-1"></i>Lưu lượng theo ngày</h6>
+    <div class="table-responsive">
+        <table class="table table-sp mb-0">
+            <thead>
+                <tr>
+                    <th>Ngày</th><th class="text-center">Lượt quét</th><th class="text-center">Xe tải</th>
+                    <th class="text-center">Ô tô</th><th class="text-center">Người</th><th>Biểu đồ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (theoNgay != null)
+                {
+                    var maxNgay = Math.Max(1, theoNgay.Max(x => x.SoXeTai));
+                    foreach (var d in theoNgay)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@d.Ngay</td>
+                            <td class="text-center">@d.SoLuot</td>
+                            <td class="text-center fw-bold" style="color:var(--accent);">@d.SoXeTai</td>
+                            <td class="text-center">@d.SoOto</td>
+                            <td class="text-center">@d.SoNguoi</td>
+                            <td style="min-width:160px;">
+                                <div style="height:9px;background:var(--line);border-radius:999px;overflow:hidden;">
+                                    <span style="display:block;height:100%;width:@((int)Math.Round(d.SoXeTai * 100.0 / maxNgay))%;background:linear-gradient(90deg,#0a2f57,var(--accent));border-radius:999px;"></span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .hour-chart { display: flex; align-items: flex-end; gap: 3px; height: 240px; padding-top: 18px; }
+    .hc-col { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+    .hc-bar { width: 100%; background: linear-gradient(180deg, #1c5fa8, #0a2f57); border-radius: 5px 5px 0 0; position: relative; min-height: 2px; transition: filter .2s; }
+    .hc-bar:hover { filter: brightness(1.25); }
+    .hc-bar.peak { background: linear-gradient(180deg, #ff9d4d, #e5691d); }
+    .hc-val { position: absolute; top: -17px; left: 50%; transform: translateX(-50%); font-size: .68rem; font-weight: 700; color: var(--navy); }
+    html[data-theme="dark"] .hc-val { color: #cfe3fb; }
+    .hc-lbl { font-size: .65rem; color: var(--muted); margin-top: 4px; }
+</style>
+
+@section scripts {
+<script>
+/* ============================================================
+   DU BAO LUU LUONG — SELECTIVE SSM (lay cam hung tu Mamba, 2023)
+   Mo hinh khong gian trang thai: h(t) = A_t * h(t-1) + B_t * x(t)
+   voi cong CHON LOC delta = sigmoid(w*x+b) dieu bien A, B theo
+   TUNG dau vao (diem khac biet cot loi cua Mamba so voi SSM co dien).
+   Quet chuoi tuyen tinh O(n) — khong can attention.
+   ============================================================ */
+(function () {
+    var serie = [@string.Join(",", ((List<SmartPort.Models.ThongKeGioVM>)ViewBag.TheoGio).Select(g => g.SoXeTai))];
+    var gioCuoi = new Date().getHours();
+
+    function sigmoid(z) { return 1 / (1 + Math.exp(-z)); }
+
+    // ---- Quet chuoi da biet de "nap" trang thai an h ----
+    var mean = serie.reduce(function (s, v) { return s + v; }, 0) / serie.length || 1;
+    var h = 0, hs = [];
+    for (var t = 0; t < serie.length; t++) {
+        var x = serie[t] / mean;                       // chuan hoa
+        var delta = sigmoid(1.6 * x - 0.8);            // cong chon loc theo dau vao
+        var A = Math.pow(0.82, delta);                 // quen co chon loc
+        var B = delta * 0.9;                           // nap co chon loc
+        h = A * h + B * x;
+        hs.push(h);
+    }
+    // He so doc C: khop trang thai an -> gia tri thuc (binh phuong toi thieu don gian)
+    var num = 0, den = 0;
+    for (var t2 = 1; t2 < serie.length; t2++) { num += hs[t2 - 1] * serie[t2] / mean; den += hs[t2 - 1] * hs[t2 - 1]; }
+    var C = den > 1e-9 ? num / den : 1;
+
+    // ---- Du bao 6 buoc autoregressive ----
+    var preds = [], hCur = h;
+    for (var k = 0; k < 6; k++) {
+        var xHat = Math.max(0, C * hCur);
+        preds.push(Math.round(xHat * mean));
+        var d2 = sigmoid(1.6 * xHat - 0.8);
+        hCur = Math.pow(0.82, d2) * hCur + d2 * 0.9 * xHat;
+    }
+
+    // ---- Ve mini bar chart ----
+    var wrap = document.getElementById('ssmChart');
+    if (!wrap) return;
+    var mx = Math.max.apply(null, preds.concat([1]));
+    var html = '';
+    for (var i = 0; i < preds.length; i++) {
+        var gio = (gioCuoi + 1 + i) % 24;
+        var hpx = Math.max(8, Math.round(preds[i] * 100 / mx));
+        html += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;">' +
+            '<div style="font-size:.7rem;font-weight:700;color:#7c3aed;">' + preds[i] + '</div>' +
+            '<div style="width:100%;height:' + hpx + '%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#a855f7,#7c3aed);opacity:.85;"></div>' +
+            '<div style="font-size:.66rem;color:var(--muted);margin-top:3px;">' + (gio < 10 ? '0' : '') + gio + ':00</div></div>';
+    }
+    wrap.innerHTML = html;
+    var tong = preds.reduce(function (s, v) { return s + v; }, 0);
+    document.getElementById('ssmTong').textContent = 'Dự kiến ~' + tong + ' lượt xe tải trong 6 giờ tới';
+})();
+</script>
+}

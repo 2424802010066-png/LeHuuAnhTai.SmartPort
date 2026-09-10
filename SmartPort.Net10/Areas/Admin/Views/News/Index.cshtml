@@ -1,0 +1,47 @@
+﻿@model List<SmartPort.Models.TinTuc>
+@{
+    ViewBag.Title = "Quản lý tin tức";
+}
+<div class="card-sp">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-newspaper me-2 text-primary"></i>Bài viết tin tức</span>
+        <a class="btn btn-sm btn-accent" href="@Url.Action("Form")"><i class="bi bi-plus-lg me-1"></i>Viết bài mới</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-sp">
+            <thead>
+                <tr><th style="width:44%;">Tiêu đề</th><th>Ngày đăng</th><th class="text-center">Lượt xem</th><th class="text-center">Nổi bật</th><th class="text-end">Thao tác</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="@(t.AnhMau ?? "g1")" style="width:42px;height:30px;border-radius:6px;display:inline-block;flex-shrink:0;"></span>
+                                <span class="fw-semibold">@t.TieuDe</span>
+                            </div>
+                        </td>
+                        <td>@Ui.Dt(t.NgayDang)</td>
+                        <td class="text-center">@t.LuotXem</td>
+                        <td class="text-center">
+                            @if (t.NoiBat)
+                            {
+                                <span class="badge-st st-warn">Nổi bật</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-secondary" target="_blank" href="@Url.Action("Details", "News", new { area = "", id = t.MaTin })" title="Xem trên website"><i class="bi bi-eye"></i></a>
+                            <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Form", new { id = t.MaTin })"><i class="bi bi-pencil"></i></a>
+                            @using (Html.BeginForm("Delete", "News", new { id = t.MaTin }, FormMethod.Post, null, new { @class = "d-inline", onsubmit = "return confirm('Xóa bài viết này?');" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i></button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

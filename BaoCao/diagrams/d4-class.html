@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+  html,body{margin:0;padding:0;background:#ffffff;}
+  svg{display:block;}
+  .rel{stroke:#334760;stroke-width:2;fill:none;}
+  .mult{font-family:'Segoe UI',Arial,sans-serif;font-size:13px;fill:#B85400;font-weight:700;}
+  .cbox{font-family:'Segoe UI',Arial,sans-serif;border:2.25px solid #0A2F57;border-radius:7px;overflow:hidden;height:100%;box-sizing:border-box;background:#fff;box-shadow:0 2px 4px rgba(10,47,87,.15);}
+  .chead{background:#0A2F57;color:#fff;font-weight:700;font-size:15.5px;padding:7px 11px;}
+  .cbody{font-size:12.8px;color:#233246;padding:7px 11px;line-height:1.62;}
+  .pk{font-weight:700;}
+  .fk{color:#8a4b00;}
+  .tag{color:#97a3b3;font-size:11px;}
+</style></head>
+<body>
+<svg width="1420" height="840" viewBox="0 0 1420 840" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="dm" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#334760"/></marker>
+</defs>
+
+<!-- connectors (drawn first, under boxes) -->
+<path class="rel" d="M340,120 L380,135"/>
+<text class="mult" x="348" y="112">1</text><text class="mult" x="358" y="150">0..*</text>
+
+<path class="rel" d="M680,135 L760,155"/>
+<text class="mult" x="688" y="127">1</text><text class="mult" x="700" y="170">0..*</text>
+
+<path class="rel" d="M1100,125 L1060,100"/>
+<text class="mult" x="1060" y="117">1</text><text class="mult" x="1005" y="95">0..*</text>
+
+<path class="rel" d="M910,270 L910,280"/>
+<text class="mult" x="920" y="266">1</text><text class="mult" x="920" y="296">0..*</text>
+<text class="mult" x="820" y="296" fill="#5b6b82" font-weight="400" font-style="italic">nhập / xuất</text>
+
+<path class="rel" d="M190,490 L190,560"/>
+<text class="mult" x="200" y="505">0..*</text><text class="mult" x="200" y="552">1</text>
+
+<path class="rel" d="M150,560 L760,430"/>
+<text class="mult" x="160" y="548">0..*</text><text class="mult" x="700" y="440">1</text>
+
+<path class="rel" d="M340,655 L380,660"/>
+<text class="mult" x="345" y="646">1</text><text class="mult" x="358" y="680">0..*</text>
+
+<path class="rel" d="M680,660 L720,660"/>
+<text class="mult" x="685" y="646">1</text><text class="mult" x="698" y="680">1..*</text>
+
+<path class="rel" d="M1060,650 L1020,650"/>
+<text class="mult" x="1005" y="636" text-anchor="end">1</text><text class="mult" x="1050" y="670" text-anchor="end">0..*</text>
+
+<!-- ============ CLASS BOXES ============ -->
+<foreignObject x="40" y="40" width="300" height="160"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">HangTau</div>
+  <div class="cbody">
+    <div class="pk">MaHangTau : int <span class="tag">[PK]</span></div>
+    <div>TenHangTau : string</div>
+    <div>MaSCAC : string</div>
+    <div>QuocGia : string</div>
+    <div>+ Taus : ICollection&lt;Tau&gt;</div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="380" y="40" width="300" height="190"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">Tau</div>
+  <div class="cbody">
+    <div class="pk">MaTau : int <span class="tag">[PK]</span></div>
+    <div>TenTau : string</div>
+    <div>SoIMO : string</div>
+    <div class="fk">MaHangTau : int? [FK]</div>
+    <div>LoaiTau, QuocTich : string</div>
+    <div>SucChuaTEU : int?</div>
+    <div>+ HangTau, + ChuyenTaus</div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="760" y="40" width="300" height="230"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">ChuyenTau</div>
+  <div class="cbody">
+    <div class="pk">MaChuyen : int <span class="tag">[PK]</span></div>
+    <div>MaChuyenHieu : string</div>
+    <div class="fk">MaTau : int [FK]</div>
+    <div class="fk">MaBen : int? [FK]</div>
+    <div>ETA, ETD, ATA, ATD : DateTime</div>
+    <div>TrangThai : string</div>
+    <div>ContNhap, ContXuat : int</div>
+    <div>+ Tau, + Ben, + Containers</div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="1100" y="40" width="280" height="170"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">Ben</div>
+  <div class="cbody">
+    <div class="pk">MaBen : int <span class="tag">[PK]</span></div>
+    <div>TenBen : string</div>
+    <div>ChieuDai, DoSau : decimal</div>
+    <div>SoCau : int</div>
+    <div>TrangThai : string</div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="40" y="280" width="300" height="210"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">TaiKhoan</div>
+  <div class="cbody">
+    <div class="pk">MaTK : int <span class="tag">[PK]</span></div>
+    <div>TenDangNhap : string</div>
+    <div>MatKhauHash : string</div>
+    <div>HoTen, Email, SDT : string</div>
+    <div>VaiTro : string</div>
+    <div class="fk">MaKH : int? [FK]</div>
+    <div>+ KhachHang</div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="760" y="280" width="300" height="260"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">Container</div>
+  <div class="cbody">
+    <div class="pk">MaCont : int <span class="tag">[PK]</span></div>
+    <div>SoCont : string (unique)</div>
+    <div>LoaiCont, TinhTrang : string</div>
+    <div>TrongLuong : decimal?</div>
+    <div class="fk">MaKH : int? [FK]</div>
+    <div class="fk">MaChuyenNhap : int? [FK]</div>
+    <div class="fk">MaChuyenXuat : int? [FK]</div>
+    <div>ViTriBai, TrangThai : string</div>
+    <div>+ KhachHang, + ChuyenNhap/Xuat</div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="40" y="560" width="300" height="190"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">KhachHang</div>
+  <div class="cbody">
+    <div class="pk">MaKH : int <span class="tag">[PK]</span></div>
+    <div>TenCongTy : string</div>
+    <div>MaSoThue, DiaChi : string</div>
+    <div>NguoiLienHe, Email, SDT : string</div>
+    <div>+ DatDichVus : ICollection&lt;&gt;</div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="380" y="560" width="300" height="200"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">DatDichVu</div>
+  <div class="cbody">
+    <div class="pk">MaBooking : int <span class="tag">[PK]</span></div>
+    <div>MaSoBooking : string (unique)</div>
+    <div class="fk">MaKH : int [FK]</div>
+    <div>NgayTao : DateTime</div>
+    <div>TrangThai : string</div>
+    <div>TongTien : decimal</div>
+    <div>+ KhachHang, + ChiTiets</div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="720" y="560" width="300" height="200"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">DatDichVuChiTiet</div>
+  <div class="cbody">
+    <div class="pk">MaCT : int <span class="tag">[PK]</span></div>
+    <div class="fk">MaBooking : int [FK]</div>
+    <div class="fk">MaDV : int [FK]</div>
+    <div>SoLuong : int</div>
+    <div>DonGia, ThanhTien : decimal</div>
+    <div>+ DatDichVu, + DichVu</div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="1060" y="560" width="280" height="180"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">DichVu</div>
+  <div class="cbody">
+    <div class="pk">MaDV : int <span class="tag">[PK]</span></div>
+    <div>TenDV, NhomDV : string</div>
+    <div>DonViTinh : string</div>
+    <div>DonGia : decimal</div>
+    <div>KichHoat : bool</div>
+  </div>
+</div></foreignObject>
+
+</svg>
+</body></html>

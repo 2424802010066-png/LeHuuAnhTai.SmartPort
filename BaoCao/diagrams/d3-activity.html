@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+  html,body{margin:0;padding:0;background:#ffffff;}
+  svg{display:block;}
+  text{font-family:'Segoe UI',Arial,sans-serif;fill:#0A2F57;}
+  .act{fill:#ffffff;stroke:#0A2F57;stroke-width:2.25;}
+  .sys{fill:#F1F5FA;stroke:#5b6b82;stroke-width:2;stroke-dasharray:6 4;}
+  .dec{fill:#FFF4EC;stroke:#FF7D2D;stroke-width:2.5;}
+  .t{font-size:15px;font-weight:600;text-anchor:middle;}
+  .tag{font-size:11.5px;font-weight:700;fill:#8a4b00;}
+  .arrow{stroke:#334760;stroke-width:2.25;fill:none;marker-end:url(#ah);}
+  .lblflow{font-size:14px;font-weight:700;fill:#B85400;}
+</style></head>
+<body>
+<svg width="1250" height="1060" viewBox="0 0 1250 1060" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#334760"/></marker>
+</defs>
+
+<!-- legend -->
+<g transform="translate(870,20)">
+  <rect x="0" y="0" width="360" height="98" fill="#ffffff" stroke="#c8d2e0" stroke-width="1.5" rx="8"/>
+  <rect x="14" y="14" width="26" height="18" class="act"/>
+  <text x="48" y="28" font-size="13" text-anchor="start" font-weight="400">Thao tác của Khách hàng / Nhân viên</text>
+  <rect x="14" y="40" width="26" height="18" class="sys"/>
+  <text x="48" y="54" font-size="13" text-anchor="start" font-weight="400">Xử lý tự động của hệ thống</text>
+  <polygon points="27,66 40,76 27,86 14,76" class="dec"/>
+  <text x="48" y="80" font-size="13" text-anchor="start" font-weight="400">Điểm quyết định (rẽ nhánh)</text>
+</g>
+
+<!-- start -->
+<circle cx="650" cy="45" r="16" fill="#0A2F57"/>
+<text x="650" y="24" class="t" font-size="14">Bắt đầu</text>
+
+<path class="arrow" d="M650,61 L650,92"/>
+<rect class="act" x="480" y="94" width="340" height="60"/>
+<text class="t" x="650" y="120">Đăng nhập hệ thống</text>
+<text class="tag" x="650" y="140" text-anchor="middle" fill="#0A2F57">[Khách hàng]</text>
+
+<path class="arrow" d="M650,154 L650,186"/>
+<rect class="act" x="480" y="188" width="340" height="60"/>
+<text class="t" x="650" y="214">Chọn dịch vụ &amp; nhập số lượng</text>
+<text class="tag" x="650" y="234" text-anchor="middle" fill="#0A2F57">[Khách hàng]</text>
+
+<path class="arrow" d="M650,248 L650,280"/>
+<rect class="act" x="480" y="282" width="340" height="60"/>
+<text class="t" x="650" y="308">Xác nhận đặt dịch vụ</text>
+<text class="tag" x="650" y="328" text-anchor="middle" fill="#0A2F57">[Khách hàng]</text>
+
+<path class="arrow" d="M650,342 L650,374"/>
+<rect class="sys" x="460" y="376" width="380" height="60"/>
+<text class="t" x="650" y="400">Tạo đơn — trạng thái "Chờ duyệt"</text>
+<text class="tag" x="650" y="420" text-anchor="middle">[Hệ thống]</text>
+
+<path class="arrow" d="M650,436 L650,468"/>
+<rect class="act" x="480" y="470" width="340" height="60"/>
+<text class="t" x="650" y="496">Nhân viên xem đơn chờ duyệt</text>
+<text class="tag" x="650" y="516" text-anchor="middle" fill="#0A2F57">[Nhân viên]</text>
+
+<path class="arrow" d="M650,530 L650,554"/>
+<polygon class="dec" points="650,554 745,610 650,666 555,610"/>
+<text class="t" x="650" y="606" font-size="14.5">Duyệt</text>
+<text class="t" x="650" y="624" font-size="14.5">đơn?</text>
+
+<!-- APPROVE branch (right) -->
+<path class="arrow" d="M745,610 L826,610"/>
+<text class="lblflow" x="785" y="598" text-anchor="middle">Có</text>
+<rect class="act" x="828" y="580" width="300" height="60"/>
+<text class="t" x="978" y="606">Cập nhật trạng thái "Đã duyệt"</text>
+<text class="tag" x="978" y="626" text-anchor="middle" fill="#0A2F57">[Nhân viên]</text>
+
+<path class="arrow" d="M978,640 L978,672"/>
+<rect class="act" x="828" y="674" width="300" height="60"/>
+<text class="t" x="978" y="700">Thực hiện dịch vụ tại cảng</text>
+<text class="tag" x="978" y="720" text-anchor="middle" fill="#0A2F57">[Nhân viên]</text>
+
+<path class="arrow" d="M978,734 L978,766"/>
+<rect class="sys" x="828" y="768" width="300" height="60"/>
+<text class="t" x="978" y="794">Cập nhật trạng thái "Hoàn thành"</text>
+<text class="tag" x="978" y="814" text-anchor="middle">[Hệ thống]</text>
+
+<path class="arrow" d="M978,828 L978,860"/>
+<rect class="sys" x="818" y="862" width="320" height="66"/>
+<text class="t" x="978" y="888">Xuất hóa đơn Excel &amp;</text>
+<text class="t" x="978" y="906">gửi Email tự động</text>
+<text class="tag" x="978" y="923" text-anchor="middle">[Hệ thống]</text>
+
+<path class="arrow" d="M978,928 L978,958"/>
+<circle cx="978" cy="978" r="16" fill="none" stroke="#0A2F57" stroke-width="2.5"/>
+<circle cx="978" cy="978" r="9" fill="#0A2F57"/>
+<text x="978" y="1010" class="t" font-size="14">Kết thúc</text>
+
+<!-- REJECT branch (left) -->
+<path class="arrow" d="M555,610 L360,672"/>
+<text class="lblflow" x="500" y="628" text-anchor="middle">Không</text>
+<rect class="act" x="200" y="674" width="300" height="60"/>
+<text class="t" x="350" y="700">Cập nhật trạng thái "Đã hủy"</text>
+<text class="tag" x="350" y="720" text-anchor="middle" fill="#0A2F57">[Nhân viên]</text>
+
+<path class="arrow" d="M350,734 L350,766"/>
+<rect class="sys" x="190" y="768" width="320" height="60"/>
+<text class="t" x="350" y="794">Gửi thông báo từ chối cho khách</text>
+<text class="tag" x="350" y="814" text-anchor="middle">[Hệ thống]</text>
+
+<path class="arrow" d="M350,828 L350,858"/>
+<circle cx="350" cy="878" r="16" fill="none" stroke="#0A2F57" stroke-width="2.5"/>
+<circle cx="350" cy="878" r="9" fill="#0A2F57"/>
+<text x="350" y="910" class="t" font-size="14">Kết thúc</text>
+
+</svg>
+</body></html>

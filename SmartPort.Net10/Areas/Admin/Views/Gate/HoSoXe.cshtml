@@ -1,0 +1,210 @@
+﻿@{
+    var bs = (string)ViewBag.BienSo ?? "";
+    ViewBag.Title = bs.Length > 0 ? "Hồ sơ xe " + bs : "Tra cứu xe";
+    var dtg = (ViewBag.DongThoiGian as List<SmartPort.Services.LienKetService.SuKien>)
+              ?? new List<SmartPort.Services.LienKetService.SuKien>();
+    var lenhMo = (ViewBag.LenhDangMo as List<SmartPort.Models.LenhGiaoNhan>)
+              ?? new List<SmartPort.Models.LenhGiaoNhan>();
+    var contDaCho = (ViewBag.ContDaCho as List<string>) ?? new List<string>();
+    var soNgay = (int)(ViewBag.SoNgay ?? 90);
+}
+
+<div class="ai-box mb-3" style="background:linear-gradient(120deg,#083344,#0891b2);">
+    <span class="ai-tag"><i class="bi bi-truck"></i> HỒ SƠ XE · TÀI XẾ</span>
+    <div style="color:#cffafe;font-size:.9rem;" class="mt-2">
+        Gõ <strong>một biển số</strong> là ra toàn bộ lịch sử: đã qua cổng bao nhiêu lượt,
+        chở những container nào, cân bao nhiêu lần, còn lệnh nào đang mở.
+        Đây là màn hình để trả lời khách/thanh tra mà <strong>không phải đối soát tay</strong>.
+    </div>
+</div>
+
+<div class="card-sp p-3 mb-3">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label small fw-semibold">BIỂN SỐ XE</label>
+            <input class="form-control form-control-lg" name="bienSo" value="@bs" autofocus
+                   placeholder="51C-638.72" style="font-weight:700;letter-spacing:1px;text-transform:uppercase;" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small fw-semibold">KHOẢNG THỜI GIAN</label>
+            @* Dung null de Razor BO HAN thuoc tinh; neu gan bool thi false van
+               render ra selected="False" va trinh duyet coi nhu da chon. *@
+            <select class="form-select" name="soNgay">
+                @foreach (var n in new[] { 7, 30, 90, 365 })
+                {
+                    <option value="@n" selected="@(soNgay == n ? "selected" : null)">
+                        @(n == 365 ? "1 năm qua" : n + " ngày qua")
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4 d-flex gap-2">
+            <button class="btn btn-accent flex-fill" type="submit"><i class="bi bi-search me-1"></i>Tra cứu</button>
+            <a class="btn btn-outline-sp" href="@Url.Action("Index", "Gate")"><i class="bi bi-upc-scan me-1"></i>Về cổng</a>
+        </div>
+    </form>
+</div>
+
+@if (bs.Length == 0)
+{
+    <div class="card-sp p-5 text-center text-muted">
+        <i class="bi bi-truck" style="font-size:2.6rem;opacity:.35;"></i>
+        <div class="mt-2">Nhập biển số xe ở ô trên để xem hồ sơ.</div>
+        <div class="small mt-1">Mẹo: ở bất kỳ trang nào cũng có thể bấm <kbd>Ctrl</kbd>+<kbd>K</kbd> rồi gõ biển số.</div>
+    </div>
+}
+else if (dtg.Count == 0)
+{
+    <div class="card-sp p-5 text-center text-muted">
+        <i class="bi bi-emoji-neutral" style="font-size:2.6rem;opacity:.35;"></i>
+        <div class="mt-2">Không có dữ liệu nào của xe <b>@bs</b> trong @soNgay ngày qua.</div>
+        <div class="small mt-1">Thử mở rộng khoảng thời gian, hoặc kiểm tra lại biển số.</div>
+    </div>
+}
+else
+{
+    <div class="row g-3 mb-3">
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="lbl">TRẠNG THÁI HIỆN TẠI</div>
+                @if ((bool)ViewBag.DangTrongCang)
+                {
+                    <div class="num" style="color:#15803d;font-size:1.25rem;">Đang trong cảng</div>
+                    <div class="small text-muted">Vào lúc @(((DateTime)ViewBag.LanCuoi).ToString("HH:mm dd/MM"))</div>
+                }
+                else
+                {
+                    <div class="num" style="color:#64748b;font-size:1.25rem;">Đã ra khỏi cảng</div>
+                    <div class="small text-muted">Lần cuối @(((DateTime)ViewBag.LanCuoi).ToString("HH:mm dd/MM"))</div>
+                }
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="lbl">LƯỢT VÀO / RA</div>
+                <div class="num">@ViewBag.SoLuotVao <span class="text-muted">/</span> @ViewBag.SoLuotRa</div>
+                <div class="small text-muted">trong @soNgay ngày</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="lbl">ĐỘ TIN CẬY OCR TB</div>
+                <div class="num">@(ViewBag.OcrTB != null ? ViewBag.OcrTB + "%" : "—")</div>
+                <div class="small text-muted">AI đọc biển số xe này</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-card">
+                <div class="lbl">LỆNH ĐANG MỞ</div>
+                <div class="num" style="color:@(lenhMo.Count > 0 ? "#b45309" : "#15803d");">@lenhMo.Count</div>
+                <div class="small text-muted">chờ xe / đã vào cổng</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-5">
+            @if (!string.IsNullOrEmpty((string)ViewBag.AnhGanNhat))
+            {
+                <div class="card-sp p-3 mb-3">
+                    <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-camera me-1"></i>Ảnh chụp gần nhất tại cổng</h6>
+                    <img src="@Url.Content((string)ViewBag.AnhGanNhat)" alt="Ảnh xe @bs"
+                         style="width:100%;border-radius:10px;border:1px solid rgba(100,116,139,.3);" />
+                    <div class="small text-muted mt-1">Ảnh gốc do camera cổng lưu — dùng đối chiếu khi có khiếu nại.</div>
+                </div>
+            }
+
+            @if (lenhMo.Count > 0)
+            {
+                <div class="card-sp p-3 mb-3">
+                    <h6 class="fw-bold mb-2" style="color:#b45309;"><i class="bi bi-exclamation-triangle me-1"></i>Lệnh đang mở của xe này</h6>
+                    @foreach (var l in lenhMo)
+                    {
+                        <div class="border rounded-3 p-2 mb-2" style="border-color:rgba(180,83,9,.3)!important;">
+                            <div class="fw-bold" style="color:#0a2f57;">@l.SoLenh — @l.TenLoaiLenh</div>
+                            <div class="small text-muted">
+                                @if (!string.IsNullOrEmpty(l.SoCont))
+                                {
+                                    <a class="lk-cont" href="@Url.Action("TraCuu", "Containers", new { so = l.SoCont })">@l.SoCont</a><text> · </text>
+                                }
+                                Hẹn @l.HenTuLuc.ToString("HH:mm dd/MM") · @l.TrangThai
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (contDaCho.Count > 0)
+            {
+                <div class="card-sp p-3">
+                    <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-box-seam me-1"></i>Container xe này đã chở</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (var sc in contDaCho)
+                        {
+                            <a class="badge text-decoration-none" style="background:#e0f2fe;color:#075985;font-size:.78rem;padding:.42rem .6rem;"
+                               href="@Url.Action("TraCuu", "Containers", new { so = sc })">
+                                <i class="bi bi-box-seam me-1"></i>@sc
+                            </a>
+                        }
+                    </div>
+                    <div class="small text-muted mt-2">Bấm một số container để mở hồ sơ 360° của nó.</div>
+                </div>
+            }
+        </div>
+
+        <div class="col-lg-7">
+            <div class="card-sp p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-clock-history me-1"></i>Dòng thời gian của xe @bs</h6>
+                    <span class="badge bg-light text-dark border">@dtg.Count sự kiện</span>
+                </div>
+                <div class="dtg-loc" id="dtgLoc">
+                    <button type="button" class="on" data-nhom="">Tất cả</button>
+                    @foreach (var nhom in dtg.Select(s => s.Nhom).Distinct())
+                    {
+                        <button type="button" data-nhom="@nhom">@nhom</button>
+                    }
+                </div>
+                <div class="dtg" id="dtgDs" style="max-height:640px;overflow-y:auto;">
+                    @foreach (var s in dtg)
+                    {
+                        <div class="dtg-muc" data-nhom="@s.Nhom">
+                            <span class="dtg-cham" style="background:@s.Mau"><i class="bi @s.Icon"></i></span>
+                            <div class="dtg-gio">@s.Luc.ToString("HH:mm · dd/MM/yyyy")</div>
+                            <div class="dtg-td">
+                                @if (!string.IsNullOrEmpty(s.Url))
+                                {
+                                    <a href="@s.Url">@s.TieuDe</a>
+                                }
+                                else
+                                {
+                                    @s.TieuDe
+                                }
+                            </div>
+                            @if (!string.IsNullOrEmpty(s.MoTa))
+                            {
+                                <div class="dtg-mt">@s.MoTa</div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    (function () {
+        var loc = document.getElementById('dtgLoc'), ds = document.getElementById('dtgDs');
+        if (!loc || !ds) return;
+        loc.addEventListener('click', function (e) {
+            var b = e.target.closest('button'); if (!b) return;
+            Array.prototype.forEach.call(loc.querySelectorAll('button'), function (x) { x.classList.remove('on'); });
+            b.classList.add('on');
+            var nhom = b.getAttribute('data-nhom') || '';
+            Array.prototype.forEach.call(ds.querySelectorAll('.dtg-muc'), function (m) {
+                m.style.display = (!nhom || m.getAttribute('data-nhom') === nhom) ? '' : 'none';
+            });
+        });
+    })();
+</script>

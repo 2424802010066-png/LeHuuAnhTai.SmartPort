@@ -1,0 +1,199 @@
+﻿@model List<SmartPort.Models.PhieuSuaChua>
+@using SmartPort.Models
+@{
+    ViewBag.Title = "Phiếu sửa chữa vỏ (EOR)";
+    var hangTaus = ViewBag.HangTaus as List<HangTau>;
+}
+
+<div class="ai-box mb-3" style="background:linear-gradient(120deg,#7c2d12,#b45309);">
+    <span class="ai-tag"><i class="bi bi-tools"></i> EOR · PHIẾU SỬA CHỮA VỎ CONTAINER</span>
+    <div style="color:#fed7aa;font-size:.9rem;" class="mt-2">
+        <strong>EOR (Estimate of Repair)</strong> — khi kiểm vỏ phát hiện hư hỏng, depot phải lập báo giá sửa
+        gửi <strong>hãng tàu duyệt</strong>, duyệt xong mới được sửa và mới đòi được tiền.
+        Không có EOR thì depot tự nuốt chi phí. Mỗi phiếu được vào sổ chứng từ chuỗi khối như mọi chứng từ khác.
+    </div>
+</div>
+
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success py-2"><i class="bi bi-check-circle me-1"></i>@TempData["ThongBao"]</div>
+}
+@if (TempData["Loi"] != null)
+{
+    <div class="alert alert-danger py-2"><i class="bi bi-exclamation-triangle me-1"></i>@TempData["Loi"]</div>
+}
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#b45309,#fbbf24);">
+            <div class="ps-num">@ViewBag.ChoDuyet</div>
+            <div class="ps-lbl">Chờ hãng tàu duyệt</div>
+            <i class="bi bi-hourglass-split"></i>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#14532d,#22c55e);">
+            <div class="ps-num">@ViewBag.DaDuyet</div>
+            <div class="ps-lbl">Đã duyệt — được sửa</div>
+            <i class="bi bi-check2-circle"></i>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#334155,#64748b);">
+            <div class="ps-num">@ViewBag.TuChoi</div>
+            <div class="ps-lbl">Hãng tàu từ chối</div>
+            <i class="bi bi-x-circle"></i>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#0a2f57,#1c5fa8);">
+            <div class="ps-num">@(((decimal)ViewBag.TongTienChoDuyet).ToString("#,##0")) ₫</div>
+            <div class="ps-lbl">Tiền đang chờ hãng tàu duyệt</div>
+            <i class="bi bi-cash-stack"></i>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-4">
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#7c2d12;"><i class="bi bi-plus-square me-1"></i>Lập phiếu sửa chữa</h6>
+            @using (Html.BeginForm("LuuEor", "Depot", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <label class="form-label small fw-semibold">SỐ CONTAINER</label>
+                <input class="form-control mb-2" name="soCont" placeholder="VD: MSCU2299876" required />
+
+                <label class="form-label small fw-semibold">HÃNG TÀU (để trống = lấy theo container)</label>
+                <select class="form-select mb-2" name="maHangTau">
+                    <option value="">— Tự lấy theo container —</option>
+                    @if (hangTaus != null)
+                    {
+                        foreach (var h in hangTaus)
+                        {
+                            <option value="@h.MaHangTau">@h.TenHangTau</option>
+                        }
+                    }
+                </select>
+
+                <label class="form-label small fw-semibold">VỊ TRÍ HƯ HỎNG</label>
+                <select class="form-select mb-2" name="viTriHuHong">
+                    <option>Vách trước</option>
+                    <option>Vách bên trái</option>
+                    <option>Vách bên phải</option>
+                    <option>Cửa</option>
+                    <option>Sàn</option>
+                    <option>Nóc</option>
+                    <option>Khung / góc</option>
+                </select>
+
+                <label class="form-label small fw-semibold">MÃ HƯ HỎNG (theo bảng hãng tàu)</label>
+                <input class="form-control mb-2" name="maHuHong" list="dsMa" placeholder="VD: DT" />
+                <datalist id="dsMa">
+                    <option value="DT">DT — Móp/lõm (dent)</option>
+                    <option value="BR">BR — Gãy/vỡ (broken)</option>
+                    <option value="CU">CU — Cong vênh (curved)</option>
+                    <option value="HO">HO — Thủng (hole)</option>
+                    <option value="RU">RU — Gỉ sét (rust)</option>
+                    <option value="CL">CL — Bẩn, cần vệ sinh</option>
+                </datalist>
+
+                <label class="form-label small fw-semibold">MÔ TẢ</label>
+                <textarea class="form-control mb-2" name="moTa" rows="2" placeholder="Móp ~30x20cm, sâu 3cm..."></textarea>
+
+                <div class="row g-2 mb-2">
+                    <div class="col-6">
+                        <label class="form-label small fw-semibold">GIỜ CÔNG</label>
+                        <input class="form-control" name="gioCong" placeholder="2.5" />
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-semibold">VẬT TƯ (đ)</label>
+                        <input class="form-control" name="chiPhiVatTu" placeholder="350000" />
+                    </div>
+                </div>
+                <div class="small text-muted mb-2">Chi phí ước tính = giờ công × 150.000đ + vật tư</div>
+                <button class="btn btn-accent w-100" type="submit"><i class="bi bi-save me-1"></i>Lập EOR gửi hãng tàu</button>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card-sp p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                <h6 class="fw-bold mb-0" style="color:#7c2d12;"><i class="bi bi-list-check me-1"></i>Danh sách phiếu</h6>
+                <div class="small">
+                    <a class="btn btn-sm btn-outline-sp @(ViewBag.TrangThai == null ? "active" : "")" href="@Url.Action("Eor")">Tất cả</a>
+                    <a class="btn btn-sm btn-outline-sp" href="@Url.Action("Eor", new { trangThai = "Chờ duyệt" })">Chờ duyệt</a>
+                    <a class="btn btn-sm btn-outline-sp" href="@Url.Action("Eor", new { trangThai = "Đã duyệt" })">Đã duyệt</a>
+                    <a class="btn btn-sm btn-outline-sp" href="@Url.Action("TonRong", "Depot")">Tồn rỗng</a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr class="small text-muted">
+                            <th>SỐ EOR</th><th>CONTAINER</th><th>HÃNG TÀU</th><th>HƯ HỎNG</th>
+                            <th class="text-end">ƯỚC TÍNH</th><th class="text-center">TRẠNG THÁI</th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Count == 0)
+                        {
+                            <tr><td colspan="7" class="text-center text-muted py-4">Chưa có phiếu sửa chữa nào.</td></tr>
+                        }
+                        @foreach (var e in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold small">@e.SoEOR<div class="text-muted" style="font-size:.7rem;">@e.NgayLap.ToString("HH:mm dd/MM")</div></td>
+                                <td class="fw-semibold"><a class="lk-cont" href="@Url.Action("TraCuu", "Containers", new { so = e.SoCont })" title="Hồ sơ container">@e.SoCont</a></td>
+                                <td class="small">@(e.HangTau != null ? e.HangTau.TenHangTau : "—")</td>
+                                <td class="small">
+                                    @e.ViTriHuHong
+                                    @if (!string.IsNullOrEmpty(e.MaHuHong))
+                                    {
+                                        <span class="badge bg-light text-dark border ms-1">@e.MaHuHong</span>
+                                    }
+                                    <div class="text-muted" style="font-size:.72rem;">@e.MoTa</div>
+                                </td>
+                                <td class="text-end fw-bold">@((e.ChiPhiUocTinh ?? 0).ToString("#,##0")) ₫</td>
+                                <td class="text-center">
+                                    <span class="badge @(e.TrangThai == "Đã duyệt" ? "bg-success" : e.TrangThai == "Đã sửa" ? "bg-primary" : e.TrangThai == "Từ chối" ? "bg-secondary" : "bg-warning text-dark")">
+                                        @e.TrangThai
+                                    </span>
+                                </td>
+                                <td class="text-end" style="white-space:nowrap;">
+                                    <a class="btn btn-sm btn-outline-sp" href="@Url.Action("InEor", new { id = e.MaEOR })" target="_blank" title="In gửi hãng tàu"><i class="bi bi-printer"></i></a>
+                                    @if (e.TrangThai == "Chờ duyệt")
+                                    {
+                                        using (Html.BeginForm("DuyetEor", "Depot", new { id = e.MaEOR, quyetDinh = "duyet" }, FormMethod.Post, null, new { @class = "d-inline" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button class="btn btn-sm btn-success" title="Hãng tàu duyệt"><i class="bi bi-check-lg"></i></button>
+                                        }
+                                        using (Html.BeginForm("DuyetEor", "Depot", new { id = e.MaEOR, quyetDinh = "tuchoi" }, FormMethod.Post, null, new { @class = "d-inline" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button class="btn btn-sm btn-outline-danger" title="Hãng tàu từ chối"><i class="bi bi-x-lg"></i></button>
+                                        }
+                                    }
+                                    else if (e.TrangThai == "Đã duyệt")
+                                    {
+                                        using (Html.BeginForm("DuyetEor", "Depot", new { id = e.MaEOR, quyetDinh = "sua" }, FormMethod.Post, null, new { @class = "d-inline" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button class="btn btn-sm btn-primary" title="Đã sửa xong">Đã sửa</button>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="small text-muted">
+                💡 Khi đi chào depot, đây là màn hình đáng tiền nhất: <b>tiền đang chờ hãng tàu duyệt</b> là con số
+                mà chủ depot chưa bao giờ nhìn thấy tổng hợp — họ chỉ có từng tờ giấy rời.
+            </div>
+        </div>
+    </div>
+</div>

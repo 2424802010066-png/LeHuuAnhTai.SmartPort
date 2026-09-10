@@ -1,0 +1,70 @@
+﻿@model List<SmartPort.Models.Container>
+@{
+    ViewBag.Title = "Quản lý container";
+    string cur = ViewBag.TrangThai as string;
+    string[] statuses = { "Trong bãi", "Chờ xuất tàu", "Đã xuất tàu", "Đã giao khách" };
+}
+<div class="card-sp">
+    <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <form method="get" class="d-flex flex-wrap gap-2">
+            <input type="text" name="q" value="@ViewBag.Q" class="form-control form-control-sm" style="width:220px;" placeholder="Số cont / khách hàng / hàng hóa" />
+            <select name="trangThai" class="form-select form-select-sm" style="width:170px;">
+                <option value="">— Trạng thái —</option>
+                @foreach (var s in statuses)
+                {
+                    <option value="@s" @(s == cur ? "selected" : "")>@s</option>
+                }
+            </select>
+            <button class="btn btn-sm btn-navy" type="submit"><i class="bi bi-search"></i> Lọc</button>
+        </form>
+        <a class="btn btn-sm btn-accent" href="@Url.Action("Form")"><i class="bi bi-plus-lg me-1"></i>Thêm container</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-sp">
+            <thead>
+                <tr><th>Số container</th><th>Loại</th><th>Hàng hóa</th><th>Khách hàng</th><th>Vị trí bãi</th><th>Vào bãi</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr>
+            </thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr><td colspan="8" class="text-center text-muted py-4">Không tìm thấy container.</td></tr>
+                }
+                @foreach (var c in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="fw-semibold text-decoration-none" href="@Url.Action("HoSo", new { id = c.MaCont })" title="Mở hồ sơ container 360°">@c.SoCont</a>
+                            @if (c.NhietDo.HasValue)
+                            {
+                                <span class="text-info" title="Container lạnh"><i class="bi bi-thermometer-snow"></i> @c.NhietDo°C</span>
+                            }
+                        </td>
+                        <td>@c.LoaiCont <span class="text-muted small">(@c.TinhTrang)</span></td>
+                        <td class="small">@(string.IsNullOrEmpty(c.HangHoa) ? "—" : c.HangHoa)</td>
+                        <td class="small">@(c.KhachHang != null ? c.KhachHang.TenCongTy : "—")</td>
+                        <td>@(string.IsNullOrEmpty(c.ViTriBai) ? "—" : c.ViTriBai)</td>
+                        <td class="small">@Ui.D(c.NgayVaoBai)</td>
+                        <td><span class="badge-st @Ui.Badge(c.TrangThai)">@c.TrangThai</span></td>
+                        <td class="text-end" style="white-space:nowrap;">
+                            @if (c.TrangThai == "Trong bãi")
+                            {
+                                using (Html.BeginForm("GateOut", "Containers", new { id = c.MaCont }, FormMethod.Post, null, new { @class = "d-inline", onsubmit = "return confirm('Giao container " + c.SoCont + " cho khách (gate out)?');" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn btn-sm btn-outline-success" type="submit" title="Giao cho khách"><i class="bi bi-box-arrow-right"></i> Gate out</button>
+                                }
+                            }
+                            <a class="btn btn-sm btn-outline-sp" href="@Url.Action("HoSo", new { id = c.MaCont })" title="Hồ sơ 360°"><i class="bi bi-folder2-open"></i></a>
+                            <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Form", new { id = c.MaCont })"><i class="bi bi-pencil"></i></a>
+                            @using (Html.BeginForm("Delete", "Containers", new { id = c.MaCont }, FormMethod.Post, null, new { @class = "d-inline", onsubmit = "return confirm('Xóa container " + c.SoCont + "?');" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i></button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

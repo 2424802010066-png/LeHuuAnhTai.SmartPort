@@ -1,0 +1,49 @@
+﻿@model List<SmartPort.Models.CauHinhAnh>
+@{
+    ViewBag.Title = "Thư viện ảnh website";
+}
+<div class="ai-box mb-3">
+    <span class="ai-tag"><i class="bi bi-images"></i> MEDIA MANAGER</span>
+    <div class="row align-items-center mt-2">
+        <div class="col-lg-9">
+            <h5 class="fw-bold mb-1">Quản lý toàn bộ hình ảnh hiển thị trên website</h5>
+            <div style="color:#c9dcef;font-size:.9rem;">
+                Dán URL ảnh mới (Unsplash, ảnh công ty...) hoặc <strong>upload ảnh riêng</strong> từ máy tính — thay đổi áp dụng ngay cho trang chủ, tin tức, banner... không cần sửa code.
+            </div>
+        </div>
+        <div class="col-lg-3 text-lg-end mt-2 mt-lg-0">
+            <div class="big">@Model.Count</div>
+            <div style="color:#c9dcef;">vị trí ảnh</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    @foreach (var a in Model)
+    {
+        <div class="col-md-6 col-xl-4">
+            <div class="card-sp p-3 h-100">
+                <div class="rounded-3 mb-2" style="height:130px;background-image:url('@(a.Url.StartsWith("~") ? Url.Content(a.Url) : a.Url)'),linear-gradient(135deg,#0d3b66,#1173c4);background-size:cover;background-position:center;"></div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-bold" style="color:#0a2f57;">@a.MoTa</span>
+                    <span class="badge bg-light text-dark border">@a.Khoa</span>
+                </div>
+                @using (Html.BeginForm("Save", "Gallery", FormMethod.Post, new { @class = "d-flex gap-1 mb-2" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="khoa" value="@a.Khoa" />
+                    <input type="text" name="url" value="@a.Url" class="form-control form-control-sm" style="font-size:.72rem;" />
+                    <button class="btn btn-sm btn-navy" type="submit" title="Lưu URL"><i class="bi bi-save"></i></button>
+                }
+                @using (Html.BeginForm("Upload", "Gallery", FormMethod.Post, new { enctype = "multipart/form-data", @class = "d-flex gap-1" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="khoa" value="@a.Khoa" />
+                    <input type="file" name="file" accept="image/*" class="form-control form-control-sm" style="font-size:.72rem;" />
+                    <button class="btn btn-sm btn-accent" type="submit" title="Upload ảnh từ máy"><i class="bi bi-upload"></i></button>
+                }
+            </div>
+        </div>
+    }
+</div>
+<div class="text-muted small mt-3"><i class="bi bi-info-circle me-1"></i>Ảnh upload lưu tại <code>/Content/img/uploads</code> (tối đa 5MB — jpg, png, webp, gif). Ảnh Unsplash dùng giấy phép miễn phí thương mại.</div>

@@ -1,0 +1,98 @@
+@model SmartPort.Models.ThanhToan
+@{
+    ViewBag.Title = "Biên lai thanh toán";
+    var bk = Model.DatDichVu;
+    bool demo = ViewBag.DemoMode ?? true;
+}
+<div class="page-head">
+    <div class="container">
+        <h1><i class="bi bi-patch-check me-2"></i>Biên lai thanh toán</h1>
+        <nav>
+            <ol class="breadcrumb mt-2">
+                <li class="breadcrumb-item"><a href="@Url.Action("My", "Booking")">Booking của tôi</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("History", "Payment")">Lịch sử thanh toán</a></li>
+                <li class="breadcrumb-item active">Biên lai #@Model.MaTT</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="receipt">
+        <div class="receipt-head">
+            <div class="rh-ico"><i class="bi bi-check-lg"></i></div>
+            <h4 class="fw-bold mb-1">
+                @(Model.TrangThai == "Đã thanh toán" ? "Thanh toán thành công" : "Biên lai giao dịch")
+            </h4>
+            <div style="opacity:.85;font-size:.92rem;">SmartPort — Cảng Quốc tế · Logistics</div>
+            <div class="mt-2" style="font-size:1.5rem;font-weight:900;color:#ffd9b8;">@Ui.Vnd(Model.SoTien)</div>
+        </div>
+
+        <div class="receipt-body">
+            <div class="rc-row"><span>Mã giao dịch</span><strong>#@Model.MaTT @(string.IsNullOrEmpty(Model.MaGiaoDich) ? "" : "· " + Model.MaGiaoDich)</strong></div>
+            <div class="rc-row"><span>Mã booking</span><strong>@(bk != null ? bk.MaSoBooking : "—")</strong></div>
+            <div class="rc-row"><span>Khách hàng</span><strong>@(bk != null && bk.KhachHang != null ? bk.KhachHang.TenCongTy : "—")</strong></div>
+            <div class="rc-row"><span>Phương thức</span><strong>@Model.TenPhuongThuc</strong></div>
+            @if (!string.IsNullOrEmpty(Model.NoiDungCK))
+            {
+                <div class="rc-row"><span>Nội dung CK</span><strong>@Model.NoiDungCK</strong></div>
+            }
+            <div class="rc-row"><span>Trạng thái</span><span class="badge-st @Ui.Badge(Model.TrangThai)">@Model.TrangThai</span></div>
+            <div class="rc-row"><span>Ngày tạo</span><strong>@Ui.Dt(Model.NgayTao)</strong></div>
+            @if (Model.NgayThanhToan.HasValue)
+            {
+                <div class="rc-row"><span>Ngày thanh toán</span><strong>@Ui.Dt(Model.NgayThanhToan.Value)</strong></div>
+            }
+
+            @if (bk != null && bk.ChiTiets != null && bk.ChiTiets.Any())
+            {
+                <h6 class="fw-bold mt-4 mb-2" style="color:#0a2f57;">Chi tiết dịch vụ</h6>
+                <div class="table-responsive">
+                    <table class="table table-sp mb-0">
+                        <thead><tr><th>Dịch vụ</th><th class="text-center">SL</th><th class="text-end">Thành tiền</th></tr></thead>
+                        <tbody>
+                            @foreach (var ct in bk.ChiTiets)
+                            {
+                                <tr>
+                                    <td>@(ct.DichVu != null ? ct.DichVu.TenDV : "Dịch vụ")</td>
+                                    <td class="text-center">@ct.SoLuong</td>
+                                    <td class="text-end">@Ui.Vnd(ct.ThanhTien)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+
+            <div class="rc-total">
+                <span>TỔNG THANH TOÁN</span>
+                <b>@Ui.Vnd(Model.SoTien)</b>
+            </div>
+            <div class="text-center fst-italic text-muted mt-2" style="font-size:.88rem;">Bằng chữ: @ViewBag.SoTienChu</div>
+
+            @if (Model.TrangThai == "Đã thanh toán")
+            {
+                <div class="text-center mt-4"><span class="rc-stamp">ĐÃ THANH TOÁN</span></div>
+            }
+        </div>
+
+        <div class="receipt-foot">
+            @if (demo)
+            {
+                <div class="mb-2"><strong class="text-warning">⚠ BIÊN LAI DEMO — đồ án môn Lập trình Web</strong></div>
+            }
+            Cảm ơn Quý khách đã sử dụng dịch vụ của SmartPort<br />
+            Hotline 0387 562 579 · lehuuanhtai2020tkh@gmail.com
+        </div>
+    </div>
+
+    <div class="text-center mt-4 d-flex flex-wrap justify-content-center gap-2">
+        <button class="btn btn-navy" onclick="window.print();"><i class="bi bi-printer me-1"></i>In biên lai</button>
+        @if (bk != null)
+        {
+            <a class="btn btn-success" href="@Url.Action("Invoice", "Booking", new { id = bk.MaBooking })"><i class="bi bi-file-earmark-excel me-1"></i>Hóa đơn Excel</a>
+            <a class="btn btn-outline-sp" href="@Url.Action("Details", "Booking", new { id = bk.MaBooking })"><i class="bi bi-arrow-left me-1"></i>Về đơn hàng</a>
+        }
+        <a class="btn btn-outline-sp" href="@Url.Action("History", "Payment")"><i class="bi bi-clock-history me-1"></i>Lịch sử thanh toán</a>
+    </div>
+</div>

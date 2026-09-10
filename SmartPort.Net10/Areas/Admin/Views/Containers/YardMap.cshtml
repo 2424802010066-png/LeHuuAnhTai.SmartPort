@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "Sơ đồ bãi container";
+    List<Container> conts = ViewBag.Conts;
+    Dictionary<string, int[]> config = ViewBag.Config;
+
+    var byBlock = new Dictionary<string, List<Container>>();
+    foreach (var c in conts)
+    {
+        var b = (c.ViTriBai ?? "?").Split('-')[0];
+        if (!byBlock.ContainsKey(b)) { byBlock[b] = new List<Container>(); }
+        byBlock[b].Add(c);
+    }
+    string[] blockOrder = { "A", "B", "C", "X", "R", "E" };
+}
+
+<div class="ai-box mb-3">
+    <span class="ai-tag"><i class="bi bi-grid-3x3-gap"></i> DIGITAL YARD MAP</span>
+    <div class="row align-items-center mt-2">
+        <div class="col-lg-9">
+            <h5 class="fw-bold mb-1">Sơ đồ bãi container trực quan theo thời gian thực</h5>
+            <div style="color:#c9dcef;font-size:.9rem;">
+                Mỗi ô là một stack (bay × hàng) — con số thể hiện chiều cao chồng container. Rê chuột vào ô để xem danh sách container. Vị trí hạ bãi cho container mới do <strong>AI gợi ý</strong> trong form thêm container.
+            </div>
+        </div>
+        <div class="col-lg-3 text-lg-end mt-2 mt-lg-0">
+            <div class="big">@conts.Count</div>
+            <div style="color:#c9dcef;">container đang chiếm bãi</div>
+        </div>
+    </div>
+</div>
+
+<div class="card-sp p-3 mb-3">
+    <div class="yard-legend">
+        <span><span class="lg" style="background:#eef2f7;border:1.5px dashed #d4deea;"></span>Trống</span>
+        <span><span class="lg" style="background:#cfe6fb;"></span>1 tầng</span>
+        <span><span class="lg" style="background:#93c5ec;"></span>2 tầng</span>
+        <span><span class="lg" style="background:#ffb25e;"></span>3 tầng</span>
+        <span><span class="lg" style="background:#ff8a5c;"></span>4+ tầng</span>
+        <span>❄ có container lạnh</span>
+        <a class="btn btn-sm btn-accent ms-auto" href="@Url.Action("Form", "Containers")"><i class="bi bi-plus-lg me-1"></i>Thêm container (AI gợi ý vị trí)</a>
+    </div>
+</div>
+
+<div class="row g-3">
+    @foreach (var blockKey in blockOrder)
+    {
+        var cfg = config.ContainsKey(blockKey) ? config[blockKey] : new[] { 4, 5, 4 };
+        int soBay = cfg[0], soRow = cfg[1], maxTier = cfg[2];
+        List<Container> inBlock = byBlock.ContainsKey(blockKey) ? byBlock[blockKey] : new List<Container>();
+        int capacity = soBay * soRow * maxTier;
+        int pct = capacity > 0 ? (int)Math.Round(inBlock.Count * 100.0 / capacity) : 0;
+
+        // Gom theo stack bay-row
+        var stacks = new Dictionary<string, List<Container>>();
+        foreach (var c in inBlock)
+        {
+            var p = c.ViTriBai.Split('-');
+            if (p.Length < 4) { continue; }
+            var key = p[1] + "-" + p[2];
+            if (!stacks.ContainsKey(key)) { stacks[key] = new List<Container>(); }
+            stacks[key].Add(c);
+        }
+
+        <div class="col-md-6 col-xl-4">
+            <div class="yard-block">
+                <h6>
+                    <span class="badge" style="background:#0d4f8b;">@blockKey</span>
+                    @SmartPort.Services.YardService.BlockName(blockKey).Replace("Khu " + blockKey + " — ", "")
+                    <span class="ms-auto text-muted fw-normal" style="font-size:.76rem;">@inBlock.Count/@capacity cont · @pct%</span>
+                </h6>
+                <div class="yard-grid" style="grid-template-columns: repeat(@soRow, 1fr);">
+                    @for (int b = 1; b <= soBay; b++)
+                    {
+                        for (int r = 1; r <= soRow; r++)
+                        {
+                            var key = b.ToString("D2") + "-" + r.ToString("D2");
+                            List<Container> stack = stacks.ContainsKey(key) ? stacks[key] : null;
+                            int h = stack != null ? stack.Count : 0;
+                            bool rf = false;
+                            var tip = blockKey + "-" + key + " · " + h + " cont";
+                            if (stack != null)
+                            {
+                                foreach (var c in stack)
+                                {
+                                    if (c.NhietDo.HasValue) { rf = true; }
+                                    tip += "\n" + c.SoCont + " (" + c.LoaiCont + ") — " + (c.HangHoa ?? "—");
+                                }
+                            }
+                            var cls = h == 0 ? "" : h == 1 ? "h1" : h == 2 ? "h2" : h == 3 ? "h3" : "h4";
+                            <div class="yard-cell @cls @(rf ? "rf" : "")" title="@tip">@(h > 0 ? h.ToString() : "")</div>
+                        }
+                    }
+                </div>
+                <div class="yard-fill"><span style="--w:@(pct)%;"></span></div>
+            </div>
+        </div>
+    }
+</div>

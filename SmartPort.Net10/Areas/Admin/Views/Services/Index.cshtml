@@ -1,0 +1,47 @@
+﻿@model List<SmartPort.Models.DichVu>
+@{
+    ViewBag.Title = "Dịch vụ & bảng giá";
+}
+<div class="card-sp">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-tools me-2 text-primary"></i>Danh mục dịch vụ cảng</span>
+        <a class="btn btn-sm btn-accent" href="@Url.Action("Form")"><i class="bi bi-plus-lg me-1"></i>Thêm dịch vụ</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-sp">
+            <thead>
+                <tr><th>Tên dịch vụ</th><th>Nhóm</th><th>Đơn vị</th><th class="text-end">Đơn giá</th><th>Mô tả</th><th class="text-center">Trạng thái</th><th class="text-end">Thao tác</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model)
+                {
+                    <tr class="@(d.KichHoat ? "" : "table-light text-muted")">
+                        <td class="fw-semibold">@d.TenDV</td>
+                        <td>@d.NhomDV</td>
+                        <td>@d.DonViTinh</td>
+                        <td class="text-end fw-semibold" style="color:#e5691d;">@Ui.Vnd(d.DonGia)</td>
+                        <td class="small text-muted">@d.MoTa</td>
+                        <td class="text-center">
+                            @if (d.KichHoat)
+                            {
+                                <span class="badge-st st-ok">Đang cung cấp</span>
+                            }
+                            else
+                            {
+                                <span class="badge-st st-off">Ngừng</span>
+                            }
+                        </td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Form", new { id = d.MaDV })"><i class="bi bi-pencil"></i></a>
+                            @using (Html.BeginForm("Delete", "Services", new { id = d.MaDV }, FormMethod.Post, null, new { @class = "d-inline", onsubmit = "return confirm('Xóa/ngừng dịch vụ " + d.TenDV + "?');" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i></button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

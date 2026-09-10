@@ -1,0 +1,252 @@
+﻿@{
+    ViewBag.Title = "Machine Learning — Học máy";
+    var km = ViewBag.KMeans as SmartPort.Models.KMeansResult;
+    var anomaly = ViewBag.Anomaly as List<SmartPort.Models.AnomalyPoint>;
+    var batThuong = anomaly != null ? anomaly.Where(a => a.BatThuong).ToList() : new List<SmartPort.Models.AnomalyPoint>();
+    int maxTeu = anomaly != null && anomaly.Any() ? anomaly.Max(a => a.TEU) : 1;
+}
+
+<div class="ai-box mb-3">
+    <span class="ai-tag"><i class="bi bi-braces-asterisk"></i> MACHINE LEARNING · HỌC MÁY CỔ ĐIỂN</span>
+    <div class="row align-items-center mt-2">
+        <div class="col-lg-9">
+            <h5 class="fw-bold mb-1">Học máy không giám sát: K-Means &amp; phát hiện bất thường Z-score</h5>
+            <div style="color:#c9dcef;font-size:.9rem;">
+                Bổ trợ cho Deep Learning: thuật toán học máy cổ điển <strong>tự cài đặt thuần C#</strong> —
+                K-Means <strong>tự phân nhóm khách hàng</strong> theo hành vi (không cần gán nhãn trước),
+                Z-score <strong>phát hiện biến động bất thường</strong> trong chuỗi sản lượng.
+            </div>
+        </div>
+        <div class="col-lg-3 text-lg-end mt-2 mt-lg-0">
+            <a class="btn btn-sm btn-light fw-semibold" href="@Url.Action("ML")"><i class="bi bi-arrow-repeat me-1"></i>Chạy lại thuật toán</a>
+        </div>
+    </div>
+</div>
+
+<!-- ============ 1. K-MEANS ============ -->
+<div class="card-sp p-4 mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-1 gap-2">
+        <h6 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-diagram-3 me-1"></i>K-Means — Phân khúc khách hàng (unsupervised learning)</h6>
+        @if (km != null)
+        {
+            <span class="badge-st st-ok"><i class="bi bi-check2 me-1"></i>@km.ThongBao</span>
+        }
+    </div>
+    <p class="text-muted small mb-3">
+        3 đặc trưng đầu vào: <strong>tổng doanh thu · số booking · số container</strong> (chuẩn hóa Min-Max về [0,1]).
+        Thuật toán khởi tạo tâm cụm kiểu k-means++, lặp gán cụm — cập nhật tâm đến khi hội tụ.
+    </p>
+
+    @if (km != null && km.Clusters != null && km.Clusters.Any())
+    {
+        <div class="row g-3">
+            @foreach (var c in km.Clusters)
+            {
+                <div class="col-lg-4">
+                    <div class="ml-cluster" style="border-top-color:@c.Mau;">
+                        <div class="mlc-head">
+                            <span class="mlc-dot" style="background:@c.Mau;"></span>
+                            <strong>@c.Ten</strong>
+                            <span class="mlc-count">@c.KhachHangs.Count KH</span>
+                        </div>
+                        <div class="mlc-desc">@c.MoTa</div>
+                        <div class="mlc-stats">
+                            <div><span>Doanh thu TB</span><b>@(((decimal)c.DoanhThuTB).ToString("N0")) đ</b></div>
+                            <div><span>Booking TB</span><b>@c.BookingTB.ToString("0.#")</b></div>
+                            <div><span>Container TB</span><b>@c.ContainerTB.ToString("0.#")</b></div>
+                        </div>
+                        <div class="mlc-list">
+                            @foreach (var kh in c.KhachHangs)
+                            {
+                                <div class="mlc-kh">
+                                    <span class="text-truncate" style="max-width:62%;">@kh.TenCongTy</span>
+                                    <span class="text-muted small">@kh.DoanhThu.ToString("N0") đ · @kh.SoBooking BK</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-muted">@(km != null ? km.ThongBao : "Chưa có dữ liệu.")</div>
+    }
+</div>
+
+<!-- ============ 2. PHÁT HIỆN BẤT THƯỜNG ============ -->
+<div class="card-sp p-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-1 gap-2">
+        <h6 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-activity me-1"></i>Phát hiện bất thường sản lượng (Z-score)</h6>
+        <span class="badge-st @(batThuong.Any() ? "st-warn" : "st-ok")">
+            @(batThuong.Any() ? batThuong.Count + " điểm bất thường" : "Không có bất thường")
+        </span>
+    </div>
+    <p class="text-muted small mb-3">
+        Tính biến động % tháng-sang-tháng của chuỗi TEU, chuẩn hóa thành Z-score:
+        <code>z = (x − μ) / σ</code>. Điểm có <strong>|z| ≥ 1,8</strong> được coi là bất thường và tô đỏ.
+    </p>
+
+    @if (anomaly != null && anomaly.Any())
+    {
+        <div class="anomaly-chart mb-3">
+            @foreach (var a in anomaly)
+            {
+                var h = (int)Math.Round(a.TEU * 100.0 / maxTeu);
+                <div class="anc-col" title="@a.Nhan — @a.TEU.ToString("N0") TEU · biến động @a.BienDongPct% · z=@a.ZScore">
+                    <div class="anc-bar @(a.BatThuong ? "bad" : "")" style="height:@Math.Max(h, 4)%;"></div>
+                    <div class="anc-lbl">@a.Nhan</div>
+                </div>
+            }
+        </div>
+
+        if (batThuong.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-sp mb-0">
+                    <thead><tr><th>Tháng</th><th class="text-end">Sản lượng (TEU)</th><th class="text-end">Biến động</th><th class="text-end">Z-score</th><th>Nhận định của thuật toán</th></tr></thead>
+                    <tbody>
+                        @foreach (var a in batThuong)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@a.Nhan</td>
+                                <td class="text-end">@a.TEU.ToString("N0")</td>
+                                <td class="text-end @(a.BienDongPct >= 0 ? "text-success" : "text-danger")">@(a.BienDongPct >= 0 ? "+" : "")@a.BienDongPct%</td>
+                                <td class="text-end fw-bold" style="color:#dc2626;">@a.ZScore</td>
+                                <td class="small">Sản lượng @a.Huong đột biến so với nhịp bình thường — nên rà soát nguyên nhân (mùa vụ, tuyến mới, sự cố...).</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="text-muted">Chưa đủ dữ liệu chuỗi thời gian.</div>
+    }
+</div>
+
+<style>
+    .ml-cluster { border: 1px solid var(--line); border-top: 4px solid; border-radius: 14px; padding: 16px; height: 100%; background: var(--card); transition: transform .2s, box-shadow .2s; }
+    .ml-cluster:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(10,47,87,.12); }
+    .mlc-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .mlc-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .mlc-head strong { color: var(--navy); font-size: .98rem; }
+    html[data-theme="dark"] .mlc-head strong { color: #cfe3fb; }
+    .mlc-count { margin-left: auto; font-size: .72rem; font-weight: 700; color: var(--muted); background: var(--soft); padding: 2px 10px; border-radius: 999px; }
+    .mlc-desc { font-size: .8rem; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+    .mlc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+    .mlc-stats > div { background: var(--soft); border-radius: 9px; padding: 7px 8px; text-align: center; }
+    .mlc-stats span { display: block; font-size: .64rem; color: var(--muted); }
+    .mlc-stats b { display: block; font-size: .78rem; color: var(--navy); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    html[data-theme="dark"] .mlc-stats b { color: #cfe3fb; }
+    .mlc-list { border-top: 1px dashed var(--line); padding-top: 8px; }
+    .mlc-kh { display: flex; justify-content: space-between; gap: 8px; padding: 5px 0; font-size: .84rem; border-bottom: 1px solid var(--line); }
+    .mlc-kh:last-child { border-bottom: 0; }
+
+    .anomaly-chart { display: flex; align-items: flex-end; gap: 5px; height: 190px; }
+    .anc-col { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+    .anc-bar { width: 100%; border-radius: 5px 5px 0 0; background: linear-gradient(180deg, #1c5fa8, #0a2f57); transition: filter .2s; }
+    .anc-bar:hover { filter: brightness(1.25); }
+    .anc-bar.bad { background: linear-gradient(180deg, #f87171, #dc2626); animation: ancBlink 1.8s ease-in-out infinite; }
+    @@keyframes ancBlink { 0%,100% { opacity: 1; } 50% { opacity: .68; } }
+    .anc-lbl { font-size: .62rem; color: var(--muted); margin-top: 4px; white-space: nowrap; }
+</style>
+
+@* ===================== DECISION TREE — CAY QUYET DINH ===================== *@
+@{
+    var dt = ViewBag.DTree as SmartPort.Models.DecisionTreeResult;
+}
+@{
+    void VeNode(SmartPort.Models.DtNode n)
+    {
+    if (n == null) { return; }
+    if (n.Feature >= 0)
+    {
+        <li>
+            <span class="dt-q">@n.TenFeature ≤ @n.Threshold ?</span>
+            <span class="dt-meta">(@n.SoMau mẫu · @n.TyLeHuy% hủy)</span>
+            <ul>
+                <li><span class="dt-branch">Đúng →</span> @{ VeNode(n.Trai); }</li>
+                <li><span class="dt-branch">Sai →</span> @{ VeNode(n.Phai); }</li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <span class="dt-leaf @(n.TyLeHuy >= 50 ? "bad" : "ok")">
+            @(n.TyLeHuy >= 50 ? "⚠ NGUY CƠ HỦY" : "✓ An toàn") · @n.TyLeHuy% (@n.SoMau mẫu)
+        </span>
+    }
+    }
+}
+
+<div class="card-sp p-4 mt-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+        <h6 class="fw-bold mb-0" style="color:#0a2f57;">
+            <i class="bi bi-diagram-2 me-1"></i>Cây quyết định — Dự đoán rủi ro hủy booking
+            <span class="badge" style="background:#0891b2;font-size:.6rem;">SUPERVISED · CART/GINI</span>
+        </h6>
+        @if (dt != null && dt.SoMau >= 4)
+        {
+            <span class="small text-muted">@dt.ThongBao · Độ chính xác (tập huấn luyện): <b class="text-primary">@dt.DoChinhXac%</b></span>
+        }
+    </div>
+    <p class="small text-muted mb-3">
+        Học <b>có giám sát</b> (supervised learning): thuật toán <b>CART</b> tự chọn điểm cắt tối thiểu hoá
+        <b>Gini impurity</b> trên 3 đặc trưng (giá trị đơn · số dịch vụ · số ngày chờ) — mô hình
+        <b>giải thích được</b> từng bước ra quyết định, khác với "hộp đen" của mạng nơ-ron.
+    </p>
+
+    @if (dt == null || dt.SoMau < 4)
+    {
+        <div class="alert alert-light border small">@(dt != null ? dt.ThongBao : "Chưa có dữ liệu.")</div>
+    }
+    else
+    {
+        <div class="row g-3">
+            <div class="col-lg-7">
+                <div class="dt-tree"><ul>@{ VeNode(dt.Goc); }</ul></div>
+            </div>
+            <div class="col-lg-5">
+                <div class="fw-semibold small mb-2" style="color:#0a2f57;">Áp dụng cho đơn ĐANG CHỜ DUYỆT:</div>
+                @if (!dt.DuDoans.Any())
+                {
+                    <div class="text-muted small">Hiện không có đơn nào chờ duyệt.</div>
+                }
+                @foreach (var d in dt.DuDoans)
+                {
+                    <div class="dt-pred @(d.NguyCo >= 50 ? "bad" : "")">
+                        <div class="d-flex justify-content-between">
+                            <b>@d.MaSo</b>
+                            <span class="@(d.NguyCo >= 50 ? "text-danger" : "text-success") fw-bold">@d.NguyCo% nguy cơ hủy</span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(d.GiaiThich))
+                        {
+                            <div class="small text-muted">Đường quyết định: @d.GiaiThich</div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .dt-tree ul { list-style: none; padding-left: 22px; border-left: 2px dashed var(--line); margin-bottom: 0; }
+    .dt-tree > ul { border-left: 0; padding-left: 0; }
+    .dt-tree li { padding: 4px 0; }
+    .dt-q { font-weight: 700; color: #0a2f57; font-size: .88rem; }
+    html[data-theme="dark"] .dt-q { color: #cfe3fb; }
+    .dt-meta { font-size: .72rem; color: var(--muted); margin-left: 6px; }
+    .dt-branch { font-size: .78rem; color: #0891b2; font-weight: 600; }
+    .dt-leaf { display: inline-block; font-size: .78rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; }
+    .dt-leaf.ok { background: #dcfce7; color: #15803d; }
+    .dt-leaf.bad { background: #fee2e2; color: #b91c1c; }
+    html[data-theme="dark"] .dt-leaf.ok { background: #0f2e1c; }
+    html[data-theme="dark"] .dt-leaf.bad { background: #2d1414; }
+    .dt-pred { border: 1px solid var(--line); border-left: 4px solid #15803d; border-radius: 10px; padding: 8px 12px; margin-bottom: 8px; }
+    .dt-pred.bad { border-left-color: #dc2626; }
+</style>

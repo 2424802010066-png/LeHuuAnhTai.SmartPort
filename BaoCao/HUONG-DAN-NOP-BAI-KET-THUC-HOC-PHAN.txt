@@ -1,0 +1,94 @@
+╔══════════════════════════════════════════════════════════════════╗
+║   HƯỚNG DẪN NỘP FILE KẾT THÚC HỌC PHẦN — MÔN LẬP TRÌNH WEB          ║
+║   SmartPort — Lê Hữu Anh Tài — MSSV 2424802010066                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+Đề bài yêu cầu nộp 4 file. Dưới đây là tình trạng từng file:
+
+
+1️⃣ SLIDE THUYẾT TRÌNH  →  ĐÃ SẴN SÀNG ✅
+──────────────────────────────────────────────────────────────────
+File: Slide_ThuyetTrinh_SmartPort.pptx
+Vị trí: Downloads\SmartPort\BaoCao\
+→ Nộp trực tiếp file này.
+
+
+2️⃣ FILE PDF BÁO CÁO  →  ĐÃ SẴN SÀNG ✅
+──────────────────────────────────────────────────────────────────
+File: BaoCao_DoAn_QuanLyCangTrongNganhLogistics_SmartPort_Lê Hữu Anh Tài_2424802010066.pdf
+Vị trí: Downloads\SmartPort\BaoCao\
+→ Nộp trực tiếp file này (83 trang, đã dựng đúng theo mẫu báo cáo
+   của giảng viên, đủ 5 chương + sơ đồ UML + trích dẫn).
+
+
+3️⃣ SOURCE CODE (NÉN + LINK DRIVE)  →  ĐÃ NÉN SẴN ✅ — CÒN 1 BƯỚC BẠN TỰ LÀM
+──────────────────────────────────────────────────────────────────
+File đã nén: SourceCode_SmartPort_LeHuuAnhTai_2424802010066.zip
+Vị trí: Downloads\SmartPort\
+(đã loại bỏ các thư mục build rác bin/obj/.vs để file gọn nhẹ — chỉ ~0,2MB
+toàn bộ mã nguồn: Controllers, Views, Models, AppServices, Scripts, CSS,
+script tạo CSDL...)
+
+CÁCH TẢI LÊN GOOGLE DRIVE VÀ LẤY LINK CHIA SẺ (làm 1 lần, ~2 phút):
+  Bước 1: Vào drive.google.com, đăng nhập bằng Gmail của bạn
+           (lehuuanhtai2020tkh@gmail.com)
+  Bước 2: Bấm nút "+ New" (Mới) → "File upload" (Tải tệp lên)
+  Bước 3: Chọn file SourceCode_SmartPort_LeHuuAnhTai_2424802010066.zip
+  Bước 4: Sau khi tải xong, chuột phải vào file → "Share" (Chia sẻ)
+  Bước 5: Trong mục "General access", đổi từ "Restricted" thành
+           "Anyone with the link" (Bất kỳ ai có đường liên kết)
+  Bước 6: Bấm "Copy link" → dán link này vào bài nộp
+
+⚠️ Lưu ý: mình (AI) không thể tự đăng nhập Google Drive của bạn để tải lên —
+đây là bước bạn cần tự thực hiện vì lý do bảo mật tài khoản.
+
+
+4️⃣ VIDEO DEMO SẢN PHẨM (NÉN + LINK DRIVE)  →  BẠN CẦN TỰ QUAY
+──────────────────────────────────────────────────────────────────
+⚠️ Máy tính của bạn không có sẵn công cụ ghi hình màn hình tự động (ffmpeg),
+nên mình không tự tạo video được. Nhưng mình đã chuẩn bị:
+
+File kịch bản chi tiết: KichBan_Video_Demo_SmartPort.docx (và .pdf)
+Vị trí: Downloads\SmartPort\BaoCao\
+
+Kịch bản này có:
+  • 12 cảnh quay theo đúng thứ tự, mỗi cảnh có URL cần mở + thao tác
+    cụ thể + lời thuyết minh sẵn (bạn chỉ cần đọc theo)
+  • Hướng dẫn dùng Xbox Game Bar — công cụ quay màn hình CÓ SẴN
+    TRONG WINDOWS, MIỄN PHÍ, không cần cài đặt gì thêm
+    (phím tắt: Windows + Alt + R để bắt đầu/dừng quay)
+  • Hướng dẫn cắt ghép bằng Clipchamp (cũng có sẵn trong Windows 11)
+  • Hướng dẫn nén và tải lên Google Drive giống bước 3 ở trên
+
+CÁC BƯỚC TÓM TẮT:
+  1. Mở SmartPort.sln bằng Visual Studio, nhấn F5 để chạy website
+  2. Mở file KichBan_Video_Demo_SmartPort.docx, đọc qua 1 lượt
+  3. Nhấn Windows + Alt + R để bắt đầu quay
+  4. Làm theo 12 cảnh trong kịch bản (đọc lời thuyết minh khi quay,
+     hoặc quay im lặng rồi lồng tiếng sau bằng Clipchamp)
+  5. Nhấn Windows + Alt + R để dừng quay
+  6. Video tự lưu tại: This PC → Videos → Captures
+  7. Đổi tên thành: Video_Demo_SmartPort_LeHuuAnhTai_2424802010066.mp4
+  8. Tải lên Google Drive và lấy link chia sẻ (như hướng dẫn ở mục 3)
+
+💡 MẸO ĐIỂM CAO: Cảnh 10 (Camera AI — YOLOv10) là điểm nhấn quan trọng
+nhất — nếu máy có webcam, hãy bật webcam AI và giơ vật thể thật (điện
+thoại, cốc nước, chính bạn) để AI nhận diện REAL-TIME ngay trong video,
+đây là chi tiết gây ấn tượng mạnh nhất với giảng viên.
+
+
+📋 TÓM TẮT VỊ TRÍ FILE CẦN NỘP
+──────────────────────────────────────────────────────────────────
+Downloads\SmartPort\BaoCao\
+  ├─ Slide_ThuyetTrinh_SmartPort.pptx          ← nộp trực tiếp
+  ├─ BaoCao_DoAn_SmartPort.pdf                 ← nộp trực tiếp
+  └─ KichBan_Video_Demo_SmartPort.docx/pdf     ← đọc để tự quay video
+
+Downloads\SmartPort\
+  └─ SourceCode_SmartPort_LeHuuAnhTai_2424802010066.zip  ← tải lên Drive,
+                                                             nộp link
+
+(Video sau khi bạn tự quay xong cũng tải lên Drive theo cách tương tự,
+nộp link)
+
+Chúc bạn hoàn thành bài nộp và đạt điểm A+! 🎓

@@ -1,0 +1,231 @@
+﻿@model List<SmartPort.Models.BanTinEDI>
+@{
+    ViewBag.Title = "EDI hãng tàu";
+    var loai = (string)ViewBag.Loai;
+}
+
+<div class="ai-box mb-3" style="background:linear-gradient(120deg,#0c4a6e,#0284c7);">
+    <span class="ai-tag"><i class="bi bi-arrow-left-right"></i> EDI HÃNG TÀU · UN/EDIFACT</span>
+    <div style="color:#e0f2fe;font-size:.9rem;" class="mt-2">
+        Depot <strong>không sở hữu vỏ container</strong> — giữ hộ cho hãng tàu, nên mỗi lượt vào/ra
+        hãng tàu bắt buộc phải biết. Đa số depot nhỏ đang gửi Excel qua email: gõ tay, sai số,
+        cuối tháng đối soát lệch là bị trừ tiền.
+        <strong>CODECO</strong> thay việc đó — máy sinh, máy đọc, có bản lưu để đối chất.
+    </div>
+</div>
+
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success py-2"><i class="bi bi-check-circle me-1"></i>@TempData["ThongBao"]</div>
+}
+@if (TempData["Loi"] != null)
+{
+    <div class="alert alert-warning py-2"><i class="bi bi-exclamation-triangle me-1"></i>@TempData["Loi"]</div>
+}
+
+<div class="row g-3 mb-3">
+    <div class="col-lg-5">
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#0284c7;"><i class="bi bi-upload me-1"></i>Sinh CODECO gửi hãng tàu</h6>
+            <div class="small text-muted mb-2">
+                Hệ thống gom mọi lượt container vào/ra <b>chưa từng báo cáo</b> của hãng được chọn.
+                Lượt đã nằm trong bản tin trước sẽ không lấy lại — tránh hãng tàu ghi nhận hai lần.
+            </div>
+            @using (Html.BeginForm("SinhCodeco", "Edi", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <label class="form-label small fw-semibold">HÃNG TÀU</label>
+                <select class="form-select mb-2" name="maHangTau" required>
+                    @foreach (var h in (SelectList)ViewBag.HangList)
+                    {
+                        <option value="@h.Value">@h.Text</option>
+                    }
+                </select>
+
+                <label class="form-label small fw-semibold">LẤY LƯỢT TRONG</label>
+                <select class="form-select mb-3" name="soNgay">
+                    <option value="1">1 ngày qua (báo cáo cuối ngày)</option>
+                    <option value="7" selected="selected">7 ngày qua</option>
+                    <option value="30">30 ngày qua</option>
+                    <option value="90">90 ngày qua</option>
+                </select>
+
+                <button class="btn btn-accent w-100" type="submit"><i class="bi bi-file-earmark-code me-1"></i>Sinh bản tin CODECO</button>
+            }
+            <div class="alert alert-light border mt-3 mb-0 py-2 small">
+                <b>@ViewBag.ChuaBaoCao</b> lượt container qua cổng <b>chưa được báo cáo</b> cho hãng tàu nào.
+                @if (ViewBag.ChuaBaoCao == 0)
+                {
+                    <span class="text-success d-block">✅ Không còn gì tồn đọng.</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card-sp p-3 h-100">
+            <h6 class="fw-bold mb-2" style="color:#0284c7;"><i class="bi bi-download me-1"></i>Nhận COPARN từ hãng tàu</h6>
+            <div class="small text-muted mb-3">
+                Hãng tàu gửi COPARN báo trước container sẽ lấy/trả. Dán nội dung hoặc tải tệp <code>.edi</code> lên,
+                hệ thống đọc và <b>tự lập lệnh giao nhận</b> — không phải gõ tay từng số container.
+            </div>
+            <a class="btn btn-outline-sp mb-3" href="@Url.Action("NhanCoparn")">
+                <i class="bi bi-inbox me-1"></i>Mở màn hình nhận COPARN
+            </a>
+
+            <div class="border-top pt-3 mb-3">
+                <h6 class="fw-bold mb-2" style="color:#0284c7;"><i class="bi bi-water me-1"></i>Sinh COARRI theo chuyến tàu</h6>
+                <div class="small text-muted mb-2">
+                    CODECO nói về <b>cổng</b> (xe ra vào depot). COARRI nói về <b>tàu</b> —
+                    container đã dỡ khỏi tàu hoặc sắp xếp lên tàu. Chỉ cần khi làm cảng biển.
+                </div>
+                @{ var dsChuyen = ViewBag.ChuyenList as List<SelectListItem>; }
+                @if (dsChuyen == null || dsChuyen.Count == 0)
+                {
+                    <div class="alert alert-light border py-2 small mb-0">
+                        Chưa có chuyến tàu nào được gán container. Vào <a href="@Url.Action("Index", "Containers")">Container</a>
+                        gán chuyến nhập/xuất trước.
+                    </div>
+                }
+                else
+                {
+                    using (Html.BeginForm("SinhCoarri", "Edi", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <select class="form-select mb-2" name="maChuyen" required>
+                            @foreach (var c in dsChuyen)
+                            {
+                                <option value="@c.Value">@c.Text</option>
+                            }
+                        </select>
+                        <select class="form-select mb-2" name="chieu">
+                            <option value="Do">Dỡ hàng (container rời tàu)</option>
+                            <option value="Xep">Xếp hàng (container lên tàu)</option>
+                        </select>
+                        <button class="btn btn-outline-sp w-100" type="submit">
+                            <i class="bi bi-file-earmark-code me-1"></i>Sinh bản tin COARRI
+                        </button>
+                    }
+                }
+            </div>
+
+            <div class="border-top pt-2 mt-auto">
+                <div class="small fw-semibold mb-1" style="color:#0a2f57;">Mã định danh depot dùng trong bản tin</div>
+                <code>@ViewBag.MaDepot</code>
+                <div class="small text-muted mt-1">
+                    Đổi trong <code>appsettings.json</code> → <code>AppSettings:MaDepotEDI</code>.
+                    Hãng tàu sẽ cấp mã riêng cho depot khi ký kết nối — thay vào đây là chạy.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-sp p-3">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+        <h6 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-journal-code me-1"></i>Lịch sử bản tin</h6>
+        <div class="d-flex gap-1">
+            <a class="btn btn-sm @(string.IsNullOrEmpty(loai) ? "btn-accent" : "btn-outline-sp") py-0" href="@Url.Action("Index")">Tất cả</a>
+            <a class="btn btn-sm @(loai == "CODECO" ? "btn-accent" : "btn-outline-sp") py-0" href="@Url.Action("Index", new { loai = "CODECO" })">CODECO (@ViewBag.SoCodeco)</a>
+            <a class="btn btn-sm @(loai == "COPARN" ? "btn-accent" : "btn-outline-sp") py-0" href="@Url.Action("Index", new { loai = "COPARN" })">COPARN (@ViewBag.SoCoparn)</a>
+            <a class="btn btn-sm @(loai == "COARRI" ? "btn-accent" : "btn-outline-sp") py-0" href="@Url.Action("Index", new { loai = "COARRI" })">COARRI (@ViewBag.SoCoarri)</a>
+        </div>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="text-center text-muted py-5">
+            <i class="bi bi-arrow-left-right" style="font-size:2.6rem;opacity:.35;"></i>
+            <div class="mt-2">Chưa có bản tin nào.</div>
+            <div class="small">Sinh CODECO đầu tiên ở khung bên trên.</div>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-sp align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Chứng từ</th>
+                        <th>Loại · hướng</th>
+                        <th>Hãng tàu</th>
+                        <th class="text-center">Cont</th>
+                        <th>Kỳ</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th class="text-end">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a class="fw-semibold text-decoration-none" href="@Url.Action("Xem", new { id = b.MaBT })">@b.SoChungTu</a>
+                                <div class="small text-muted">@b.NgayTao.ToString("HH:mm dd/MM/yyyy") · @b.NguoiTao</div>
+                            </td>
+                            <td>
+                                <span class="badge" style="background:@(b.LoaiBT == "CODECO" ? "#0284c7" : b.LoaiBT == "COARRI" ? "#0d9488" : "#7c3aed");">@b.LoaiBT</span>
+                                <div class="small text-muted">
+                                    <i class="bi @(b.Huong == "Gửi" ? "bi-arrow-up-right" : "bi-arrow-down-left")"></i> @b.Huong
+                                </div>
+                            </td>
+                            <td class="small">@(b.HangTau != null ? b.HangTau.TenHangTau : "—")</td>
+                            <td class="text-center fw-bold">@b.SoLuongCont</td>
+                            <td class="small text-muted">
+                                @if (b.TuNgay != null)
+                                {
+                                    @b.TuNgay.Value.ToString("dd/MM") <text> → </text> @b.DenNgay.Value.ToString("dd/MM/yyyy")
+                                }
+                                else
+                                {
+                                    <text>—</text>
+                                }
+                                @if (!string.IsNullOrEmpty(b.GhiChu))
+                                {
+                                    <div style="font-size:.7rem;">@b.GhiChu</div>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (b.TrangThai == "Đã gửi")
+                                {
+                                    <span class="badge bg-success">Đã gửi</span>
+                                    <div class="small text-muted">@(b.NgayGui != null ? b.NgayGui.Value.ToString("dd/MM") : "")</div>
+                                }
+                                else if (b.TrangThai == "Đã xử lý")
+                                {
+                                    <span class="badge bg-info text-dark">Đã xử lý</span>
+                                }
+                                else if (b.TrangThai == "Lỗi")
+                                {
+                                    <span class="badge bg-danger">Lỗi</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Chờ gửi</span>
+                                }
+                            </td>
+                            <td class="text-end text-nowrap">
+                                <a class="btn btn-sm btn-outline-sp" href="@Url.Action("Xem", new { id = b.MaBT })" title="Xem nội dung"><i class="bi bi-eye"></i></a>
+                                <a class="btn btn-sm btn-outline-sp" href="@Url.Action("Tai", new { id = b.MaBT })" title="Tải tệp .edi"><i class="bi bi-download"></i></a>
+                                @if (b.Huong == "Gửi" && b.TrangThai != "Đã gửi")
+                                {
+                                    using (Html.BeginForm("DanhDauDaGui", "Edi", new { id = b.MaBT }, FormMethod.Post, null, new { @class = "d-inline" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn-sm btn-outline-success" type="submit" title="Đánh dấu đã gửi cho hãng tàu"><i class="bi bi-send"></i></button>
+                                    }
+                                }
+                                @using (Html.BeginForm("Xoa", "Edi", new { id = b.MaBT }, FormMethod.Post, null,
+                                        new { @class = "d-inline", onsubmit = "return confirm('Xóa bản tin " + b.SoChungTu + "? Các lượt qua cổng trong đó sẽ quay lại trạng thái CHƯA báo cáo.');" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i></button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

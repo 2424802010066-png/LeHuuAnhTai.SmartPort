@@ -1,0 +1,59 @@
+﻿@model SmartPort.Models.Tau
+@{
+    ViewBag.Title = Model.MaTau == 0 ? "Thêm tàu mới" : "Sửa tàu " + Model.TenTau;
+    string[] loaiTau = { "Container", "Hàng rời", "Tổng hợp", "Tàu dầu" };
+}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card-sp">
+            <div class="card-header"><i class="bi bi-water me-2 text-primary"></i>@ViewBag.Title</div>
+            <div class="p-4">
+                @using (Html.BeginForm("Save", "Vessels", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.MaTau)
+                    @Html.ValidationSummary(true)
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label class="form-label">Tên tàu <span class="text-danger">*</span></label>
+                            @Html.TextBoxFor(m => m.TenTau, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.TenTau)
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Số IMO</label>
+                            @Html.TextBoxFor(m => m.SoIMO, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Hãng tàu</label>
+                            @Html.DropDownListFor(m => m.MaHangTau, (SelectList)ViewBag.HangTauList, "— Chọn hãng tàu —", new { @class = "form-select" })
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Loại tàu</label>
+                            @Html.DropDownListFor(m => m.LoaiTau, new SelectList(loaiTau, Model.LoaiTau), new { @class = "form-select" })
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Quốc tịch</label>
+                            @Html.TextBoxFor(m => m.QuocTich, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Chiều dài LOA (m)</label>
+                            @Html.TextBoxFor(m => m.ChieuDai, new { @class = "form-control", type = "number", step = "0.1", min = "0" })
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Mớn nước (m)</label>
+                            @Html.TextBoxFor(m => m.MonNuoc, new { @class = "form-control", type = "number", step = "0.1", min = "0" })
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Sức chứa (TEU)</label>
+                            @Html.TextBoxFor(m => m.SucChuaTEU, new { @class = "form-control", type = "number", min = "0" })
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button class="btn btn-accent px-4" type="submit"><i class="bi bi-save me-1"></i>Lưu</button>
+                            <a class="btn btn-outline-secondary" href="@Url.Action("Index")">Quay lại</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

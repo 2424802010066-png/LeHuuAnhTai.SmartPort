@@ -1,0 +1,83 @@
+﻿@{ ViewBag.Title = "Cảng xanh · ESG"; }
+
+<div class="ai-box mb-3" style="background:linear-gradient(120deg,#14532d,#166534);">
+    <span class="ai-tag"><i class="bi bi-tree-fill"></i> CẢNG XANH · GREEN PORT · ESG</span>
+    <div style="color:#d1fae5;font-size:.9rem;" class="mt-2">
+        Đo lường lợi ích môi trường từ <strong>số hóa quy trình</strong> — tính từ dữ liệu vận hành THẬT của hệ thống,
+        theo hướng tiêu chí cảng xanh <strong>TCCS 02:2022/CHHVN</strong> (Cục Hàng hải VN) và mô hình
+        Green Port Award (APSN) mà Cát Lái, TCIT, Long An đã đạt.
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#14532d,#22c55e);">
+            <div class="ps-num">@ViewBag.Co2 kg</div>
+            <div class="ps-lbl">CO₂ đã cắt giảm</div>
+            <i class="bi bi-cloud-minus"></i>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#0a2f57,#1c5fa8);">
+            <div class="ps-num">@ViewBag.ToGiay</div>
+            <div class="ps-lbl">Tờ giấy tiết kiệm (lệnh + chứng từ điện tử)</div>
+            <i class="bi bi-file-earmark-minus"></i>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#b45309,#fbbf24);">
+            <div class="ps-num">@ViewBag.LitDau L</div>
+            <div class="ps-lbl">Dầu tiết kiệm nhờ check-in online (@ViewBag.PhutIdle phút bớt nổ máy chờ)</div>
+            <i class="bi bi-fuel-pump"></i>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#155e75,#22d3ee);">
+            <div class="ps-num">@ViewBag.TyLeDienTu%</div>
+            <div class="ps-lbl">Lượt xe đi kèm lệnh điện tử (không giấy)</div>
+            <i class="bi bi-qr-code"></i>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="card-sp p-3 mb-3">
+            <h6 class="fw-bold mb-2" style="color:#14532d;"><i class="bi bi-calculator me-1"></i>Cách tính (minh bạch số liệu)</h6>
+            <table class="table table-sm align-middle mb-1">
+                <tr><td>@ViewBag.SoLenh lệnh giao nhận điện tử × 4 liên giấy EIR truyền thống</td><td class="text-end fw-bold">@(ViewBag.SoLenh * 4) tờ</td></tr>
+                <tr><td>@ViewBag.SoCT chứng từ số hóa × ~2 tờ/bộ</td><td class="text-end fw-bold">@(ViewBag.SoCT * 2) tờ</td></tr>
+                <tr><td>@ViewBag.SoCheckIn lượt check-in online × 7 phút bớt chờ nổ máy <span class="text-muted small">(số liệu Cát Lái: 13'→6')</span></td><td class="text-end fw-bold">@ViewBag.PhutIdle phút</td></tr>
+                <tr class="table-success"><td class="fw-bold">Quy đổi CO₂ (4,7g/tờ giấy · 0,093kg/phút idle)</td><td class="text-end fw-bold fs-5">@ViewBag.Co2 kg CO₂</td></tr>
+            </table>
+            <div class="small text-muted">Số liệu tự cập nhật theo thời gian thực từ CSDL vận hành — càng dùng hệ thống, chỉ số xanh càng tăng.</div>
+        </div>
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#14532d;"><i class="bi bi-list-check me-1"></i>Checklist cảng xanh TCCS 02:2022/CHHVN — SmartPort đáp ứng</h6>
+            <div class="row g-2 small">
+                <div class="col-md-6">✅ Số hóa chứng từ, giảm giấy tờ</div>
+                <div class="col-md-6">✅ Điều tiết xe, giảm ùn tắc — khí thải cổng</div>
+                <div class="col-md-6">✅ Giám sát container lạnh (nhiệt độ)</div>
+                <div class="col-md-6">✅ Quản lý năng lượng — báo cáo phát thải</div>
+                <div class="col-md-6">✅ An toàn lao động (camera AI, mũ bảo hộ)</div>
+                <div class="col-md-6">🕓 Lộ trình: điện mặt trời, thiết bị điện hóa, shore power</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#14532d;"><i class="bi bi-award me-1"></i>Chuẩn tham chiếu ngành</h6>
+            <div class="small" style="line-height:1.8;">
+                🏆 <b>Green Port Award (APSN)</b> — Cát Lái (2017), TCIT (2020) đã đạt<br />
+                🏆 <b>Cảng xanh thông minh APAC</b> — Cảng Quốc tế Long An (đầu tiên VN)<br />
+                📜 <b>TCCS 02:2022/CHHVN</b> — tiêu chí cảng xanh Cục Hàng hải, lộ trình bắt buộc từ 2030<br />
+                ⚡ Xu hướng 2025-2026: shore power (Cát Lái 2MW), eRTG, đầu kéo điện, điện mặt trời áp mái
+            </div>
+            <hr />
+            <div class="small text-muted">
+                💡 Khi thuyết trình: SmartPort là TOS hiếm hoi <b>đo được lợi ích xanh bằng con số</b> —
+                các cảng lớn có chương trình xanh nhưng chưa "phần mềm hóa" thành dashboard ESG như thế này.
+            </div>
+        </div>
+    </div>
+</div>

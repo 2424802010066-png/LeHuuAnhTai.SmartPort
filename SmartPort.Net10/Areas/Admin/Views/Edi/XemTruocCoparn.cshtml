@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Xem trước COPARN";
+    var kq = ViewBag.KetQua as SmartPort.Services.EdiService.KetQuaDoc;
+    var daCo = (ViewBag.DaCoLenh as List<string>) ?? new List<string>();
+    var hopLe = kq.Dong.Count(d => string.IsNullOrEmpty(d.Loi) && !daCo.Contains(d.SoCont));
+    var trung = kq.Dong.Count(d => string.IsNullOrEmpty(d.Loi) && daCo.Contains(d.SoCont));
+    var hong = kq.Dong.Count(d => !string.IsNullOrEmpty(d.Loi));
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <div>
+        <a class="btn btn-sm btn-outline-sp" href="@Url.Action("NhanCoparn")"><i class="bi bi-arrow-left me-1"></i>Nhập lại</a>
+        <span class="fs-5 fw-bold ms-2" style="color:#0a2f57;"><i class="bi bi-eye me-1"></i>Xem trước trước khi tạo lệnh</span>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3">
+        <div class="stat-card"><div class="lbl">LOẠI BẢN TIN</div><div class="num" style="font-size:1.2rem;">@(kq.LoaiBanTin ?? "—")</div><div class="small text-muted">@(kq.SoChungTu ?? "")</div></div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card" style="border-left:4px solid #15803d;">
+            <div class="lbl">SẼ TẠO LỆNH</div><div class="num" style="color:#15803d;">@hopLe</div><div class="small text-muted">container hợp lệ</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card" style="border-left:4px solid #b45309;">
+            <div class="lbl">BỎ QUA</div><div class="num" style="color:#b45309;">@trung</div><div class="small text-muted">đã có lệnh đang mở</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card" style="border-left:4px solid #dc2626;">
+            <div class="lbl">DÒNG LỖI</div><div class="num" style="color:@(hong > 0 ? "#dc2626" : "#15803d");">@hong</div><div class="small text-muted">không tạo được</div>
+        </div>
+    </div>
+</div>
+
+<div class="card-sp p-3 mb-3">
+    <div class="small text-muted mb-2">
+        Bên gửi <b>@(kq.BenGui ?? "—")</b> → bên nhận <b>@(kq.BenNhan ?? "—")</b> ·
+        tham chiếu <code>@(kq.SoThamChieu ?? "—")</code>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-sp align-middle mb-0">
+            <thead>
+                <tr>
+                    <th style="width:40px;"></th>
+                    <th>Số container</th>
+                    <th>Mã ISO → loại</th>
+                    <th class="text-center">Tình trạng</th>
+                    <th>Booking</th>
+                    <th>Hẹn lúc</th>
+                    <th>Kết quả</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ var i = 0; }
+                @foreach (var d in kq.Dong)
+                {
+                    i++;
+                    var loi = !string.IsNullOrEmpty(d.Loi);
+                    var boQua = !loi && daCo.Contains(d.SoCont);
+                    <tr class="@(loi ? "table-danger" : boQua ? "table-warning" : "")">
+                        <td class="text-muted">@i</td>
+                        <td class="fw-semibold" style="font-family:Consolas,monospace;">@d.SoCont</td>
+                        <td class="small"><code>@d.MaISO</code> → @d.LoaiContNoiBo</td>
+                        <td class="text-center">
+                            <span class="badge @(d.Rong ? "bg-secondary" : "bg-primary")">@(d.Rong ? "Rỗng" : "Có hàng")</span>
+                        </td>
+                        <td class="small">@(d.SoBooking ?? "—")</td>
+                        <td class="small">@(d.HenLuc != null ? d.HenLuc.Value.ToString("HH:mm dd/MM/yyyy") : "—")</td>
+                        <td class="small">
+                            @if (loi)
+                            {
+                                <span class="text-danger"><i class="bi bi-x-circle me-1"></i>@d.Loi</span>
+                            }
+                            else if (boQua)
+                            {
+                                <span style="color:#b45309;"><i class="bi bi-dash-circle me-1"></i>Đã có lệnh đang mở — bỏ qua</span>
+                            }
+                            else
+                            {
+                                <span class="text-success"><i class="bi bi-check-circle me-1"></i>Sẽ tạo lệnh</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card-sp p-3">
+    @using (Html.BeginForm("TaoLenhTuCoparn", "Edi", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="noiDung" value="@ViewBag.NoiDung" />
+        <input type="hidden" name="maHangTau" value="@ViewBag.MaHangTau" />
+        <input type="hidden" name="loaiLenh" value="@ViewBag.LoaiLenh" />
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div class="small text-muted">
+                Sẽ tạo <b>@hopLe lệnh @ViewBag.LoaiLenh</b>. Container chưa có trong hệ thống được khai báo tự động ở trạng thái “Chờ về”.
+            </div>
+            <button class="btn btn-accent" type="submit" @(hopLe == 0 ? "disabled" : "")>
+                <i class="bi bi-check2-square me-1"></i>Xác nhận tạo @hopLe lệnh
+            </button>
+        </div>
+    }
+</div>

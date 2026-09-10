@@ -1,0 +1,159 @@
+﻿@model SmartPort.Models.CostRequestVM
+@{
+    ViewBag.Title = "AI Ước tính chi phí";
+    CostEstimate kq = ViewBag.Result as CostEstimate;
+    string[] loais = { "20GP", "40GP", "40HC", "45HC", "20RF", "40RF" };
+}
+<div class="page-head">
+    <div class="container">
+        <h1><i class="bi bi-calculator me-2"></i>AI Ước tính chi phí dịch vụ cảng</h1>
+        <nav><ol class="breadcrumb mt-2"><li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li><li class="breadcrumb-item active">Ước tính chi phí</li></ol></nav>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="cost-hero mb-4" data-reveal>
+        <div class="row align-items-center g-3">
+            <div class="col-lg-8">
+                <span class="hero-badge"><i class="bi bi-stars"></i> AI COST ESTIMATOR</span>
+                <h4 class="fw-bold mt-2 mb-1">Biết trước chi phí — chủ động kế hoạch logistics</h4>
+                <p class="mb-0" style="color:#c9dcef;">Khai báo thông tin lô hàng, AI tính chi tiết từng khoản theo biểu giá hiện hành của cảng, vẽ cơ cấu chi phí và đưa ra gợi ý tiết kiệm thông minh. Hoàn toàn miễn phí, không cần đăng nhập.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <div class="fs-1 float-slow d-inline-block">🧮</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="card-sp p-4" data-reveal>
+                <h5 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-ui-checks me-2"></i>Thông tin lô hàng</h5>
+                @using (Html.BeginForm("Index", "Cost", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label">Loại container</label>
+                            @Html.DropDownListFor(m => m.LoaiCont, new SelectList(loais, Model.LoaiCont), new { @class = "form-select" })
+                            <div class="text-muted mt-1" style="font-size:.74rem;">RF = container lạnh (tự tính phí điện)</div>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Số lượng (cont)</label>
+                            @Html.TextBoxFor(m => m.SoLuong, new { @class = "form-control", type = "number", min = "1", max = "1000" })
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Chiều hàng</label>
+                            @Html.DropDownListFor(m => m.ChieuHang, new SelectList(new[]
+                            {
+                                new SelectListItem { Value = "Nhap", Text = "Hàng nhập (dỡ tàu)" },
+                                new SelectListItem { Value = "Xuat", Text = "Hàng xuất (xếp tàu)" }
+                            }, "Value", "Text", Model.ChieuHang), new { @class = "form-select" })
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Số ngày lưu bãi</label>
+                            @Html.TextBoxFor(m => m.SoNgayLuuBai, new { @class = "form-control", type = "number", min = "0", max = "120" })
+                            <div class="text-muted mt-1" style="font-size:.74rem;">Miễn phí 5 ngày đầu</div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Dịch vụ kèm theo</label>
+                            <div class="row g-2">
+                                <div class="col-6"><div class="form-check">@Html.CheckBoxFor(m => m.CanVGM, new { @class = "form-check-input" })<label class="form-check-label small">Cân VGM (SOLAS)</label></div></div>
+                                <div class="col-6"><div class="form-check">@Html.CheckBoxFor(m => m.DongRut, new { @class = "form-check-input" })<label class="form-check-label small">Đóng/Rút kho CFS</label></div></div>
+                                <div class="col-6"><div class="form-check">@Html.CheckBoxFor(m => m.VeSinh, new { @class = "form-check-input" })<label class="form-check-label small">Vệ sinh container</label></div></div>
+                                <div class="col-6"><div class="form-check">@Html.CheckBoxFor(m => m.GiamDinh, new { @class = "form-check-input" })<label class="form-check-label small">Giám định lô hàng</label></div></div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Vận chuyển đường bộ</label>
+                            @Html.DropDownListFor(m => m.VanChuyen, new SelectList(new[]
+                            {
+                                new SelectListItem { Value = "Khong", Text = "Không cần (tự vận chuyển)" },
+                                new SelectListItem { Value = "NoiThanh", Text = "Nội thành (≤ 30km)" },
+                                new SelectListItem { Value = "LienTinh", Text = "Liên tỉnh" }
+                            }, "Value", "Text", Model.VanChuyen), new { @class = "form-select" })
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-accent btn-lg w-100 btn-glow" type="submit"><i class="bi bi-magic me-1"></i>AI tính chi phí ngay</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            @if (kq == null)
+            {
+                <div class="card-sp p-5 text-center h-100 d-flex flex-column justify-content-center" data-reveal>
+                    <div class="fs-1 mb-2">👈</div>
+                    <h5 class="fw-bold" style="color:#0a2f57;">Điền thông tin lô hàng rồi bấm "AI tính chi phí ngay"</h5>
+                    <p class="text-muted mb-0">Kết quả gồm: bảng chi tiết từng khoản phí, biểu đồ cơ cấu chi phí và các gợi ý tiết kiệm từ AI.</p>
+                </div>
+            }
+            else
+            {
+                <div class="card-sp p-4 mb-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-receipt me-2"></i>Bảng ước tính chi tiết</h5>
+                        <div class="text-end">
+                            <div class="cost-total">@Ui.Vnd(kq.Tong)</div>
+                            <div class="text-muted small">≈ @Ui.Vnd(kq.TrenMoiCont) / container · chưa gồm VAT</div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sp mb-0">
+                            <thead><tr><th>Khoản mục</th><th>Diễn giải</th><th class="text-end">Thành tiền</th></tr></thead>
+                            <tbody>
+                                @foreach (var l in kq.Lines)
+                                {
+                                    <tr>
+                                        <td class="fw-semibold">@l.Ten</td>
+                                        <td class="text-muted small">@l.DienGiai</td>
+                                        <td class="text-end fw-semibold">@(l.ThanhTien == 0 ? "Miễn phí" : Ui.Vnd(l.ThanhTien))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-5">
+                        <div class="card-sp p-3 h-100">
+                            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-pie-chart me-1"></i>Cơ cấu chi phí</h6>
+                            <div style="height:220px;"><canvas id="costChart"></canvas></div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-sp p-3 h-100">
+                            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-lightbulb me-1"></i>AI nhận xét &amp; gợi ý tiết kiệm</h6>
+                            @foreach (var n in kq.AiNhanXet)
+                            {
+                                <div class="ai-note">@n</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="text-muted small mt-4" data-reveal><i class="bi bi-info-circle me-1"></i>Kết quả mang tính tham khảo theo biểu giá công bố; chi phí thực tế theo booking được duyệt. Ưu đãi hợp đồng sản lượng lớn vui lòng liên hệ Quản lý Lê Hữu Anh Tài: 0387 562 579.</div>
+</div>
+
+@section scripts {
+@if (kq != null)
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <script>
+        var cost = @Html.Raw(kq.ChartJson);
+        new Chart(document.getElementById('costChart'), {
+            type: 'doughnut',
+            data: {
+                labels: cost.labels,
+                datasets: [{ data: cost.data, backgroundColor: ['#1173c4', '#ff7d2d', '#10b981', '#8b5cf6'], borderWidth: 2 }]
+            },
+            options: { maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } } }
+        });
+    </script>
+}
+}

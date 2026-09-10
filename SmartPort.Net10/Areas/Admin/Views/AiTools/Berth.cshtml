@@ -1,0 +1,96 @@
+﻿@model List<SmartPort.Models.BerthSuggestionVM>
+@{
+    ViewBag.Title = "AI gợi ý phân bổ bến";
+}
+<div class="ai-box mb-4">
+    <span class="ai-tag"><i class="bi bi-stars"></i> AI BERTH ALLOCATION</span>
+    <div class="row align-items-center mt-2">
+        <div class="col-lg-9">
+            <h5 class="fw-bold mb-1">Gợi ý phân bổ bến thông minh cho các chuyến chưa có bến</h5>
+            <div style="color:#c9dcef;font-size:.9rem;">
+                Thuật toán chấm điểm từng bến dựa trên: chiều dài bến ≥ LOA tàu + 15m dây buộc · độ sâu ≥ mớn nước + 0.5m an toàn · không trùng lịch (±6h) · số cẩu bờ. Bến "vừa vặn" được ưu tiên để dành bến lớn cho tàu lớn.
+            </div>
+        </div>
+        <div class="col-lg-3 text-lg-end mt-2 mt-lg-0">
+            <div class="big">@Model.Count</div>
+            <div style="color:#c9dcef;">chuyến cần phân bến</div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="card-sp p-5 text-center">
+        <div style="font-size:3.5rem;">✅</div>
+        <h5 class="fw-bold mt-2">Tuyệt vời! Mọi chuyến tàu dự kiến đều đã có bến</h5>
+        <p class="text-muted mb-3">Khi có chuyến mới chưa phân bến, AI sẽ tự động phân tích và gợi ý tại đây.</p>
+        <a class="btn btn-navy" href="@Url.Action("Index", "VesselCalls")"><i class="bi bi-calendar2-week me-1"></i>Về trang điều độ</a>
+    </div>
+}
+
+@foreach (var s in Model)
+{
+    var tau = s.Chuyen.Tau;
+    <div class="card-sp mb-4">
+        <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span>
+                <i class="bi bi-water me-2 text-primary"></i>
+                Chuyến <strong>@s.Chuyen.MaChuyenHieu</strong> — @(tau != null ? tau.TenTau : "")
+                <span class="badge-st st-info ms-2">ETA @Ui.Dt(s.Chuyen.ETA)</span>
+            </span>
+            <span class="text-muted small">
+                @if (tau != null)
+                {
+                    <span>LOA <strong>@Ui.Num(tau.ChieuDai) m</strong> · Mớn nước <strong>@Ui.Num(tau.MonNuoc) m</strong> · @Ui.Num(tau.SucChuaTEU) TEU · Cont N/X: @s.Chuyen.ContNhap/@s.Chuyen.ContXuat</span>
+                }
+            </span>
+        </div>
+        <div class="p-3">
+            @if (s.Options.Count == 0)
+            {
+                <div class="alert alert-warning mb-0">
+                    <i class="bi bi-exclamation-triangle me-1"></i>
+                    Không có bến nào phù hợp trong khung thời gian này (thiếu chiều dài/độ sâu hoặc trùng lịch). Hãy điều chỉnh ETA/ETD hoặc xem xét bến đang bảo trì.
+                </div>
+            }
+            <div class="row g-3">
+                @{ int rank = 0; }
+                @foreach (var o in s.Options)
+                {
+                    rank++;
+                    <div class="col-lg-4">
+                        <div class="border rounded-3 p-3 h-100 @(rank == 1 ? "border-primary" : "")" style="@(rank == 1 ? "background:#f4f9ff;border-width:2px !important;" : "")">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <span class="fw-bold fs-5" style="color:#0a2f57;">@o.Ben.TenBen</span>
+                                    @if (rank == 1)
+                                    {
+                                        <span class="badge-st st-run ms-1"><i class="bi bi-stars"></i> AI đề xuất</span>
+                                    }
+                                </div>
+                                <span class="ai-score" title="Điểm phù hợp">@o.Score</span>
+                            </div>
+                            <div class="text-muted small mb-1">Dài @Ui.Num(o.Ben.ChieuDai)m · Sâu @Ui.Num(o.Ben.DoSau)m · @o.Ben.SoCau cẩu bờ</div>
+                            <div class="small fw-semibold mb-2" style="color:#0b7ea8;"><i class="bi bi-stopwatch me-1"></i>AI dự đoán giải phóng tàu trong ~@o.GioLamHang giờ</div>
+                            <ul class="small mb-3 ps-3">
+                                @foreach (var ly in o.LyDo)
+                                {
+                                    <li>@ly</li>
+                                }
+                            </ul>
+                            @using (Html.BeginForm("ApplyBerth", "AiTools", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="maChuyen" value="@s.Chuyen.MaChuyen" />
+                                <input type="hidden" name="maBen" value="@o.Ben.MaBen" />
+                                <button class="btn @(rank == 1 ? "btn-accent" : "btn-outline-sp") w-100 btn-sm" type="submit">
+                                    <i class="bi bi-check2-circle me-1"></i>Phân bến này
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

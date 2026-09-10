@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Tình trạng cổng cảng — thời gian thực";
+    var ganNhat = ViewBag.GanNhat as List<object[]>;
+}
+@section scripts {
+    <script>setTimeout(function () { location.reload(); }, 30000);</script>
+}
+
+<div class="container py-5" style="max-width:900px;">
+    <div class="text-center mb-4">
+        <div class="fs-1">🚦</div>
+        <h3 class="fw-bold" style="color:#0a2f57;">Tình trạng cổng cảng</h3>
+        <p class="text-muted">Cập nhật thời gian thực (tự làm mới mỗi 30 giây) — xem trước khi cho xe chạy đến cảng.
+            <br /><span class="small">Lúc @DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy")</span></p>
+    </div>
+
+    <div class="alert alert-@ViewBag.MauMatDo text-center fs-5 fw-bold py-3">
+        Cổng hiện tại: @ViewBag.MatDo — @ViewBag.LuotGioQua lượt xe trong 60 phút qua
+        · xử lý trung bình ~@ViewBag.GiayXuLy giây/xe
+    </div>
+
+    <div class="row g-3 mb-4 text-center">
+        <div class="col-md-3 col-6">
+            <div class="card-sp p-3"><div class="fs-3 fw-bold" style="color:#15803d;">@ViewBag.VaoHomNay</div><div class="small text-muted">Lượt VÀO hôm nay</div></div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card-sp p-3"><div class="fs-3 fw-bold" style="color:#c2410c;">@ViewBag.RaHomNay</div><div class="small text-muted">Lượt RA hôm nay</div></div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card-sp p-3"><div class="fs-3 fw-bold" style="color:#0a2f57;">@ViewBag.TrongCang</div><div class="small text-muted">Xe đang trong cảng</div></div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card-sp p-3"><div class="fs-3 fw-bold" style="color:#b45309;">@ViewBag.SoLenhChoXe</div><div class="small text-muted">Lệnh đang chờ xe đến</div></div>
+        </div>
+    </div>
+
+    <div class="card-sp p-3">
+        <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-clock-history me-1"></i>10 lượt xe gần nhất</h6>
+        <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+                <thead><tr class="small text-muted"><th>BIỂN SỐ</th><th>HƯỚNG</th><th>CỔNG</th><th>LOẠI XE</th><th>THỜI GIAN</th></tr></thead>
+                <tbody>
+                    @if (ganNhat == null || ganNhat.Count == 0)
+                    {
+                        <tr><td colspan="5" class="text-center text-muted py-3">Chưa có lượt xe nào hôm nay.</td></tr>
+                    }
+                    else
+                    {
+                        foreach (var x in ganNhat)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@x[0]</td>
+                                <td><span class="badge @((string)x[1] == "Vào" ? "bg-success" : "bg-warning text-dark")">@x[1]</span></td>
+                                <td>@x[2]</td>
+                                <td class="small text-muted">@x[4]</td>
+                                <td class="small">@(((DateTime)x[3]).ToString("HH:mm:ss dd/MM"))</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="text-center mt-3 small text-muted">
+        💡 Mẹo nhà xe: tạo lệnh + <a href="@Url.Action("Index", "TaiXe")">check-in online</a> trước khi chạy —
+        cổng ưu tiên xử lý, đỡ xếp hàng. <a href="@Url.Action("Index", "Home")" class="ms-2"><i class="bi bi-arrow-left"></i> Trang chủ</a>
+    </div>
+</div>

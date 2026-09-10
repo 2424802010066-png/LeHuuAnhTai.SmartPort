@@ -1,0 +1,230 @@
+﻿@model List<SmartPort.Models.NhatKyAgent>
+@{
+    ViewBag.Title = "Agent tự động";
+    var cauHinh = ViewBag.CauHinh as List<SmartPort.Models.CauHinhAgent>;
+    var tenKN = cauHinh.ToDictionary(c => c.KyNang, c => c.TenHienThi);
+    var tt = (string)ViewBag.TrangThai;
+}
+
+<div class="ai-box mb-3" style="background:linear-gradient(120deg,#2e1065,#7c3aed);">
+    <span class="ai-tag"><i class="bi bi-robot"></i> AGENT TỰ HÀNH ĐỘNG</span>
+    <div style="color:#ede9fe;font-size:.9rem;" class="mt-2">
+        Trợ lý cảnh báo thì <strong>nói cho bạn biết</strong> phải làm gì. Agent này <strong>tự làm</strong> —
+        lập phiếu thu, sinh bản tin EDI, mở sự cố an ninh trên chính hệ thống.
+        Mỗi việc đều <strong>ghi rõ lý do</strong>, và <strong>hoàn tác được</strong>.
+    </div>
+</div>
+
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success py-2"><i class="bi bi-check-circle me-1"></i>@TempData["ThongBao"]</div>
+}
+
+<div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3">
+        <div class="stat-card" style="border-left:4px solid #b45309;">
+            <div class="lbl">CHỜ BẠN DUYỆT</div>
+            <div class="num" style="color:#b45309;">@ViewBag.SoChoDuyet</div>
+            <div class="small text-muted">agent đề nghị, chờ gật đầu</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card" style="border-left:4px solid #7c3aed;">
+            <div class="lbl">AGENT TỰ LÀM</div>
+            <div class="num" style="color:#7c3aed;">@ViewBag.SoTuLam</div>
+            <div class="small text-muted">/ @ViewBag.SoDaLam việc đã xong</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card" style="border-left:4px solid #15803d;">
+            <div class="lbl">TIỀN AGENT CHỐT HỘ</div>
+            <div class="num" style="color:#15803d;">@ViewBag.TienDaChot.ToString("N0") <span style="font-size:.9rem;">đ</span></div>
+            <div class="small text-muted">phiếu thu do agent lập</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="lbl">ĐÃ HOÀN TÁC</div>
+            <div class="num" style="color:@(ViewBag.SoHoanTac > 0 ? "#dc2626" : "#15803d");">@ViewBag.SoHoanTac</div>
+            <div class="small text-muted">việc agent làm sai, đã gỡ</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-5">
+        <div class="card-sp p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold mb-0" style="color:#7c3aed;"><i class="bi bi-sliders me-1"></i>Agent được phép làm gì</h6>
+                @using (Html.BeginForm("ChayNgay", "Agent", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <button class="btn btn-sm btn-accent" type="submit"><i class="bi bi-play-fill me-1"></i>Chạy ngay</button>
+                }
+            </div>
+            <div class="small text-muted mb-3" style="font-size:.75rem;">
+                Mặc định mọi kỹ năng ở <b>Xin phép</b> — agent chỉ đề nghị, bạn bấm duyệt.
+                Xem nó làm đúng vài tuần rồi hãy chuyển sang <b>Tự làm</b>.
+            </div>
+
+            @foreach (var c in cauHinh)
+            {
+                <div class="ag-kn">
+                    @using (Html.BeginForm("DoiCheDo", "Agent", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="maCH" value="@c.MaCH" />
+                        <div class="d-flex justify-content-between align-items-start gap-2">
+                            <div style="flex:1;">
+                                <div class="fw-semibold" style="font-size:.85rem;color:#0a2f57;">@c.TenHienThi</div>
+                                <div class="small text-muted" style="font-size:.73rem;line-height:1.4;">@c.MoTa</div>
+                            </div>
+                            <span class="badge" style="background:@(c.CheDo == "Tự làm" ? "#7c3aed" : c.CheDo == "Xin phép" ? "#b45309" : "#94a3b8");">
+                                @c.CheDo
+                            </span>
+                        </div>
+                        <div class="row g-1 mt-2">
+                            <div class="col-5">
+                                <select class="form-select form-select-sm" name="cheDo">
+                                    @foreach (var m in new[] { "Tắt", "Xin phép", "Tự làm" })
+                                    {
+                                        <option value="@m" selected="@(c.CheDo == m ? "selected" : null)">@m</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <input class="form-control form-control-sm" type="number" name="nguong" value="@c.Nguong" min="0" title="Ngưỡng (ngày / số lượng)" />
+                            </div>
+                            <div class="col-2">
+                                <input class="form-control form-control-sm" type="number" name="toiDaMoiLan" value="@c.ToiDaMoiLan" min="1" max="200" title="Tối đa mỗi lần chạy" />
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-sm btn-outline-sp w-100" type="submit" title="Lưu"><i class="bi bi-save"></i></button>
+                            </div>
+                        </div>
+                    }
+                    @if (c.LanChayCuoi != null)
+                    {
+                        <div class="small text-muted mt-1" style="font-size:.7rem;">Chạy lần cuối @c.LanChayCuoi.Value.ToString("HH:mm dd/MM")</div>
+                    }
+                </div>
+            }
+
+            <div class="alert alert-light border small mt-3 mb-0" style="font-size:.75rem;">
+                <b>Vì sao quyết định bằng luật chứ không bằng mô hình ngôn ngữ:</b>
+                agent này đụng tới tiền của khách và báo cáo gửi hãng tàu.
+                Tiền thì không được phép “có vẻ đúng” — luật thì giải trình được từng đồng khi bị hỏi.
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card-sp p-3">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                <h6 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-journal-text me-1"></i>Agent đã làm gì</h6>
+                <div class="d-flex gap-1">
+                    <a class="btn btn-sm @(string.IsNullOrEmpty(tt) ? "btn-accent" : "btn-outline-sp") py-0" href="@Url.Action("Index")">Tất cả</a>
+                    <a class="btn btn-sm @(tt == "Chờ duyệt" ? "btn-accent" : "btn-outline-sp") py-0" href="@Url.Action("Index", new { trangThai = "Chờ duyệt" })">Chờ duyệt</a>
+                    <a class="btn btn-sm @(tt == "Đã làm" ? "btn-accent" : "btn-outline-sp") py-0" href="@Url.Action("Index", new { trangThai = "Đã làm" })">Đã làm</a>
+                </div>
+            </div>
+
+            @if (Model.Count == 0)
+            {
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-robot" style="font-size:2.6rem;opacity:.35;"></i>
+                    <div class="mt-2">Agent chưa làm gì cả.</div>
+                    <div class="small">Bấm <b>Chạy ngay</b> để nó quét hệ thống lần đầu.</div>
+                </div>
+            }
+            else
+            {
+                <div style="max-height:640px;overflow-y:auto;">
+                    @foreach (var n in Model)
+                    {
+                        <div class="ag-viec @(n.DaHoanTac ? "opacity-50" : "")">
+                            <div class="d-flex justify-content-between align-items-start gap-2">
+                                <div>
+                                    <span class="badge" style="background:@n.MauTrangThai;">@n.TrangThai</span>
+                                    @if (n.TuDong)
+                                    {
+                                        <span class="badge" style="background:#7c3aed;font-size:.56rem;" title="Agent tự làm, không ai bấm">TỰ LÀM</span>
+                                    }
+                                    @if (n.DaHoanTac)
+                                    {
+                                        <span class="badge bg-danger" style="font-size:.56rem;">ĐÃ HOÀN TÁC</span>
+                                    }
+                                    <span class="ms-1 fw-semibold" style="font-size:.84rem;color:#0a2f57;">
+                                        @(tenKN.ContainsKey(n.KyNang) ? tenKN[n.KyNang] : n.KyNang)
+                                    </span>
+                                    @if (!string.IsNullOrEmpty(n.DoiTuong))
+                                    {
+                                        <code class="ms-1" style="font-size:.75rem;">@n.DoiTuong</code>
+                                    }
+                                </div>
+                                <span class="text-muted text-nowrap text-end" style="font-size:.7rem;">
+                                    @n.Luc.ToString("HH:mm dd/MM")
+                                    @if (!string.IsNullOrEmpty(n.NguoiChay))
+                                    {
+                                        <br /><span title="Ai đã khởi động lượt chạy này">@n.NguoiChay</span>
+                                    }
+                                </span>
+                            </div>
+
+                            <div class="ag-lydo"><b>Vì sao:</b> @n.LyDo</div>
+                            @if (!string.IsNullOrEmpty(n.HanhDong))
+                            {
+                                <div class="ag-hd"><i class="bi bi-arrow-return-right me-1"></i>@n.HanhDong</div>
+                            }
+                            @if (!string.IsNullOrEmpty(n.KetQua))
+                            {
+                                <div class="ag-kq">@n.KetQua</div>
+                            }
+
+                            <div class="d-flex gap-1 mt-2">
+                                @if (n.TrangThai == "Chờ duyệt")
+                                {
+                                    using (Html.BeginForm("Duyet", "Agent", new { id = n.MaNK }, FormMethod.Post, null, new { @class = "d-inline" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn-sm btn-accent py-0" type="submit"><i class="bi bi-check2 me-1"></i>Duyệt</button>
+                                    }
+                                    using (Html.BeginForm("Huy", "Agent", new { id = n.MaNK }, FormMethod.Post, null, new { @class = "d-inline" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn-sm btn-outline-secondary py-0" type="submit">Bỏ qua</button>
+                                    }
+                                }
+                                @if (n.TrangThai == "Đã làm" && !n.DaHoanTac && n.MaThamChieu != null && !string.IsNullOrEmpty(n.BangThamChieu))
+                                {
+                                    using (Html.BeginForm("HoanTac", "Agent", new { id = n.MaNK }, FormMethod.Post, null,
+                                           new { @class = "d-inline", onsubmit = "return confirm('Hoàn tác việc agent đã làm?');" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn-sm btn-outline-danger py-0" type="submit"><i class="bi bi-arrow-counterclockwise me-1"></i>Hoàn tác</button>
+                                    }
+                                }
+                                @if (!string.IsNullOrEmpty(n.NguoiXuLy))
+                                {
+                                    <span class="small text-muted align-self-center ms-1">@n.NguoiXuLy · @(n.LucXuLy != null ? n.LucXuLy.Value.ToString("HH:mm dd/MM") : "")</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .ag-kn { border: 1px solid rgba(100,116,139,.2); border-radius: 10px; padding: .6rem .7rem; margin-bottom: .6rem; }
+    .ag-viec { border-left: 3px solid #7c3aed; background: rgba(124,58,237,.04);
+               border-radius: 8px; padding: .6rem .75rem; margin-bottom: .6rem; }
+    .ag-lydo { font-size: .78rem; color: #475569; line-height: 1.5; margin-top: .35rem; }
+    .ag-hd { font-size: .8rem; color: #0a2f57; font-weight: 600; margin-top: .25rem; }
+    .ag-kq { font-size: .76rem; color: #15803d; margin-top: .2rem; }
+    html[data-theme="dark"] .ag-lydo { color: #9fb6cc; }
+    html[data-theme="dark"] .ag-hd { color: #cfe3fb; }
+    html[data-theme="dark"] .ag-viec { background: rgba(124,58,237,.1); }
+</style>

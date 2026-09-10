@@ -1,0 +1,111 @@
+@{
+    ViewBag.Title = "Vận hành hệ thống";
+    var bang = ViewBag.Bang as System.Collections.Generic.List<SmartPort.Areas.Admin.Controllers.BangSoVM>;
+    var loiGanNhat = ViewBag.LoiGanNhat as System.Collections.Generic.List<SmartPort.Models.NhatKy>;
+    var uptime = (System.TimeSpan)ViewBag.Uptime;
+    var uptimeText = uptime.TotalHours >= 24
+        ? ((int)uptime.TotalDays) + " ngày " + uptime.Hours + " giờ"
+        : ((int)uptime.TotalHours) + " giờ " + uptime.Minutes + " phút";
+}
+
+<div class="ai-box mb-3">
+    <span class="ai-tag"><i class="bi bi-heart-pulse"></i> SYSTEM HEALTH · VẬN HÀNH</span>
+    <div class="row align-items-center mt-2">
+        <div class="col-lg-9">
+            <h5 class="fw-bold mb-1">Sức khỏe hệ thống SmartPort</h5>
+            <div style="color:#c9dcef;font-size:.9rem;">
+                Theo dõi <strong>kết nối CSDL</strong>, <strong>số liệu từng phân hệ</strong>, <strong>kho lưu trữ AI</strong>
+                và <strong>lỗi phát sinh</strong> — phát hiện sớm trục trặc trước khi ảnh hưởng người dùng.
+            </div>
+        </div>
+        <div class="col-lg-3 text-lg-end mt-2 mt-lg-0">
+            <a class="btn btn-sm btn-light fw-semibold" href="@Url.Action("NhatKy")"><i class="bi bi-journal-text me-1"></i>Nhật ký hoạt động</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <div class="card-sp p-3 text-center">
+            <div style="font-size:1.9rem;">@(ViewBag.DbOk ? "🟢" : "🔴")</div>
+            <div class="fw-bold" style="color:#0a2f57;">Cơ sở dữ liệu</div>
+            <div class="small text-muted">@(ViewBag.DbOk ? "Kết nối OK · " + ViewBag.DbPingMs + " ms" : "MẤT KẾT NỐI")</div>
+            <div class="small text-muted text-truncate" title="@ViewBag.DbServer">@ViewBag.DbName · @ViewBag.DbServer</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card-sp p-3 text-center">
+            <div style="font-size:1.9rem;">⏱️</div>
+            <div class="fw-bold" style="color:#0a2f57;">Uptime phiên chạy</div>
+            <div class="small text-muted">@uptimeText</div>
+            <div class="small text-muted">Máy chủ: @ViewBag.May · .NET @ViewBag.DotNet</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card-sp p-3 text-center">
+            <div style="font-size:1.9rem;">@(((int)ViewBag.Loi24h) == 0 ? "✅" : "⚠️")</div>
+            <div class="fw-bold" style="color:#0a2f57;">Lỗi 24h qua</div>
+            <div class="small"><b style="font-size:1.15rem;color:@(((int)ViewBag.Loi24h) == 0 ? "#15803d" : "#b91c1c");">@ViewBag.Loi24h</b> lỗi runtime</div>
+            <div class="small text-muted">@ViewBag.BaoMat7n cảnh báo bảo mật / 7 ngày</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card-sp p-3 text-center">
+            <div style="font-size:1.9rem;">🗄️</div>
+            <div class="fw-bold" style="color:#0a2f57;">Kho lưu trữ AI</div>
+            <div class="small text-muted">Media: <b>@ViewBag.KhoMedia</b> · An ninh: <b>@ViewBag.KhoSecurity</b></div>
+            <div class="small text-muted">Ảnh website: <b>@ViewBag.KhoAnh</b></div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-database me-1"></i>Số liệu từng phân hệ</h6>
+            <div class="row g-2">
+                @if (bang != null)
+                {
+                    foreach (var b in bang)
+                    {
+                        <div class="col-6 col-md-4">
+                            <div class="d-flex align-items-center gap-2 p-2 rounded" style="background:rgba(13,79,139,.06);">
+                                <i class="bi bi-@b.Icon" style="color:#0d4f8b;font-size:1.1rem;"></i>
+                                <div>
+                                    <div class="fw-bold" style="color:#0a2f57;line-height:1.1;">@b.So.ToString("N0")</div>
+                                    <div class="text-muted" style="font-size:.72rem;">@b.Ten</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="small text-muted mt-2">Giờ máy chủ: @(((System.DateTime)ViewBag.GioServer).ToString("HH:mm:ss dd/MM/yyyy"))</div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card-sp p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-bug me-1"></i>Lỗi gần nhất</h6>
+                <a class="small" href="@Url.Action("NhatKy", new { loai = "Loi" })">Xem tất cả →</a>
+            </div>
+            @if (loiGanNhat == null || loiGanNhat.Count == 0)
+            {
+                <div class="text-center text-muted py-4">
+                    <div style="font-size:2rem;">🎉</div>
+                    Chưa ghi nhận lỗi nào — hệ thống đang chạy trơn tru!
+                </div>
+            }
+            else
+            {
+                foreach (var l in loiGanNhat)
+                {
+                    <div class="border-start border-danger border-3 ps-2 mb-2">
+                        <div class="small">@l.NoiDung</div>
+                        <div class="text-muted" style="font-size:.72rem;">@l.ThoiGian.ToString("HH:mm dd/MM/yyyy")</div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

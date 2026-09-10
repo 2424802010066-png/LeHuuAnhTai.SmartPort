@@ -1,0 +1,245 @@
+﻿@model SmartPort.Models.LoginVM
+@{
+    ViewBag.Title = "Đăng nhập";
+}
+<div class="auth-page">
+    <!-- Hạt sáng nền -->
+    <div class="auth-particles">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="container">
+        <div class="auth-shell">
+            <!-- ============ CỘT TRÁI: Thương hiệu ============ -->
+            <div class="auth-hero">
+                <div class="auth-hero-inner">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        @Html.Partial("_Logo")
+                        <div>
+                            <div class="ah-brand">SmartPort</div>
+                            <div class="ah-sub">CẢNG QUỐC TẾ · LOGISTICS</div>
+                        </div>
+                    </div>
+
+                    <h2 class="ah-title">Hệ thống quản lý cảng<br /><span class="ah-hl">thông minh</span> ứng dụng AI</h2>
+                    <p class="ah-desc">
+                        Nền tảng số hóa toàn diện nghiệp vụ khai thác cảng container —
+                        tích hợp Deep Learning, Machine Learning và AI Agent điều phối tự động.
+                    </p>
+
+                    <!-- ====== ANH CANG THAT — phong cach camera truc tiep ====== -->
+                    <div class="port-scene port-photo" aria-hidden="true">
+                        <div class="pp-img"></div>
+                        <div class="pp-overlay"></div>
+                        <div class="pp-caption">
+                            <span class="pp-live"><span class="pp-dot"></span>CAMERA BẾN 03 · TRỰC TIẾP</span>
+                            <span class="pp-note">Tàu đang làm hàng dưới giàn cẩu STS</span>
+                        </div>
+                    </div>
+
+                    <div class="ah-stats">
+                        <div><b>14</b><span>bảng dữ liệu</span></div>
+                        <div><b>24/7</b><span>giám sát</span></div>
+                        <div><b>10+</b><span>công nghệ AI</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ CỘT PHẢI: Biểu mẫu ============ -->
+            <div class="auth-form">
+                <div class="af-inner">
+                    <div class="af-head">
+                        <span class="af-badge"><i class="bi bi-shield-lock-fill me-1"></i>Kết nối an toàn</span>
+                        <h3>Đăng nhập</h3>
+                        <p>Chào mừng trở lại! Vui lòng đăng nhập để tiếp tục.</p>
+                    </div>
+
+                    @using (Html.BeginForm("Login", "Account", new { returnUrl = ViewBag.ReturnUrl }, FormMethod.Post, null, new { id = "frmLogin", autocomplete = "on" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger py-2 small" })
+
+                        <div class="af-field">
+                            <label class="form-label">Tên đăng nhập</label>
+                            <div class="af-input">
+                                <i class="bi bi-person"></i>
+                                @Html.TextBoxFor(m => m.TenDangNhap, new { @class = "form-control", placeholder = "Nhập tên đăng nhập", id = "inpUser", autocomplete = "username" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.TenDangNhap, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="af-field">
+                            <label class="form-label">Mật khẩu</label>
+                            <div class="af-input">
+                                <i class="bi bi-lock"></i>
+                                @Html.PasswordFor(m => m.MatKhau, new { @class = "form-control", placeholder = "Nhập mật khẩu", id = "inpPass", autocomplete = "current-password" })
+                                <button type="button" class="af-eye" id="btnEye" title="Hiện / ẩn mật khẩu" tabindex="-1"><i class="bi bi-eye"></i></button>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.MatKhau, "", new { @class = "text-danger small" })
+                            <div class="af-strength" id="afStrength"><span></span></div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="chkRemember" />
+                                <label class="form-check-label small" for="chkRemember">Ghi nhớ đăng nhập</label>
+                            </div>
+                            <a href="@Url.Action("Contact", "Home")" class="small fw-semibold text-decoration-none">Quên mật khẩu?</a>
+                        </div>
+
+                        <button class="btn btn-accent w-100 btn-lg af-submit" type="submit" id="btnLogin">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập
+                        </button>
+                    }
+
+                    <div class="af-divider"><span>hoặc</span></div>
+
+                    <!-- ===== FACE LOGIN: mo modal quet khuon mat AI ===== -->
+                    <button type="button" id="btnFaceLogin" class="btn-face">
+                        <i class="bi bi-person-bounding-box"></i>
+                        Đăng nhập bằng khuôn mặt
+                        <span class="badge" style="background:rgba(255,255,255,.28);font-size:.6rem;">AI</span>
+                    </button>
+                    <div class="text-center af-note mt-2">
+                        <i class="bi bi-info-circle me-1"></i>Lần đầu dùng? Đăng nhập bằng mật khẩu →
+                        <b>Hồ sơ cá nhân</b> → <b>Cài đặt khuôn mặt</b> để đăng ký 3 góc mặt.
+                    </div>
+
+                    @if (SmartPort.Helpers.AppMode.TrinhDien)
+                    {
+                    <div class="af-divider"><span>Tài khoản trải nghiệm nhanh</span></div>
+
+                    <div class="af-demo">
+                        <button type="button" class="af-demo-btn" data-user="admin" data-pass="123456">
+                            <span class="afd-ico" style="background:linear-gradient(135deg,#0a2f57,#1c5fa8);"><i class="bi bi-shield-fill-check"></i></span>
+                            <span class="afd-txt"><strong>Quản trị viên</strong><small>admin</small></span>
+                        </button>
+                        <button type="button" class="af-demo-btn" data-user="dieudo" data-pass="123456">
+                            <span class="afd-ico" style="background:linear-gradient(135deg,#0891b2,#22d3ee);"><i class="bi bi-clipboard-data-fill"></i></span>
+                            <span class="afd-txt"><strong>Nhân viên</strong><small>dieudo</small></span>
+                        </button>
+                        <button type="button" class="af-demo-btn" data-user="taile" data-pass="123456">
+                            <span class="afd-ico" style="background:linear-gradient(135deg,#ff7d2d,#ffb25e);"><i class="bi bi-buildings-fill"></i></span>
+                            <span class="afd-txt"><strong>Khách hàng</strong><small>taile</small></span>
+                        </button>
+                    </div>
+                    <div class="text-center af-note mt-2">Bấm để điền nhanh thông tin đăng nhập trải nghiệm.</div>
+                    }
+
+                    <div class="text-center mt-4 af-register">
+                        Chưa có tài khoản?
+                        <a href="@Url.Action("Register", "Account")">Đăng ký khách hàng</a>
+                    </div>
+                    <div class="text-center mt-2">
+                        <a href="@Url.Action("Index", "Home")" class="af-link-home"><i class="bi bi-arrow-left me-1"></i>Về trang chủ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ MODAL QUET KHUON MAT (Face Login) ============ -->
+<div id="faceModal" class="face-overlay" style="display:none;" data-return="@ViewBag.ReturnUrl">
+    <div class="face-modal">
+        <div class="d-flex justify-content-between align-items-start mb-1">
+            <div>
+                <h5>Đăng nhập bằng khuôn mặt</h5>
+                <div class="fm-sub">AI ArcFace 512D · chống giả mạo liveness · ngưỡng khớp ≥ 80%</div>
+            </div>
+            <button type="button" id="btnFaceClose" class="fm-close" title="Đóng">✕</button>
+        </div>
+
+        <!-- Vong camera: vien gradient xoay + hieu ung -->
+        <div id="faceRing" class="face-ring idle">
+            <div class="face-hole">
+                <video id="faceVideo" playsinline muted></video>
+                <!-- Hieu ung khi dang quet: luoi HUD + laser + 3 song radar -->
+                <div id="faceFx" style="display:none;">
+                    <div class="face-grid"></div>
+                    <div class="face-laser"></div>
+                    <div class="face-wave"></div>
+                    <div class="face-wave w2"></div>
+                    <div class="face-wave w3"></div>
+                </div>
+                <!-- Man ket qua: tick xanh / X do -->
+                <div id="faceResult" class="face-result ok" style="display:none;">
+                    <span id="faceBadgeIcon" class="face-badge">✔</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="faceStatus" class="face-status">Đưa khuôn mặt vào giữa vòng tròn.</div>
+
+        <div class="face-actions">
+            <button type="button" id="btnFaceScan" class="btn-face"><i class="bi bi-radar"></i> Bắt đầu quét</button>
+            <button type="button" id="btnFaceCancel" class="btn-face-ghost" style="display:none;">Huỷ quét</button>
+            <button type="button" id="btnFaceRetry" class="btn-face" style="display:none;"><i class="bi bi-arrow-repeat"></i> Thử lại</button>
+            <button type="button" id="btnFaceFallback" class="btn-face-ghost" style="display:none;"><i class="bi bi-key"></i> Dùng mật khẩu thay thế</button>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script src="@Url.Content("~/Scripts/facelogin.js")?v=4"></script>
+<script>
+(function () {
+    var user = document.getElementById('inpUser');
+    var pass = document.getElementById('inpPass');
+    var eye = document.getElementById('btnEye');
+    var strength = document.getElementById('afStrength');
+    var remember = document.getElementById('chkRemember');
+    var form = document.getElementById('frmLogin');
+    var btn = document.getElementById('btnLogin');
+
+    // 1. Hiện / ẩn mật khẩu
+    if (eye) eye.addEventListener('click', function () {
+        var hien = pass.type === 'password';
+        pass.type = hien ? 'text' : 'password';
+        eye.innerHTML = hien ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+        pass.focus();
+    });
+
+    // 2. Thanh đo độ mạnh mật khẩu
+    if (pass && strength) pass.addEventListener('input', function () {
+        var v = pass.value, d = 0;
+        if (v.length >= 6) d++;
+        if (v.length >= 10) d++;
+        if (/[A-Z]/.test(v) && /[a-z]/.test(v)) d++;
+        if (/\d/.test(v) && /[^A-Za-z0-9]/.test(v)) d++;
+        strength.className = 'af-strength lv' + (v ? d : 0);
+    });
+
+    // 3. Ghi nhớ tên đăng nhập (chỉ tên, không lưu mật khẩu)
+    try {
+        var luu = localStorage.getItem('sp-user');
+        if (luu && user && !user.value) { user.value = luu; if (remember) remember.checked = true; }
+    } catch (e) { }
+
+    // 4. Điền nhanh tài khoản demo
+    document.querySelectorAll('.af-demo-btn').forEach(function (b) {
+        b.addEventListener('click', function () {
+            user.value = b.getAttribute('data-user');
+            pass.value = b.getAttribute('data-pass');
+            pass.dispatchEvent(new Event('input'));
+            document.querySelectorAll('.af-demo-btn').forEach(function (x) { x.classList.remove('active'); });
+            b.classList.add('active');
+            btn.focus();
+        });
+    });
+
+    // 5. Trạng thái đang xử lý khi gửi
+    if (form) form.addEventListener('submit', function () {
+        try {
+            if (remember && remember.checked) localStorage.setItem('sp-user', user.value);
+            else localStorage.removeItem('sp-user');
+        } catch (e) { }
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang đăng nhập...';
+    });
+
+    if (user && !user.value) user.focus();
+})();
+</script>
+}

@@ -1,0 +1,43 @@
+# ============================================================
+# SmartPort — .gitignore
+# Nguyen tac: cai gi TU SINH LAI DUOC, TRUNG LAP, hoac CHUA BI MAT thi khong len git.
+# ============================================================
+
+# ---------- Rac build (.NET / Visual Studio) — tu sinh lai khi build ----------
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.cache
+*.pdb
+TestResults/
+
+# ---------- BI MAT — tuyet doi khong day ----------
+# Mat khau tai khoan ung dung (chi luu tren may ban)
+TAI-KHOAN-MOI.txt
+# Ban sao luu appsettings goc co mat khau somee that
+*.bak
+*.local-backup
+# Moi file cau hinh "local"/"secret" neu sau nay co
+appsettings.*.local.json
+*.secret.json
+.env
+.env.*
+
+# ---------- Ban sao trung lap / luu tru ----------
+# Bo dong goi di thi = ban sao y nguyen cua SmartPort.Net10 + tai lieu (508 MB)
+NopThi_*/
+# Ban MVC5 da ngung phat trien (216 MB) va Web.config cua no co mat khau
+_Cu_KhongDung/
+# Thu muc tam gom file cho Claude Design (ban sao CSS + anh)
+_ThietKe_ChoClaudeDesign/
+
+# ---------- File tam / he dieu hanh ----------
+Thumbs.db
+desktop.ini
+~$*
+*.tmp
+
+# ---------- Model AI: CO day (app can chung de chay offline) ----------
+# Khong ignore *.onnx / *.wasm / tessdata — chung la mot phan cua san pham.

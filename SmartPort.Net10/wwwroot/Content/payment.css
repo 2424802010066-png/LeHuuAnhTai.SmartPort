@@ -1,0 +1,210 @@
+/* ============================================================
+   MODULE THANH TOAN — SmartPort Payment
+   Dung chung bien mau voi site.css (--navy, --accent, --line...)
+   ============================================================ */
+
+/* --- Banner che do demo --- */
+.pay-demo-banner { background: linear-gradient(100deg,#fff7ed,#ffedd5); border: 1px solid #fdba74; border-left: 5px solid var(--accent); color: #7c2d12; border-radius: 12px; padding: 13px 18px; font-size: .92rem; }
+html[data-theme="dark"] .pay-demo-banner { background: linear-gradient(100deg,#2a1c10,#33230f); border-color: #7c4a1d; color: #fcd9b6; }
+
+/* --- So thu tu buoc --- */
+.pay-step { width: 30px; height: 30px; border-radius: 50%; background: var(--navy); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: .95rem; }
+
+/* --- Danh sach phuong thuc --- */
+.pay-methods { display: grid; gap: 14px; }
+.pay-method { position: relative; display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; border: 2px solid var(--line); border-radius: 16px; cursor: pointer; overflow: hidden; transition: border-color .22s, box-shadow .22s, transform .22s; background: var(--card); }
+.pay-method input { position: absolute; opacity: 0; pointer-events: none; }
+.pay-method:hover { border-color: #9fc2e8; transform: translateY(-2px); box-shadow: 0 10px 26px rgba(10,47,87,.10); }
+.pay-method.active { border-color: var(--navy); box-shadow: 0 12px 30px rgba(10,47,87,.16); }
+.pay-method .pm-glow { position: absolute; inset: 0; background: radial-gradient(420px 120px at 12% 0%, rgba(28,95,168,.12), transparent 70%); opacity: 0; transition: opacity .25s; pointer-events: none; }
+.pay-method.active .pm-glow { opacity: 1; }
+.pm-ico { flex: 0 0 52px; width: 52px; height: 52px; border-radius: 14px; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.45rem; box-shadow: 0 8px 18px rgba(10,47,87,.22); }
+.pm-body { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.pm-title { font-weight: 800; color: var(--navy); font-size: 1.02rem; }
+html[data-theme="dark"] .pm-title { color: #cfe3fb; }
+.pm-tag { display: inline-block; margin-left: 6px; background: var(--accent); color: #fff; font-size: .68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; vertical-align: middle; }
+.pm-desc { color: var(--muted); font-size: .86rem; line-height: 1.5; }
+.pm-brands { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
+.pm-brand { font-size: .72rem; font-weight: 600; color: var(--navy); background: rgba(28,95,168,.10); border: 1px solid rgba(28,95,168,.18); padding: 2px 9px; border-radius: 999px; }
+html[data-theme="dark"] .pm-brand { color: #a9cdf5; background: rgba(120,170,230,.12); }
+.pm-check { flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); display: flex; align-items: center; justify-content: center; color: transparent; transition: all .22s; margin-top: 4px; }
+.pay-method.active .pm-check { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+/* --- Nut tiep tuc + bao mat --- */
+.pay-next { position: relative; overflow: hidden; }
+.pay-next::after { content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.32), transparent); animation: payShine 2.8s ease-in-out infinite; }
+@keyframes payShine { 0% { left: -60%; } 55%, 100% { left: 120%; } }
+.pay-secure { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; color: var(--muted); font-size: .82rem; }
+.pay-secure i { color: #15803d; margin-right: 4px; }
+
+/* --- Tom tat don --- */
+.pay-summary { position: sticky; top: 90px; }
+.pay-items { border-top: 1px dashed var(--line); padding-top: 8px; }
+.pay-total { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-radius: 14px; background: linear-gradient(120deg, var(--navy), #1c5fa8); color: #fff; font-weight: 700; }
+.pay-total-num { font-size: 1.35rem; font-weight: 900; color: #ffd9b8; }
+
+/* --- Thanh tien trinh 3 buoc --- */
+.pay-steps { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.ps-item { display: flex; align-items: center; gap: 8px; color: var(--muted); font-weight: 600; font-size: .9rem; }
+.ps-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--line); color: #64748b; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .9rem; transition: all .3s; }
+.ps-item.active .ps-dot { background: var(--accent); color: #fff; box-shadow: 0 0 0 6px rgba(255,125,45,.18); animation: psPulse 2s ease-in-out infinite; }
+.ps-item.done .ps-dot { background: #15803d; color: #fff; }
+.ps-item.active, .ps-item.done { color: var(--navy); }
+html[data-theme="dark"] .ps-item.active, html[data-theme="dark"] .ps-item.done { color: #cfe3fb; }
+@keyframes psPulse { 0%,100% { box-shadow: 0 0 0 6px rgba(255,125,45,.18); } 50% { box-shadow: 0 0 0 11px rgba(255,125,45,.06); } }
+.ps-line { width: 54px; height: 3px; border-radius: 3px; background: var(--line); }
+.ps-line.done { background: #15803d; }
+
+/* --- Khu vuc QR --- */
+.qr-wrap { text-align: center; }
+.qr-frame { position: relative; display: inline-block; padding: 16px; border-radius: 20px; background: #fff; border: 2px solid var(--line); box-shadow: 0 14px 34px rgba(10,47,87,.14); overflow: hidden; }
+.qr-img { width: 260px; height: auto; display: block; border-radius: 10px; }
+.qr-empty { width: 260px; height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 3rem; }
+.qr-scan { position: absolute; left: 8%; right: 8%; height: 3px; border-radius: 3px; background: linear-gradient(90deg, transparent, var(--accent), transparent); box-shadow: 0 0 14px rgba(255,125,45,.85); animation: qrScan 2.6s ease-in-out infinite; }
+@keyframes qrScan { 0%, 100% { top: 8%; } 50% { top: 88%; } }
+.qr-banks { margin-top: 10px; font-size: .82rem; color: var(--muted); }
+.qr-banks strong { color: var(--navy); }
+html[data-theme="dark"] .qr-banks strong { color: #9ec6f2; }
+
+/* --- Thong tin ngan hang --- */
+.bank-info { border: 1px dashed var(--line); border-radius: 14px; padding: 6px 16px; background: var(--soft); }
+.bi-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.bi-row:last-child { border-bottom: 0; }
+.bi-row > span { color: var(--muted); font-size: .88rem; }
+.copyable { cursor: pointer; transition: color .18s; }
+.copyable:hover { color: var(--accent) !important; }
+
+/* --- The ngan hang 3D --- */
+.card-visual { position: relative; width: 100%; max-width: 380px; aspect-ratio: 1.586; border-radius: 18px; padding: 22px; color: #fff; background: linear-gradient(135deg, #0a2f57 0%, #1c5fa8 55%, #7c3aed 100%); box-shadow: 0 20px 44px rgba(10,47,87,.34); transition: transform .18s ease-out; will-change: transform; overflow: hidden; }
+.card-visual::after { content: ""; position: absolute; inset: 0; background: radial-gradient(320px 120px at 80% -10%, rgba(255,255,255,.22), transparent 70%); pointer-events: none; }
+.cv-chip { width: 46px; height: 34px; border-radius: 7px; background: linear-gradient(135deg,#f5d67b,#c79a34); margin-bottom: 22px; box-shadow: inset 0 0 6px rgba(0,0,0,.25); }
+.cv-num { font-family: Consolas, "Courier New", monospace; font-size: 1.42rem; font-weight: 700; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,.3); }
+.cv-bottom { display: flex; gap: 26px; margin-top: 18px; font-size: .78rem; }
+.cv-bottom span { opacity: .72; font-size: .66rem; letter-spacing: 1px; }
+.cv-bottom div div { font-weight: 700; letter-spacing: 1px; }
+.cv-brand { position: absolute; right: 22px; bottom: 20px; font-weight: 900; font-style: italic; font-size: 1.3rem; letter-spacing: 1px; }
+
+/* --- Vi dien tu --- */
+.wallet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+.wallet-item { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 10px; border: 2px solid var(--line); border-radius: 14px; cursor: pointer; transition: all .22s; background: var(--card); font-size: .86rem; font-weight: 600; color: var(--navy); }
+html[data-theme="dark"] .wallet-item { color: #cfe3fb; }
+.wallet-item input { display: none; }
+.wallet-item:hover { transform: translateY(-3px); border-color: #9fc2e8; }
+.wallet-item.active { border-color: var(--navy); box-shadow: 0 10px 24px rgba(10,47,87,.16); }
+.wi-logo { width: 54px; height: 54px; border-radius: 14px; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .8rem; }
+.wallet-note { background: var(--soft); border-radius: 12px; padding: 13px 16px; font-size: .9rem; color: var(--muted); }
+
+/* --- Tien mat --- */
+.cash-card { border: 1px dashed var(--line); border-radius: 14px; padding: 6px 18px; background: var(--soft); }
+.cash-row { display: flex; gap: 14px; align-items: flex-start; padding: 13px 0; border-bottom: 1px solid var(--line); }
+.cash-row:last-child { border-bottom: 0; }
+.cash-row > i { font-size: 1.15rem; color: var(--navy); margin-top: 2px; }
+html[data-theme="dark"] .cash-row > i { color: #8fbdea; }
+
+/* --- Dong ho dem nguoc --- */
+.countdown-card { text-align: center; }
+.countdown { font-size: 2.6rem; font-weight: 900; color: var(--navy); font-variant-numeric: tabular-nums; letter-spacing: 2px; }
+html[data-theme="dark"] .countdown { color: #cfe3fb; }
+.countdown.cd-warn { color: var(--accent); animation: cdBlink 1s ease-in-out infinite; }
+.countdown.cd-out { color: #dc2626; animation: none; }
+@keyframes cdBlink { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+.cd-bar { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; margin-top: 6px; }
+.cd-bar span { display: block; height: 100%; width: 100%; border-radius: 999px; background: linear-gradient(90deg, #15803d, var(--accent)); transition: width 1s linear; }
+
+/* --- Trang thai / so tien --- */
+.pay-actions .pay-done { background: #dcfce7; color: #14532d; border: 1px solid #86efac; border-radius: 12px; padding: 12px 16px; font-weight: 700; text-align: center; }
+html[data-theme="dark"] .pay-actions .pay-done { background: #0f2e1c; color: #86efac; border-color: #166534; }
+.pay-amount { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; border-radius: 12px; background: linear-gradient(120deg, var(--navy), #1c5fa8); color: #fff; font-weight: 700; }
+.pay-amount-num { font-size: 1.25rem; font-weight: 900; color: #ffd9b8; }
+.pay-guide { padding-left: 18px; margin-bottom: 10px; }
+.pay-guide li { font-size: .88rem; color: var(--muted); margin-bottom: 5px; }
+
+/* --- Bien lai --- */
+.receipt { max-width: 720px; margin: 0 auto; border-radius: 18px; overflow: hidden; box-shadow: 0 18px 44px rgba(10,47,87,.16); background: var(--card); }
+.receipt-head { background: linear-gradient(120deg, var(--navy), #1c5fa8); color: #fff; padding: 28px 30px; text-align: center; }
+.receipt-head .rh-ico { width: 68px; height: 68px; border-radius: 50%; background: rgba(255,255,255,.16); display: flex; align-items: center; justify-content: center; font-size: 2.1rem; margin: 0 auto 10px; animation: rhPop .5s cubic-bezier(.34,1.56,.64,1); }
+@keyframes rhPop { 0% { transform: scale(.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.receipt-body { padding: 26px 30px; }
+.rc-row { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px dashed var(--line); font-size: .93rem; }
+.rc-row:last-child { border-bottom: 0; }
+.rc-row > span { color: var(--muted); }
+.rc-total { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding: 15px 18px; border-radius: 14px; background: var(--soft); border: 2px solid var(--navy); font-weight: 800; color: var(--navy); }
+html[data-theme="dark"] .rc-total { color: #cfe3fb; border-color: #2f5f96; }
+.rc-total b { font-size: 1.3rem; color: var(--accent); }
+.receipt-foot { border-top: 2px dashed var(--line); padding: 18px 30px; text-align: center; color: var(--muted); font-size: .84rem; }
+.rc-stamp { display: inline-block; border: 3px solid #15803d; color: #15803d; border-radius: 10px; padding: 6px 18px; font-weight: 900; letter-spacing: 2px; transform: rotate(-8deg); font-size: 1.05rem; }
+
+/* --- The chi so thong ke (dung chung admin + khach hang) --- */
+.pay-stat {
+    position: relative; overflow: hidden; isolation: isolate;
+    border-radius: 18px; padding: 20px 22px; color: #fff;
+    min-height: 112px; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; gap: 5px;
+    border: 1px solid rgba(255,255,255,.22);
+    box-shadow: 0 12px 30px rgba(10,47,87,.22), inset 0 1px 0 rgba(255,255,255,.25);
+    transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s ease;
+}
+.pay-stat:hover { transform: translateY(-4px) scale(1.015); box-shadow: 0 20px 44px rgba(10,47,87,.32), inset 0 1px 0 rgba(255,255,255,.3); }
+/* lop anh sang chieu sau — nam DUOI noi dung */
+.pay-stat::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background:
+        radial-gradient(340px 130px at 14% -30%, rgba(255,255,255,.3), transparent 62%),
+        radial-gradient(260px 160px at 108% 120%, rgba(0,0,0,.18), transparent 60%);
+}
+/* tia sang quet ngang dinh ky */
+.pay-stat::after {
+    content: ""; position: absolute; top: 0; left: -70%; z-index: 1; pointer-events: none;
+    width: 45%; height: 100%; transform: skewX(-18deg);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.24), transparent);
+    animation: psSweep 4.6s ease-in-out infinite;
+}
+@keyframes psSweep { 0%, 62% { left: -70%; } 100% { left: 130%; } }
+
+.pay-stat .ps-num {
+    position: relative; z-index: 2;
+    font-size: clamp(1.4rem, 2.3vw, 1.9rem); font-weight: 900; line-height: 1.12;
+    letter-spacing: -.5px; text-shadow: 0 2px 8px rgba(0,0,0,.28);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    padding-right: 66px;
+    font-variant-numeric: tabular-nums;
+}
+.pay-stat .ps-lbl {
+    position: relative; z-index: 2;
+    font-size: .82rem; opacity: .95; line-height: 1.35; font-weight: 600;
+    letter-spacing: .2px; padding-right: 66px;
+    text-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+/* icon trong khoi kinh mo noi ben phai */
+.pay-stat > i {
+    position: absolute; right: 16px; top: 50%; z-index: 2;
+    transform: translateY(-50%);
+    width: 52px; height: 52px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.55rem; opacity: 1;
+    background: rgba(255,255,255,.17);
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 15px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.3);
+    pointer-events: none;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.pay-stat:hover > i { transform: translateY(-50%) scale(1.12) rotate(-8deg); }
+
+@media (max-width: 575px) {
+    .pay-stat { min-height: 96px; padding: 16px 18px; }
+    .pay-stat > i { width: 44px; height: 44px; font-size: 1.3rem; right: 12px; }
+    .pay-stat .ps-num, .pay-stat .ps-lbl { padding-right: 56px; }
+}
+
+@media (max-width: 991px) {
+    .pay-summary { position: static; }
+    .qr-img, .qr-empty { width: 220px; }
+    .qr-empty { height: 220px; }
+    .countdown { font-size: 2.1rem; }
+}
+
+@media print {
+    .page-head, .site-footer, .btn, .breadcrumb, .pay-demo-banner { display: none !important; }
+    .receipt { box-shadow: none; border: 1px solid #999; }
+}

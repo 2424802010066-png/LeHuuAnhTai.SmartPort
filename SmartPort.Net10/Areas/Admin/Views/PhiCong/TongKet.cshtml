@@ -1,0 +1,174 @@
+﻿@{
+    ViewBag.Title = "Tổng kết ca thu phí cổng";
+    var tk = ViewBag.TongKet as SmartPort.Services.PhiCongService.TongKetCa;
+    var ct = ViewBag.ChiTiet as List<SmartPort.Models.XeRaVao>;
+    var tu = (DateTime)ViewBag.Tu;
+    var den = (DateTime)ViewBag.Den;
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 khong-in">
+    <div>
+        <a class="btn btn-sm btn-outline-sp" href="@Url.Action("Index")"><i class="bi bi-arrow-left me-1"></i>Phí cổng</a>
+        <span class="fs-5 fw-bold ms-2" style="color:#0a2f57;"><i class="bi bi-clipboard-data me-1"></i>Tổng kết ca</span>
+    </div>
+    <button class="btn btn-sm btn-accent" onclick="window.print()"><i class="bi bi-printer me-1"></i>In bảng giao ca</button>
+</div>
+
+<div class="card-sp p-3 mb-3 khong-in">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label small fw-semibold">TỪ</label>
+            <input class="form-control" type="datetime-local" name="tu" value="@tu.ToString("yyyy-MM-ddTHH:mm")" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label small fw-semibold">ĐẾN</label>
+            <input class="form-control" type="datetime-local" name="den" value="@den.ToString("yyyy-MM-ddTHH:mm")" />
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-outline-sp w-100" type="submit"><i class="bi bi-funnel me-1"></i>Xem</button>
+        </div>
+    </form>
+</div>
+
+<div class="giao-ca">
+    <div class="gc-dau">
+        <div>
+            <div class="gc-cang">CẢNG QUỐC TẾ SMARTPORT</div>
+            <div class="gc-nho">Bảng tổng kết thu phí cổng</div>
+        </div>
+        <div class="text-end gc-nho">
+            In lúc @DateTime.Now.ToString("HH:mm dd/MM/yyyy")
+        </div>
+    </div>
+
+    <h2 class="gc-ten">BẢNG GIAO CA THU PHÍ CỔNG</h2>
+    <div class="text-center gc-nho mb-3">
+        Từ <b>@tu.ToString("HH:mm dd/MM/yyyy")</b> đến <b>@den.ToString("HH:mm dd/MM/yyyy")</b>
+    </div>
+
+    <table class="gc-bang mb-3">
+        <thead>
+            <tr><th>Khoản mục</th><th class="text-center" style="width:110px;">Số lượt</th><th class="text-end" style="width:160px;">Số tiền</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>Tiền mặt thu tại cổng</b><div class="gc-nho">Thu ngân phải nộp quỹ đúng số này</div></td>
+                <td class="text-center">@ct.Count(x => x.HinhThucThu == "Tiền mặt")</td>
+                <td class="text-end fw-bold">@tk.TienMat.ToString("N0")</td>
+            </tr>
+            <tr>
+                <td>Trừ tài khoản trả trước<div class="gc-nho">Khách đã nạp từ trước — không nộp quỹ lần nữa</div></td>
+                <td class="text-center">@ct.Count(x => x.HinhThucThu == "Trừ tài khoản")</td>
+                <td class="text-end">@tk.TruTaiKhoan.ToString("N0")</td>
+            </tr>
+            <tr>
+                <td>Miễn phí do thẻ tháng</td>
+                <td class="text-center">@tk.LuotTheThang</td>
+                <td class="text-end text-muted">0</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="gc-tong">
+                <td class="text-end" colspan="2">TỔNG PHÁT SINH</td>
+                <td class="text-end">@tk.TongThu.ToString("N0") đ</td>
+            </tr>
+            <tr class="gc-nop">
+                <td class="text-end" colspan="2">TIỀN MẶT PHẢI NỘP QUỸ</td>
+                <td class="text-end">@tk.TienMat.ToString("N0") đ</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    @if (tk.TheoLoaiXe.Count > 0)
+    {
+        <div class="fw-bold mb-1" style="color:#0a2f57;">Chi tiết theo loại xe</div>
+        <table class="gc-bang mb-3">
+            <thead><tr><th>Loại xe</th><th class="text-center" style="width:110px;">Lượt</th><th class="text-end" style="width:160px;">Thành tiền</th></tr></thead>
+            <tbody>
+                @foreach (var d in tk.TheoLoaiXe)
+                {
+                    <tr>
+                        <td>@d.LoaiXe</td>
+                        <td class="text-center">@d.SoLuot</td>
+                        <td class="text-end">@d.ThanhTien.ToString("N0")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="gc-ky">
+        <div>
+            <div class="fw-bold">THU NGÂN GIAO CA</div>
+            <div class="gc-cho-ky"></div>
+            <div class="gc-nho">(Ký, ghi rõ họ tên)</div>
+        </div>
+        <div>
+            <div class="fw-bold">THU NGÂN NHẬN CA</div>
+            <div class="gc-cho-ky"></div>
+            <div class="gc-nho">(Ký, ghi rõ họ tên)</div>
+        </div>
+        <div>
+            <div class="fw-bold">KẾ TOÁN</div>
+            <div class="gc-cho-ky"></div>
+            <div class="gc-nho">(Ký, ghi rõ họ tên)</div>
+        </div>
+    </div>
+</div>
+
+<div class="card-sp p-3 mt-3 khong-in">
+    <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-list-ul me-1"></i>Chi tiết từng lượt (@ct.Count)</h6>
+    @if (ct.Count == 0)
+    {
+        <div class="text-center text-muted py-4">Không có lượt thu phí nào trong khoảng này.</div>
+    }
+    else
+    {
+        <div class="table-responsive" style="max-height:520px;overflow-y:auto;">
+            <table class="table table-sp table-sm align-middle mb-0">
+                <thead><tr><th>Thời gian</th><th>Biển số</th><th>Loại xe</th><th>Hình thức</th><th class="text-end">Số tiền</th></tr></thead>
+                <tbody>
+                    @foreach (var x in ct)
+                    {
+                        <tr>
+                            <td class="small text-muted">@x.ThoiGian.ToString("HH:mm:ss dd/MM")</td>
+                            <td><a class="lk-xe" href="@Url.Action("HoSoXe", "Gate", new { bienSo = x.BienSo })">@x.BienSo</a></td>
+                            <td class="small">@(x.LoaiXe ?? "—")</td>
+                            <td>
+                                <span class="badge @(x.HinhThucThu == "Tiền mặt" ? "bg-success" : x.HinhThucThu == "Trừ tài khoản" ? "bg-info text-dark" : "bg-primary")">
+                                    @x.HinhThucThu
+                                </span>
+                            </td>
+                            <td class="text-end fw-semibold">@((x.PhiCong ?? 0).ToString("N0"))đ</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<style>
+    .giao-ca { background:#fff; color:#0f172a; max-width:800px; margin:0 auto; padding:24px 28px;
+               border:1px solid #e2e8f0; border-radius:12px; font-size:.88rem; }
+    .gc-dau { display:flex; justify-content:space-between; align-items:flex-start;
+              border-bottom:2px solid #0a2f57; padding-bottom:10px; margin-bottom:14px; }
+    .gc-cang { font-weight:800; color:#0a2f57; font-size:1rem; }
+    .gc-nho { font-size:.74rem; color:#64748b; }
+    .gc-ten { text-align:center; font-size:1.25rem; font-weight:800; color:#0a2f57; margin:0; }
+    .gc-bang { width:100%; border-collapse:collapse; }
+    .gc-bang th { background:#0a2f57; color:#fff; padding:7px 9px; font-size:.76rem; text-align:left; }
+    .gc-bang td { padding:8px 9px; border-bottom:1px solid #e2e8f0; }
+    .gc-tong td { background:#f1f5f9; font-weight:700; }
+    .gc-nop td { background:#fef3c7; font-weight:800; font-size:1.05rem; color:#b45309; }
+    .gc-ky { display:flex; justify-content:space-around; text-align:center; margin-top:26px; font-size:.78rem; }
+    .gc-cho-ky { height:56px; }
+    html[data-theme="dark"] .giao-ca { background:#fff; color:#0f172a; }
+    @@media print {
+        .sidebar, .topbar, .khong-in, .side-foot { display:none !important; }
+        .admin-main { margin-left:0 !important; }
+        .content { padding:0 !important; }
+        .giao-ca { border:0; max-width:100%; padding:0; }
+        body { background:#fff !important; }
+    }
+</style>

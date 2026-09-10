@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Cổng tài xế — check-in trước khi đến cảng";
+    var lenh = ViewBag.Lenh as SmartPort.Models.LenhGiaoNhan;
+}
+
+<div class="container py-5" style="max-width:660px;">
+    <div class="text-center mb-4">
+        <div class="fs-1">🚛</div>
+        <h3 class="fw-bold" style="color:#0a2f57;">Cổng tài xế</h3>
+        <p class="text-muted">Nhập <b>số lệnh</b> + <b>mã PIN</b> in trên Lệnh giao nhận để xem chuyến và
+        <b>check-in online</b> — xe đến cổng được camera ưu tiên xử lý nhanh.</p>
+    </div>
+
+    @if (ViewBag.Loi != null) { <div class="alert alert-danger py-2">@ViewBag.Loi</div> }
+    @if (ViewBag.ThongBao != null) { <div class="alert alert-success py-2">@ViewBag.ThongBao</div> }
+
+    <div class="card-sp p-4 mb-3">
+        @using (Html.BeginForm("TraCuu", "TaiXe", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row g-3">
+                <div class="col-md-7">
+                    <label class="form-label small fw-semibold">SỐ LỆNH</label>
+                    <input name="soLenh" class="form-control form-control-lg" placeholder="EG-2608-00001"
+                           value="@(lenh != null ? lenh.SoLenh : "")" style="font-family:Consolas,monospace;" />
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label small fw-semibold">MÃ PIN (6 số)</label>
+                    <input name="maPin" type="password" class="form-control form-control-lg" placeholder="••••••" maxlength="8" />
+                </div>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+                <button class="btn btn-navy flex-grow-1" type="submit" name="hanhDong" value="xem"><i class="bi bi-search me-1"></i>Xem lệnh</button>
+                <button class="btn btn-accent flex-grow-1" type="submit" name="hanhDong" value="checkin"><i class="bi bi-geo-alt-fill me-1"></i>CHECK-IN ngay</button>
+            </div>
+        }
+    </div>
+
+    @if (lenh != null)
+    {
+        <div class="card-sp p-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <b style="font-family:Consolas,monospace;color:#0a2f57;">@lenh.SoLenh</b>
+                <span class="badge @(lenh.TrangThai == "Hoàn tất" ? "bg-success" : lenh.TrangThai == "Đã vào cổng" ? "bg-primary" : lenh.TrangThai == "Chờ xe" ? "bg-warning text-dark" : "bg-secondary")">@lenh.TrangThai</span>
+            </div>
+            <table class="table table-sm mb-2">
+                <tr><td class="text-muted" style="width:140px;">Loại lệnh</td><td>@lenh.TenLoaiLenh</td></tr>
+                <tr><td class="text-muted">Biển số xe</td><td class="fw-bold">@lenh.BienSoXe</td></tr>
+                <tr><td class="text-muted">Container</td><td style="font-family:Consolas,monospace;">@(string.IsNullOrEmpty(lenh.SoCont) ? "—" : lenh.SoCont)</td></tr>
+                <tr><td class="text-muted">Khung giờ hẹn</td><td><b>@lenh.HenTuLuc.ToString("HH:mm") – @lenh.HenDenLuc.ToString("HH:mm dd/MM/yyyy")</b></td></tr>
+                <tr>
+                    <td class="text-muted">Check-in</td>
+                    <td>
+                        @if (lenh.DaCheckIn)
+                        {
+                            <span class="badge bg-info text-dark">✔ Đã check-in @(lenh.CheckInLuc != null ? lenh.CheckInLuc.Value.ToString("HH:mm dd/MM") : "")</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Chưa — bấm "CHECK-IN ngay" trước khi khởi hành</span>
+                        }
+                    </td>
+                </tr>
+            </table>
+            <div class="small text-muted">
+                💡 Khi xe đến cổng, camera AI đọc biển số và tự đối chiếu với lệnh này — check-in trước giúp
+                nhân viên cổng thấy nhãn <b>"đã check-in online"</b> và xử lý ưu tiên.
+            </div>
+        </div>
+    }
+
+    <div class="text-center mt-3">
+        <a href="@Url.Action("Index", "Home")" class="small"><i class="bi bi-arrow-left me-1"></i>Về trang chủ</a>
+    </div>
+</div>

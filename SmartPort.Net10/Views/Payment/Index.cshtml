@@ -1,0 +1,155 @@
+﻿@{
+    var booking = (SmartPort.Models.DatDichVu)ViewBag.Booking;
+    ViewBag.Title = "Thanh toán booking " + booking.MaSoBooking;
+    bool demo = ViewBag.DemoMode ?? true;
+}
+<div class="page-head">
+    <div class="container">
+        <h1><i class="bi bi-credit-card-2-front me-2"></i>Thanh toán trực tuyến</h1>
+        <nav>
+            <ol class="breadcrumb mt-2">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("My", "Booking")">Booking của tôi</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("Details", "Booking", new { id = booking.MaBooking })">@booking.MaSoBooking</a></li>
+                <li class="breadcrumb-item active">Thanh toán</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container mb-5">
+    @if (demo)
+    {
+        <div class="pay-demo-banner mb-4">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <strong>Chế độ DEMO đồ án</strong> — cổng thanh toán mô phỏng quy trình thật (QR VietQR chuẩn NAPAS 247).
+            Vui lòng <u>không chuyển tiền thật</u> khi chạy thử.
+        </div>
+    }
+
+    <div class="row g-4">
+        <!-- ===== Chon phuong thuc ===== -->
+        <div class="col-lg-8">
+            <div class="card-sp p-4">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="pay-step">1</span>
+                    <h5 class="fw-bold mb-0" style="color:#0a2f57;">Chọn phương thức thanh toán</h5>
+                </div>
+                <p class="text-muted small mb-4">Hệ thống hỗ trợ 4 hình thức — chọn hình thức phù hợp rồi bấm “Tiếp tục”.</p>
+
+                @using (Html.BeginForm("Start", "Payment", new { id = booking.MaBooking }, FormMethod.Post, null, new { id = "frmPay" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="pay-methods">
+                        <label class="pay-method active" data-value="ChuyenKhoan">
+                            <input type="radio" name="phuongThuc" value="ChuyenKhoan" checked />
+                            <span class="pm-glow"></span>
+                            <span class="pm-ico" style="background:linear-gradient(135deg,#0a2f57,#1c5fa8);"><i class="bi bi-qr-code-scan"></i></span>
+                            <span class="pm-body">
+                                <span class="pm-title">Chuyển khoản QR <span class="pm-tag">Khuyên dùng</span></span>
+                                <span class="pm-desc">Quét mã VietQR bằng app ngân hàng — tự điền sẵn số tiền &amp; nội dung, không lo sai sót.</span>
+                                <span class="pm-brands">
+                                    <span class="pm-brand">NAPAS 247</span><span class="pm-brand">VietQR</span><span class="pm-brand">Miễn phí</span>
+                                </span>
+                            </span>
+                            <span class="pm-check"><i class="bi bi-check-lg"></i></span>
+                        </label>
+
+                        <label class="pay-method" data-value="TheNganHang">
+                            <input type="radio" name="phuongThuc" value="TheNganHang" />
+                            <span class="pm-glow"></span>
+                            <span class="pm-ico" style="background:linear-gradient(135deg,#7c3aed,#a855f7);"><i class="bi bi-credit-card"></i></span>
+                            <span class="pm-body">
+                                <span class="pm-title">Thẻ ngân hàng</span>
+                                <span class="pm-desc">Thẻ nội địa ATM hoặc thẻ quốc tế Visa / Mastercard / JCB.</span>
+                                <span class="pm-brands">
+                                    <span class="pm-brand">ATM nội địa</span><span class="pm-brand">Visa</span><span class="pm-brand">Mastercard</span>
+                                </span>
+                            </span>
+                            <span class="pm-check"><i class="bi bi-check-lg"></i></span>
+                        </label>
+
+                        <label class="pay-method" data-value="ViDienTu">
+                            <input type="radio" name="phuongThuc" value="ViDienTu" />
+                            <span class="pm-glow"></span>
+                            <span class="pm-ico" style="background:linear-gradient(135deg,#e5691d,#ff9d4d);"><i class="bi bi-wallet2"></i></span>
+                            <span class="pm-body">
+                                <span class="pm-title">Ví điện tử</span>
+                                <span class="pm-desc">Thanh toán nhanh qua ví đã liên kết, xác nhận bằng mã PIN.</span>
+                                <span class="pm-brands">
+                                    <span class="pm-brand">MoMo</span><span class="pm-brand">ZaloPay</span><span class="pm-brand">VNPay</span>
+                                </span>
+                            </span>
+                            <span class="pm-check"><i class="bi bi-check-lg"></i></span>
+                        </label>
+
+                        <label class="pay-method" data-value="TienMat">
+                            <input type="radio" name="phuongThuc" value="TienMat" />
+                            <span class="pm-glow"></span>
+                            <span class="pm-ico" style="background:linear-gradient(135deg,#15803d,#22c55e);"><i class="bi bi-cash-coin"></i></span>
+                            <span class="pm-body">
+                                <span class="pm-title">Tiền mặt tại quầy</span>
+                                <span class="pm-desc">Thanh toán trực tiếp tại quầy thu ngân của cảng khi làm thủ tục.</span>
+                                <span class="pm-brands">
+                                    <span class="pm-brand">Giờ HC 7:30–17:00</span>
+                                </span>
+                            </span>
+                            <span class="pm-check"><i class="bi bi-check-lg"></i></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-navy btn-lg w-100 mt-4 pay-next">
+                        <i class="bi bi-arrow-right-circle me-2"></i>Tiếp tục thanh toán
+                    </button>
+                }
+
+                <div class="pay-secure mt-3">
+                    <span><i class="bi bi-shield-lock-fill"></i> Mã hóa giao dịch</span>
+                    <span><i class="bi bi-patch-check-fill"></i> Chuẩn NAPAS 247</span>
+                    <span><i class="bi bi-clock-history"></i> Đối soát tự động</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== Tom tat don hang ===== -->
+        <div class="col-lg-4">
+            <div class="card-sp p-4 pay-summary">
+                <h5 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-receipt me-1"></i>Đơn hàng</h5>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Mã booking</span><strong>@booking.MaSoBooking</strong>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Khách hàng</span>
+                    <strong class="text-end" style="max-width:60%;">@(booking.KhachHang != null ? booking.KhachHang.TenCongTy : "—")</strong>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Trạng thái đơn</span><span class="badge-st @Ui.Badge(booking.TrangThai)">@booking.TrangThai</span>
+                </div>
+                @if (booking.ChiTiets != null)
+                {
+                    <div class="pay-items mt-2">
+                        @foreach (var ct in booking.ChiTiets)
+                        {
+                            <div class="d-flex justify-content-between small py-1">
+                                <span class="text-muted">@(ct.DichVu != null ? ct.DichVu.TenDV : "Dịch vụ") × @ct.SoLuong</span>
+                                <span>@Ui.Vnd(ct.ThanhTien)</span>
+                            </div>
+                        }
+                    </div>
+                }
+                <div class="pay-total mt-3">
+                    <span>Tổng thanh toán</span>
+                    <span class="pay-total-num" data-count="@((long)booking.TongTien)">0 ₫</span>
+                </div>
+                <a class="btn btn-outline-sp w-100 mt-3" href="@Url.Action("Details", "Booking", new { id = booking.MaBooking })">
+                    <i class="bi bi-arrow-left me-1"></i>Quay lại đơn
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script src="@Url.Content("~/Scripts/payment.js")"></script>
+}

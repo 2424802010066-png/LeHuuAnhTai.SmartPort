@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "SafePose AI — Giám sát an toàn lao động";
+}
+<div class="ai-box mb-3">
+    <span class="ai-tag"><i class="bi bi-person-arms-up"></i> SAFEPOSE · DEEP LEARNING #4</span>
+    <div class="row align-items-center mt-2">
+        <div class="col-lg-9">
+            <h5 class="fw-bold mb-1">Giám sát an toàn lao động bằng YOLO26-Pose (ước lượng tư thế)</h5>
+            <div style="color:#c9dcef;font-size:.9rem;">
+                Mạng nơ-ron nhận diện <strong>17 điểm khớp cơ thể</strong> (mũi, vai, khuỷu, hông, gối, cổ chân...),
+                vẽ khung xương và <strong>tự phân tích tư thế</strong>: phát hiện người <strong>ngã</strong>,
+                <strong>cúi nâng vật sai cách</strong> — cảnh báo sớm tai nạn lao động tại cầu bến, kho bãi.
+            </div>
+        </div>
+        <div class="col-lg-3 text-lg-end mt-2 mt-lg-0">
+            <span id="psEngine" class="badge-st st-info"><i class="bi bi-hourglass-split me-1"></i>Đang khởi động...</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-4">
+        <div class="card-sp p-3 mb-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-sliders me-1"></i>Nguồn hình ảnh</h6>
+            <div id="psStatus" class="small mb-3 text-muted">Đang tải mô hình...</div>
+
+            <label class="form-label small fw-semibold">📁 Tải ảnh có người</label>
+            <input type="file" id="fileInput" accept="image/*" class="form-control form-control-sm mb-3" disabled />
+
+            <label class="form-label small fw-semibold">🖼️ Hoặc dùng ảnh mẫu</label>
+            <div class="d-grid gap-2 mb-3">
+                <button class="btn btn-sm btn-outline-primary ps-sample" disabled data-src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1100&auto=format&fit=crop"><i class="bi bi-people me-1"></i>Nhân sự đang họp</button>
+                <button class="btn btn-sm btn-outline-primary ps-sample" disabled data-src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1100&auto=format&fit=crop"><i class="bi bi-person-standing me-1"></i>Hai người bắt tay</button>
+            </div>
+
+            <label class="form-label small fw-semibold">🎥 Webcam trực tiếp</label>
+            <button id="btnCam" class="btn btn-navy w-100 mb-3" disabled><i class="bi bi-camera-video me-1"></i>Bật webcam pose</button>
+
+            <label class="form-label small fw-semibold d-flex justify-content-between">
+                <span>Ngưỡng tin cậy</span><span id="psConfVal" class="text-primary">40%</span>
+            </label>
+            <input type="range" id="psConf" class="form-range" min="0.2" max="0.8" step="0.05" value="0.4" />
+        </div>
+
+        <div class="card-sp p-3 mb-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-shield-exclamation me-1"></i>Phân tích an toàn</h6>
+            <div id="psInsight"><div class="ai-note">Chưa có dữ liệu — hãy phân tích một khung hình.</div></div>
+        </div>
+
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-list-check me-1"></i>Luật an toàn AI áp dụng</h6>
+            <div class="small text-muted" style="line-height:1.7;">
+                <div>🔴 <strong>Nguy hiểm</strong>: nằm ngang (nghi ngã) hoặc đầu thấp hơn hông</div>
+                <div>🟠 <strong>Chú ý</strong>: thân trên gập sâu — tư thế nâng vật dễ chấn thương lưng</div>
+                <div>🟢 <strong>An toàn</strong>: đứng/di chuyển bình thường</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card-sp p-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+                <h6 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-bounding-box-circles me-1"></i>Kết quả phân tích tư thế</h6>
+                <span id="psMeta" class="text-muted small">—</span>
+            </div>
+            <div class="vs-stage">
+                <canvas id="psCanvas"></canvas>
+                <video id="psVideo" playsinline muted style="display:none;"></video>
+            </div>
+            <div class="small text-muted mt-2">
+                <i class="bi bi-info-circle me-1"></i>Mô hình YOLO26n-Pose nhận diện 17 khớp/người theo chuẩn COCO,
+                chạy hoàn toàn trên trình duyệt — hình ảnh <strong>không rời khỏi máy</strong> (bảo mật tuyệt đối).
+            </div>
+        </div>
+    </div>
+</div>
+
+<canvas id="psWork" style="display:none;"></canvas>
+
+@section scripts {
+<script src="@Url.Content("~/Scripts/pose.js")?v=4"></script>
+}

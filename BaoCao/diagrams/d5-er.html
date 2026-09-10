@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+  html,body{margin:0;padding:0;background:#ffffff;}
+  svg{display:block;}
+  .rel{stroke:#334760;stroke-width:2;fill:none;}
+  .mult{font-family:'Segoe UI',Arial,sans-serif;font-size:13px;fill:#B85400;font-weight:700;}
+  .cbox{font-family:'Segoe UI',Arial,sans-serif;border:2.25px solid #0A2F57;border-radius:7px;overflow:hidden;height:100%;box-sizing:border-box;background:#fff;box-shadow:0 2px 4px rgba(10,47,87,.15);}
+  .cbox2{font-family:'Segoe UI',Arial,sans-serif;border:2px solid #7d8aa0;border-radius:7px;overflow:hidden;height:100%;box-sizing:border-box;background:#fff;}
+  .chead{background:#0A2F57;color:#fff;font-weight:700;font-size:15px;padding:6px 11px;}
+  .chead2{background:#5b6b82;color:#fff;font-weight:700;font-size:14.5px;padding:6px 11px;}
+  .cbody{font-size:12.3px;color:#233246;padding:6px 11px;line-height:1.56;}
+  .pk{font-weight:700;text-decoration:underline;}
+  .fk{color:#8a4b00;}
+  .ty{color:#8a97a8;}
+</style></head>
+<body>
+<svg width="1420" height="1220" viewBox="0 0 1420 1220" xmlns="http://www.w3.org/2000/svg">
+
+<!-- connectors -->
+<path class="rel" d="M340,115 L380,135"/>
+<text class="mult" x="348" y="107">1</text><text class="mult" x="356" y="150">N</text>
+
+<path class="rel" d="M680,135 L760,155"/>
+<text class="mult" x="688" y="127">1</text><text class="mult" x="700" y="170">N</text>
+
+<path class="rel" d="M1100,132 L1070,100"/>
+<text class="mult" x="1060" y="124">1</text><text class="mult" x="1010" y="95">N</text>
+
+<path class="rel" d="M915,320 L915,360"/>
+<text class="mult" x="925" y="316">1</text><text class="mult" x="925" y="356">N</text>
+
+<path class="rel" d="M190,600 L190,700"/>
+<text class="mult" x="200" y="616">1</text><text class="mult" x="200" y="694">N</text>
+
+<path class="rel" d="M150,700 L760,470"/>
+<text class="mult" x="160" y="688">1</text><text class="mult" x="700" y="480">N</text>
+
+<path class="rel" d="M340,805 L380,805"/>
+<text class="mult" x="345" y="796">1</text><text class="mult" x="358" y="825">N</text>
+
+<path class="rel" d="M680,800 L720,795"/>
+<text class="mult" x="685" y="791">1</text><text class="mult" x="698" y="820">N</text>
+
+<path class="rel" d="M1100,795 L1030,792"/>
+<text class="mult" x="1015" y="786" text-anchor="end">1</text><text class="mult" x="1090" y="815" text-anchor="end">N</text>
+
+<!-- ============ ROW 1 ============ -->
+<foreignObject x="40" y="40" width="300" height="150"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">HangTau</div>
+  <div class="cbody">
+    <div class="pk">MaHangTau <span class="ty">INT, PK</span></div>
+    <div>TenHangTau <span class="ty">NVARCHAR(100)</span></div>
+    <div>MaSCAC <span class="ty">VARCHAR(10)</span></div>
+    <div>QuocGia <span class="ty">NVARCHAR(50)</span></div>
+    <div>Website <span class="ty">VARCHAR(100)</span></div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="380" y="40" width="300" height="225"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">Tau</div>
+  <div class="cbody">
+    <div class="pk">MaTau <span class="ty">INT, PK</span></div>
+    <div>TenTau <span class="ty">NVARCHAR(100)</span></div>
+    <div>SoIMO <span class="ty">VARCHAR(15)</span></div>
+    <div class="fk">MaHangTau <span class="ty">INT, FK</span></div>
+    <div>LoaiTau <span class="ty">NVARCHAR(50)</span></div>
+    <div>QuocTich <span class="ty">NVARCHAR(50)</span></div>
+    <div>ChieuDai <span class="ty">DECIMAL(6,1)</span></div>
+    <div>MonNuoc <span class="ty">DECIMAL(4,1)</span></div>
+    <div>SucChuaTEU <span class="ty">INT</span></div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="760" y="40" width="310" height="280"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">ChuyenTau</div>
+  <div class="cbody">
+    <div class="pk">MaChuyen <span class="ty">INT, PK</span></div>
+    <div>MaChuyenHieu <span class="ty">VARCHAR(20)</span></div>
+    <div class="fk">MaTau <span class="ty">INT, FK</span></div>
+    <div class="fk">MaBen <span class="ty">INT, FK</span></div>
+    <div>ETA / ETD / ATA / ATD <span class="ty">DATETIME</span></div>
+    <div>TrangThai <span class="ty">NVARCHAR(30)</span></div>
+    <div>ContNhap / ContXuat <span class="ty">INT</span></div>
+    <div>GhiChu <span class="ty">NVARCHAR(200)</span></div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="1100" y="40" width="280" height="185"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">Ben</div>
+  <div class="cbody">
+    <div class="pk">MaBen <span class="ty">INT, PK</span></div>
+    <div>TenBen <span class="ty">NVARCHAR(50)</span></div>
+    <div>ChieuDai <span class="ty">DECIMAL(6,1)</span></div>
+    <div>DoSau <span class="ty">DECIMAL(4,1)</span></div>
+    <div>SoCau <span class="ty">INT</span></div>
+    <div>TrangThai <span class="ty">NVARCHAR(30)</span></div>
+  </div>
+</div></foreignObject>
+
+<!-- ============ ROW 2 ============ -->
+<foreignObject x="40" y="360" width="300" height="240"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">TaiKhoan</div>
+  <div class="cbody">
+    <div class="pk">MaTK <span class="ty">INT, PK</span></div>
+    <div>TenDangNhap <span class="ty">VARCHAR(50), UQ</span></div>
+    <div>MatKhauHash <span class="ty">VARCHAR(64)</span></div>
+    <div>HoTen <span class="ty">NVARCHAR(100)</span></div>
+    <div>Email / SoDienThoai <span class="ty">VARCHAR</span></div>
+    <div>VaiTro <span class="ty">VARCHAR(20)</span></div>
+    <div class="fk">MaKH <span class="ty">INT, FK</span></div>
+    <div>KichHoat <span class="ty">BIT</span></div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="760" y="360" width="310" height="300"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">Container</div>
+  <div class="cbody">
+    <div class="pk">MaCont <span class="ty">INT, PK</span></div>
+    <div>SoCont <span class="ty">VARCHAR(11), UQ</span></div>
+    <div>LoaiCont / TinhTrang <span class="ty">VARCHAR(10)</span></div>
+    <div>TrongLuong <span class="ty">DECIMAL(8,2)</span></div>
+    <div>HangHoa <span class="ty">NVARCHAR(200)</span></div>
+    <div class="fk">MaKH <span class="ty">INT, FK</span></div>
+    <div class="fk">MaChuyenNhap <span class="ty">INT, FK</span></div>
+    <div class="fk">MaChuyenXuat <span class="ty">INT, FK</span></div>
+    <div>ViTriBai <span class="ty">VARCHAR(20)</span></div>
+    <div>TrangThai <span class="ty">NVARCHAR(30)</span></div>
+    <div>NhietDo <span class="ty">DECIMAL(4,1)</span></div>
+  </div>
+</div></foreignObject>
+
+<!-- ============ ROW 3 ============ -->
+<foreignObject x="40" y="700" width="300" height="205"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">KhachHang</div>
+  <div class="cbody">
+    <div class="pk">MaKH <span class="ty">INT, PK</span></div>
+    <div>TenCongTy <span class="ty">NVARCHAR(150)</span></div>
+    <div>MaSoThue <span class="ty">VARCHAR(20)</span></div>
+    <div>DiaChi <span class="ty">NVARCHAR(200)</span></div>
+    <div>NguoiLienHe <span class="ty">NVARCHAR(100)</span></div>
+    <div>Email / SoDienThoai <span class="ty">VARCHAR</span></div>
+    <div>NgayTao <span class="ty">DATETIME</span></div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="380" y="700" width="300" height="220"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">DatDichVu</div>
+  <div class="cbody">
+    <div class="pk">MaBooking <span class="ty">INT, PK</span></div>
+    <div>MaSoBooking <span class="ty">VARCHAR(15), UQ</span></div>
+    <div class="fk">MaKH <span class="ty">INT, FK</span></div>
+    <div>NgayTao <span class="ty">DATETIME</span></div>
+    <div>NgayCanThucHien <span class="ty">DATETIME</span></div>
+    <div>TrangThai <span class="ty">NVARCHAR(30)</span></div>
+    <div>GhiChu <span class="ty">NVARCHAR(300)</span></div>
+    <div>TongTien <span class="ty">DECIMAL(14,0)</span></div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="720" y="700" width="300" height="185"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">DatDichVuChiTiet</div>
+  <div class="cbody">
+    <div class="pk">MaCT <span class="ty">INT, PK</span></div>
+    <div class="fk">MaBooking <span class="ty">INT, FK</span></div>
+    <div class="fk">MaDV <span class="ty">INT, FK</span></div>
+    <div>SoLuong <span class="ty">INT</span></div>
+    <div>DonGia / ThanhTien <span class="ty">DECIMAL</span></div>
+    <div>GhiChu <span class="ty">NVARCHAR(200)</span></div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="1100" y="700" width="280" height="185"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox">
+  <div class="chead">DichVu</div>
+  <div class="cbody">
+    <div class="pk">MaDV <span class="ty">INT, PK</span></div>
+    <div>TenDV <span class="ty">NVARCHAR(100)</span></div>
+    <div>NhomDV <span class="ty">NVARCHAR(50)</span></div>
+    <div>DonViTinh <span class="ty">NVARCHAR(30)</span></div>
+    <div>DonGia <span class="ty">DECIMAL(12,0)</span></div>
+    <div>KichHoat <span class="ty">BIT</span></div>
+  </div>
+</div></foreignObject>
+
+<!-- ============ ROW 4: standalone tables ============ -->
+<line x1="40" y1="935" x2="1380" y2="935" stroke="#c8d2e0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text x="40" y="965" font-family="'Segoe UI',Arial,sans-serif" font-size="15" font-weight="700" fill="#5b6b82">BẢNG ĐỘC LẬP / HỖ TRỢ — không có khóa ngoại liên kết trực tiếp</text>
+
+<foreignObject x="40" y="980" width="300" height="165"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox2">
+  <div class="chead2">TinTuc</div>
+  <div class="cbody">
+    <div class="pk">MaTin <span class="ty">INT, PK</span></div>
+    <div>TieuDe <span class="ty">NVARCHAR(200)</span></div>
+    <div>TomTat / NoiDung <span class="ty">NVARCHAR</span></div>
+    <div>NgayDang <span class="ty">DATETIME</span></div>
+    <div>LuotXem <span class="ty">INT</span> · NoiBat <span class="ty">BIT</span></div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="380" y="980" width="300" height="165"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox2">
+  <div class="chead2">LienHe</div>
+  <div class="cbody">
+    <div class="pk">MaLH <span class="ty">INT, PK</span></div>
+    <div>HoTen <span class="ty">NVARCHAR(100)</span></div>
+    <div>Email / SoDienThoai <span class="ty">VARCHAR</span></div>
+    <div>ChuDe / NoiDung <span class="ty">NVARCHAR</span></div>
+    <div>NgayGui <span class="ty">DATETIME</span> · DaXuLy <span class="ty">BIT</span></div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="720" y="980" width="300" height="140"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox2">
+  <div class="chead2">SanLuongThang</div>
+  <div class="cbody">
+    <div class="pk">MaSL <span class="ty">INT, PK</span></div>
+    <div>Nam / Thang <span class="ty">INT</span> (UQ cặp)</div>
+    <div>TEU <span class="ty">INT</span></div>
+    <div>DoanhThu <span class="ty">DECIMAL(15,0)</span></div>
+  </div>
+</div></foreignObject>
+
+<foreignObject x="1100" y="980" width="280" height="140"><div xmlns="http://www.w3.org/1999/xhtml" class="cbox2">
+  <div class="chead2">CauHinhAnh</div>
+  <div class="cbody">
+    <div class="pk">Khoa <span class="ty">VARCHAR(30), PK</span></div>
+    <div>Url <span class="ty">VARCHAR(500)</span></div>
+    <div>MoTa <span class="ty">NVARCHAR(100)</span></div>
+    <div>ThuTu <span class="ty">INT</span></div>
+  </div>
+</div></foreignObject>
+
+</svg>
+</body></html>

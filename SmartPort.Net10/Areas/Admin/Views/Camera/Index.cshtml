@@ -1,0 +1,167 @@
+﻿@model List<SmartPort.Models.CameraIP>
+@{ ViewBag.Title = "Camera IP tại hiện trường"; }
+
+<div class="ai-box mb-3" style="background:linear-gradient(120deg,#1e1b4b,#4338ca);">
+    <span class="ai-tag"><i class="bi bi-camera-video-fill"></i> CAMERA IP HIỆN TRƯỜNG</span>
+    <div style="color:#e0e7ff;font-size:.9rem;" class="mt-2">
+        Dùng <strong>chính camera Hikvision/Dahua mà cảng đã lắp sẵn</strong> — không bắt mua webcam mới.
+        AI đọc biển số chỉ cần <strong>một khung hình tĩnh</strong>, mà hai hãng này đều có sẵn đường dẫn
+        trả về 1 tấm JPEG qua HTTP — nên <strong>không phải xử lý RTSP</strong>.
+        Máy chủ đóng vai cầu nối (camera nằm trong mạng LAN, cần xác thực Digest, và vướng CORS
+        nên trình duyệt không gọi thẳng được).
+    </div>
+</div>
+
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success py-2"><i class="bi bi-check-circle me-1"></i>@TempData["ThongBao"]</div>
+}
+@if (TempData["Loi"] != null)
+{
+    <div class="alert alert-danger py-2"><i class="bi bi-exclamation-triangle me-1"></i>@TempData["Loi"]</div>
+}
+
+<div class="row g-3">
+    <div class="col-lg-5">
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#4338ca;"><i class="bi bi-plus-square me-1"></i>Thêm camera</h6>
+            @using (Html.BeginForm("Luu", "Camera", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="MaCam" value="0" />
+                <label class="form-label small fw-semibold">TÊN CAMERA</label>
+                <input class="form-control mb-2" name="TenCam" placeholder="Camera cổng vào" required />
+
+                <label class="form-label small fw-semibold">VỊ TRÍ</label>
+                <input class="form-control mb-2" name="ViTri" placeholder="Cổng A1" />
+
+                <label class="form-label small fw-semibold">HÃNG</label>
+                <select class="form-select mb-2" name="Hang" id="selHang">
+                    <option value="Hikvision">Hikvision</option>
+                    <option value="Dahua">Dahua</option>
+                    <option value="Reolink">Reolink</option>
+                    <option value="Khac">Hãng khác (tự nhập đường dẫn)</option>
+                </select>
+
+                <label class="form-label small fw-semibold">ĐỊA CHỈ IP (kèm cổng nếu khác 80)</label>
+                <input class="form-control mb-2" name="DiaChi" placeholder="192.168.1.64" required />
+
+                <div class="row g-2 mb-2">
+                    <div class="col-7">
+                        <label class="form-label small fw-semibold">TÊN ĐĂNG NHẬP</label>
+                        <input class="form-control" name="TenDangNhap" placeholder="admin" autocomplete="off" />
+                    </div>
+                    <div class="col-5">
+                        <label class="form-label small fw-semibold">KÊNH</label>
+                        <input class="form-control" name="Kenh" type="number" value="1" min="1" />
+                    </div>
+                </div>
+
+                <label class="form-label small fw-semibold">MẬT KHẨU</label>
+                <input class="form-control mb-2" name="MatKhau" type="password" autocomplete="new-password" />
+
+                <label class="form-label small fw-semibold">ĐƯỜNG DẪN ẢNH RIÊNG (chỉ khi chọn "Hãng khác")</label>
+                <input class="form-control mb-2" name="DuongDanRieng" placeholder="/snapshot.jpg" />
+
+                <div class="small text-muted mb-2" id="goiY"></div>
+                <button class="btn btn-accent w-100" type="submit"><i class="bi bi-save me-1"></i>Lưu camera</button>
+            }
+        </div>
+
+        <div class="card-sp p-3 mt-3">
+            <h6 class="fw-bold mb-2" style="color:#4338ca;"><i class="bi bi-info-circle me-1"></i>Cách lấy thông tin từ đầu ghi</h6>
+            <ol class="small text-muted mb-0" style="padding-left:18px;line-height:1.8;">
+                <li>Hỏi bên lắp camera <b>IP của đầu ghi/camera</b> và tài khoản xem.</li>
+                <li>Mở trình duyệt gõ IP đó — vào được trang đăng nhập camera là mạng thông.</li>
+                <li>Nhập vào form bên trên rồi bấm <b>Thử kết nối</b>.</li>
+                <li>Nếu báo lỗi 401 → sai mật khẩu. Nếu quá 8 giây → khác mạng LAN.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#4338ca;"><i class="bi bi-list-ul me-1"></i>Camera đã cấu hình (@Model.Count)</h6>
+            @if (Model.Count == 0)
+            {
+                <div class="text-center text-muted py-4">
+                    Chưa có camera nào. Thêm camera đầu tiên ở khung bên trái.<br />
+                    <span class="small">Chưa có camera IP thì hệ thống vẫn chạy bằng webcam như cũ.</span>
+                </div>
+            }
+            else
+            {
+                foreach (var c in Model)
+                {
+                    <div class="border rounded-3 p-3 mb-3" style="border-color:rgba(100,116,139,.25)!important;">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                            <div>
+                                <span class="fw-bold" style="color:#0a2f57;">@c.TenCam</span>
+                                <span class="badge bg-light text-dark border ms-1">@c.Hang</span>
+                                @if (!c.KichHoat)
+                                {
+                                    <span class="badge bg-secondary ms-1">Tắt</span>
+                                }
+                                <div class="small text-muted">@c.ViTri · kênh @(c.Kenh ?? 1)</div>
+                                <div class="small font-monospace text-muted" style="word-break:break-all;">@c.UrlHienThi</div>
+                                @if (!string.IsNullOrEmpty(c.KetQuaThu))
+                                {
+                                    <div class="small mt-1 fw-semibold @(c.KetQuaThu.StartsWith("OK") ? "text-success" : "text-danger")">
+                                        @c.KetQuaThu
+                                        @if (c.LanThuCuoi != null)
+                                        {
+                                            <span class="text-muted fw-normal"> · @c.LanThuCuoi.Value.ToString("HH:mm dd/MM")</span>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <div class="d-flex gap-1">
+                                @using (Html.BeginForm("Thu", "Camera", new { id = c.MaCam }, FormMethod.Post, null, new { @class = "d-inline" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn btn-sm btn-accent" type="submit"><i class="bi bi-plug me-1"></i>Thử kết nối</button>
+                                }
+                                <button class="btn btn-sm btn-outline-sp" type="button" onclick="xemAnh(@c.MaCam, '@c.TenCam')"><i class="bi bi-eye"></i></button>
+                                @using (Html.BeginForm("Xoa", "Camera", new { id = c.MaCam }, FormMethod.Post, null, new { @class = "d-inline", onsubmit = "return confirm('Xóa camera này?');" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i></button>
+                                }
+                            </div>
+                        </div>
+                        <div class="mt-2" id="khungAnh@(c.MaCam)" style="display:none;">
+                            <img id="anh@(c.MaCam)" style="max-width:100%;border-radius:10px;border:1px solid rgba(100,116,139,.3);" alt="Ảnh từ @c.TenCam" />
+                            <div class="small text-muted mt-1">Ảnh chụp lúc <span id="gio@(c.MaCam)"></span> — bấm mắt lần nữa để chụp lại.</div>
+                        </div>
+                    </div>
+                }
+            }
+            <div class="small text-muted">
+                💡 Camera đã <b>Thử kết nối OK</b> sẽ xuất hiện trong ô chọn nguồn ở màn hình
+                <a href="@Url.Action("Index", "Gate")">Cổng ALPR</a> — AI đọc biển số thẳng từ camera hiện trường.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Goi y duong dan anh theo hang camera
+    var GOI_Y = {
+        Hikvision: 'Hikvision → /ISAPI/Streaming/channels/{kênh}01/picture (tự ghép)',
+        Dahua: 'Dahua → /cgi-bin/snapshot.cgi?channel={kênh} (tự ghép)',
+        Reolink: 'Reolink → /cgi-bin/api.cgi?cmd=Snap&channel={kênh-1} (tự ghép)',
+        Khac: 'Hãng khác → bắt buộc tự nhập "Đường dẫn ảnh riêng", VD: /snapshot.jpg'
+    };
+    var sel = document.getElementById('selHang');
+    function veGoiY() { document.getElementById('goiY').textContent = GOI_Y[sel.value] || ''; }
+    if (sel) { sel.addEventListener('change', veGoiY); veGoiY(); }
+
+    function xemAnh(id, ten) {
+        var khung = document.getElementById('khungAnh' + id);
+        var img = document.getElementById('anh' + id);
+        khung.style.display = 'block';
+        img.src = '/Admin/Camera/Anh/' + id + '?t=' + Date.now();
+        img.onerror = function () { document.getElementById('gio' + id).textContent = '⚠ không lấy được ảnh — bấm Thử kết nối để xem lỗi'; };
+        document.getElementById('gio' + id).textContent = new Date().toLocaleTimeString('vi-VN');
+    }
+</script>

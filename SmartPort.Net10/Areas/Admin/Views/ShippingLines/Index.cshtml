@@ -1,0 +1,38 @@
+﻿@model List<SmartPort.Models.HangTau>
+@{
+    ViewBag.Title = "Quản lý hãng tàu";
+    Dictionary<int, int> soTau = ViewBag.SoTau;
+}
+<div class="card-sp">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-globe2 me-2 text-primary"></i>Danh sách hãng tàu đối tác</span>
+        <a class="btn btn-sm btn-accent" href="@Url.Action("Form")"><i class="bi bi-plus-lg me-1"></i>Thêm hãng tàu</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-sp">
+            <thead>
+                <tr><th>Tên hãng tàu</th><th>Mã SCAC</th><th>Quốc gia</th><th>Website</th><th class="text-center">Số tàu</th><th class="text-end">Thao tác</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var h in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@h.TenHangTau</td>
+                        <td><span class="badge bg-light text-dark border">@h.MaSCAC</span></td>
+                        <td>@h.QuocGia</td>
+                        <td class="small text-muted">@h.Website</td>
+                        <td class="text-center">@(soTau.ContainsKey(h.MaHangTau) ? soTau[h.MaHangTau] : 0)</td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Form", new { id = h.MaHangTau })"><i class="bi bi-pencil"></i></a>
+                            @using (Html.BeginForm("Delete", "ShippingLines", new { id = h.MaHangTau }, FormMethod.Post, null, new { @class = "d-inline", onsubmit = "return confirm('Xóa hãng tàu " + h.TenHangTau + "?');" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i></button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

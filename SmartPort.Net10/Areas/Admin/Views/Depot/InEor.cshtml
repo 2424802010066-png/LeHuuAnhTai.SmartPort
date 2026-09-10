@@ -1,0 +1,102 @@
+﻿@model SmartPort.Models.PhieuSuaChua
+@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>@Model.SoEOR — Phiếu sửa chữa vỏ container</title>
+    <style>
+        /* Ban in EOR song ngu de gui hang tau duyet */
+        body { font-family: 'Times New Roman', serif; color: #000; background: #f1f5f9; margin: 0; }
+        .to { width: 190mm; margin: 10mm auto; background: #fff; padding: 12mm; }
+        .dau { display: flex; justify-content: space-between; border-bottom: 3px double #000; padding-bottom: 4mm; }
+        .dau h1 { font-size: 17pt; margin: 0; }
+        .dau .en { font-size: 10pt; font-style: italic; color: #444; }
+        .so { text-align: right; font-size: 11pt; }
+        .so b { font-size: 14pt; }
+        table { width: 100%; border-collapse: collapse; font-size: 11pt; margin-top: 5mm; }
+        th, td { border: 1px solid #333; padding: 3mm; text-align: left; vertical-align: top; }
+        th { background: #e2e8f0; width: 32%; }
+        th .en { display: block; font-size: 8.5pt; font-style: italic; font-weight: normal; color: #555; }
+        .tien { font-size: 14pt; font-weight: bold; }
+        .kyTen { display: flex; justify-content: space-between; margin-top: 10mm; font-size: 10.5pt; text-align: center; }
+        .kyTen div { width: 30%; }
+        .cho { height: 20mm; }
+        .nut { text-align: center; margin: 8mm 0; }
+        .nut button { font-size: 12pt; padding: 9px 26px; border: 0; border-radius: 8px; background: #0a2f57; color: #fff; cursor: pointer; }
+        .ghiChu { margin-top: 5mm; font-size: 9.5pt; color: #444; border-left: 3px solid #b45309; padding-left: 4mm; }
+        @@media print { body { background: #fff; } .nut { display: none; } .to { margin: 0; width: auto; padding: 0; } }
+    </style>
+</head>
+<body>
+    <div class="nut"><button onclick="window.print()">🖨 In / Lưu PDF gửi hãng tàu</button></div>
+    <div class="to">
+        <div class="dau">
+            <div>
+                <h1>PHIẾU BÁO GIÁ SỬA CHỮA VỎ CONTAINER</h1>
+                <div class="en">ESTIMATE OF REPAIR (EOR)</div>
+            </div>
+            <div class="so">
+                Số / <i>No.</i> <b>@Model.SoEOR</b><br />
+                Ngày / <i>Date</i>: @Model.NgayLap.ToString("dd/MM/yyyy")
+            </div>
+        </div>
+
+        <table>
+            <tr>
+                <th>Số container <span class="en">Container No.</span></th>
+                <td style="font-size:14pt;font-weight:bold;">@Model.SoCont</td>
+            </tr>
+            <tr>
+                <th>Hãng tàu <span class="en">Shipping line</span></th>
+                <td>@(Model.HangTau != null ? Model.HangTau.TenHangTau : "—")</td>
+            </tr>
+            <tr>
+                <th>Vị trí hư hỏng <span class="en">Damage location</span></th>
+                <td>@Model.ViTriHuHong</td>
+            </tr>
+            <tr>
+                <th>Mã hư hỏng <span class="en">Damage code</span></th>
+                <td>@(string.IsNullOrEmpty(Model.MaHuHong) ? "—" : Model.MaHuHong)</td>
+            </tr>
+            <tr>
+                <th>Mô tả <span class="en">Description</span></th>
+                <td>@Model.MoTa</td>
+            </tr>
+            <tr>
+                <th>Giờ công <span class="en">Labour hours</span></th>
+                <td>@(Model.GioCong ?? 0) giờ × 150.000 đ = <b>@(((Model.GioCong ?? 0) * 150000m).ToString("#,##0")) đ</b></td>
+            </tr>
+            <tr>
+                <th>Vật tư <span class="en">Material cost</span></th>
+                <td>@((Model.ChiPhiVatTu ?? 0).ToString("#,##0")) đ</td>
+            </tr>
+            <tr>
+                <th>TỔNG ƯỚC TÍNH <span class="en">TOTAL ESTIMATE</span></th>
+                <td class="tien">@((Model.ChiPhiUocTinh ?? 0).ToString("#,##0")) đ</td>
+            </tr>
+            <tr>
+                <th>Trạng thái <span class="en">Status</span></th>
+                <td>
+                    <b>@Model.TrangThai</b>
+                    @if (Model.NgayDuyet != null)
+                    {
+                        <text> — @Model.NgayDuyet.Value.ToString("HH:mm dd/MM/yyyy")</text>
+                    }
+                </td>
+            </tr>
+        </table>
+
+        <div class="ghiChu">
+            Phiếu này chỉ có giá trị thực hiện sau khi <b>hãng tàu phê duyệt</b>.
+            <i>This estimate is valid for execution only after the shipping line's approval.</i>
+        </div>
+
+        <div class="kyTen">
+            <div><b>NGƯỜI LẬP PHIẾU</b><br /><i>Prepared by</i><div class="cho"></div>@Model.NguoiLap</div>
+            <div><b>GIÁM ĐỊNH VIÊN</b><br /><i>Surveyor</i><div class="cho"></div></div>
+            <div><b>HÃNG TÀU DUYỆT</b><br /><i>Line approval</i><div class="cho"></div></div>
+        </div>
+    </div>
+</body>
+</html>

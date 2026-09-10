@@ -1,0 +1,46 @@
+﻿@model SmartPort.Models.TinTuc
+@{
+    ViewBag.Title = Model.TieuDe;
+}
+<div class="page-head">
+    <div class="container">
+        <h1 style="font-size:1.35rem;">@Model.TieuDe</h1>
+        <nav><ol class="breadcrumb mt-2"><li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li><li class="breadcrumb-item"><a href="@Url.Action("Index", "News")">Tin tức</a></li><li class="breadcrumb-item active">Chi tiết</li></ol></nav>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card-sp p-4">
+                <div class="news-meta mb-3">
+                    <i class="bi bi-calendar3 me-1"></i>@Ui.Dt(Model.NgayDang) &nbsp;·&nbsp; <i class="bi bi-eye me-1"></i>@Model.LuotXem lượt xem
+                </div>
+                <div class="news-thumb rounded-3 mb-4" style="height:280px;@Photos.Bg(Model.AnhMau ?? "g1")"></div>
+                @if (!string.IsNullOrEmpty(Model.TomTat))
+                {
+                    <p class="lead" style="font-size:1.05rem;color:#33506e;"><strong>@Model.TomTat</strong></p>
+                }
+                <div class="news-content" style="line-height:1.8;">
+                    @Html.Raw(Model.NoiDung)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card-sp p-4">
+                <h6 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-collection me-2"></i>Tin khác</h6>
+                @foreach (TinTuc t in ViewBag.TinKhac)
+                {
+                    <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
+                        <div class="news-thumb rounded-3 flex-shrink-0" style="width:74px;height:58px;@Photos.Bg(t.AnhMau ?? "g1")"></div>
+                        <div>
+                            <a class="fw-semibold d-block" style="color:#12263a;font-size:.9rem;line-height:1.4;" href="@Url.Action("Details", "News", new { id = t.MaTin })">@t.TieuDe</a>
+                            <small class="text-muted">@Ui.D(t.NgayDang)</small>
+                        </div>
+                    </div>
+                }
+                <a class="btn btn-outline-sp btn-sm w-100" href="@Url.Action("Index", "News")">Xem tất cả tin</a>
+            </div>
+        </div>
+    </div>
+</div>

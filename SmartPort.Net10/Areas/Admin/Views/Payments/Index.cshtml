@@ -1,0 +1,157 @@
+@model List<SmartPort.Models.ThanhToan>
+@{
+    ViewBag.Title = "Đối soát thanh toán";
+    var coCau = ViewBag.CoCau as List<SmartPort.Models.CoCauThanhToanVM>;
+    decimal tongDaTT = ViewBag.TongDaTT ?? 0m;
+}
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+    <h4 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-cash-stack me-2"></i>Đối soát thanh toán</h4>
+    <span class="text-muted small">@Model.Count giao dịch</span>
+</div>
+
+@if (TempData["Ok"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show"><i class="bi bi-check-circle me-2"></i>@TempData["Ok"]<button class="btn-close" data-bs-dismiss="alert"></button></div>
+}
+
+<!-- Thong ke -->
+<div class="row g-3 mb-3">
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#15803d,#22c55e);">
+            <div class="ps-num">@Ui.Vnd(tongDaTT)</div>
+            <div class="ps-lbl">Đã thu (@ViewBag.SoGdDaTT giao dịch)</div>
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+    </div>
+    <div class="col-md-3 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#e5691d,#ff9d4d);">
+            <div class="ps-num">@Ui.Vnd((decimal)ViewBag.TongChoTT)</div>
+            <div class="ps-lbl">Chờ đối soát (@ViewBag.SoGdChoTT giao dịch)</div>
+            <i class="bi bi-hourglass-split"></i>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card-sp p-3 h-100">
+            <div class="fw-bold mb-2" style="color:#0a2f57;font-size:.92rem;"><i class="bi bi-pie-chart me-1"></i>Cơ cấu theo phương thức (đã thu)</div>
+            @if (coCau != null && coCau.Any())
+            {
+                foreach (var c in coCau)
+                {
+                    var pct = tongDaTT > 0 ? (double)(c.SoTien / tongDaTT * 100) : 0;
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <span style="min-width:120px;font-size:.84rem;">@c.TenPhuongThuc</span>
+                        <div class="flex-grow-1" style="height:8px;background:var(--line);border-radius:999px;overflow:hidden;">
+                            <span style="display:block;height:100%;width:@(Math.Round(pct))%;background:linear-gradient(90deg,#0a2f57,#1c5fa8);"></span>
+                        </div>
+                        <span class="text-muted" style="font-size:.8rem;min-width:100px;text-align:right;">@Ui.Vnd(c.SoTien)</span>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<!-- ===== TÍCH HỢP KẾ TOÁN MISA ===== -->
+<div class="card-sp p-3 mb-3" style="border-left:5px solid #10793f;">
+    <div class="row g-2 align-items-end">
+        <div class="col-lg-5">
+            <div class="fw-bold" style="color:#10793f;"><i class="bi bi-calculator me-1"></i>Đồng bộ kế toán MISA</div>
+            <div class="small text-muted">
+                Xuất bảng kê chứng từ bán hàng (định khoản <b>Nợ 131 / Có 5113</b>) theo đúng mẫu
+                <b>Nhập chứng từ từ Excel</b> của MISA AMIS/SME — kèm sheet hướng dẫn nhập.
+            </div>
+        </div>
+        <form class="col-lg-7" method="get" action="@Url.Action("MisaExport")">
+            <div class="row g-2 align-items-end">
+                <div class="col-sm-4">
+                    <label class="form-label small fw-semibold mb-1">Từ ngày</label>
+                    <input type="date" name="tu" class="form-control form-control-sm"
+                           value="@DateTime.Today.AddDays(-30).ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-sm-4">
+                    <label class="form-label small fw-semibold mb-1">Đến ngày</label>
+                    <input type="date" name="den" class="form-control form-control-sm"
+                           value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-sm w-100 text-white" style="background:#10793f;" type="submit">
+                        <i class="bi bi-file-earmark-excel me-1"></i>Xuất file nhập MISA
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Bo loc -->
+<div class="card-sp p-3 mb-3">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label small fw-semibold mb-1">Trạng thái</label>
+            <select name="trangThai" class="form-select form-select-sm">
+                <option value="">— Tất cả —</option>
+                @foreach (var s in new[] { "Chờ thanh toán", "Đã thanh toán", "Đã hủy", "Quá hạn" })
+                {
+                    <option value="@s" selected="@(((string)ViewBag.TrangThai) == s)">@s</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small fw-semibold mb-1">Phương thức</label>
+            <select name="phuongThuc" class="form-select form-select-sm">
+                <option value="">— Tất cả —</option>
+                <option value="ChuyenKhoan" selected="@(((string)ViewBag.PhuongThuc) == "ChuyenKhoan")">Chuyển khoản QR</option>
+                <option value="TheNganHang" selected="@(((string)ViewBag.PhuongThuc) == "TheNganHang")">Thẻ ngân hàng</option>
+                <option value="ViDienTu" selected="@(((string)ViewBag.PhuongThuc) == "ViDienTu")">Ví điện tử</option>
+                <option value="TienMat" selected="@(((string)ViewBag.PhuongThuc) == "TienMat")">Tiền mặt</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label small fw-semibold mb-1">Tìm kiếm</label>
+            <input name="tuKhoa" value="@ViewBag.TuKhoa" class="form-control form-control-sm" placeholder="Nội dung CK, mã GD, booking, khách hàng..." />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-navy btn-sm w-100"><i class="bi bi-funnel me-1"></i>Lọc</button>
+        </div>
+    </form>
+</div>
+
+<div class="card-sp p-0">
+    <div class="table-responsive">
+        <table class="table table-sp align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Mã GD</th>
+                    <th>Booking</th>
+                    <th>Khách hàng</th>
+                    <th>Phương thức</th>
+                    <th class="text-end">Số tiền</th>
+                    <th>Ngày tạo</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr><td colspan="8" class="text-center text-muted py-4">Không có giao dịch nào khớp bộ lọc.</td></tr>
+                }
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">#@t.MaTT</td>
+                        <td>@(t.DatDichVu != null ? t.DatDichVu.MaSoBooking : "—")</td>
+                        <td style="max-width:200px;">@(t.DatDichVu != null && t.DatDichVu.KhachHang != null ? t.DatDichVu.KhachHang.TenCongTy : "—")</td>
+                        <td>@t.TenPhuongThuc</td>
+                        <td class="text-end fw-semibold">@Ui.Vnd(t.SoTien)</td>
+                        <td>@Ui.Dt(t.NgayTao)</td>
+                        <td><span class="badge-st @Ui.Badge(t.TrangThai)">@t.TrangThai</span></td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-sp" href="@Url.Action("Details", new { id = t.MaTT })"><i class="bi bi-eye me-1"></i>Chi tiết</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

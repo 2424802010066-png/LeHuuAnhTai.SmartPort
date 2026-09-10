@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Trạm camera an ninh AI";
+}
+
+<div class="ai-box mb-3">
+    <span class="ai-tag"><i class="bi bi-shield-exclamation"></i> SMARTGUARD · TRẠM CAMERA AN NINH AI</span>
+    <div class="row align-items-center mt-2">
+        <div class="col-lg-9">
+            <h5 class="fw-bold mb-1">Xác nhận container 2 bước + phát hiện nguy hiểm thời gian thực</h5>
+            <div style="color:#c9dcef;font-size:.9rem;">
+                <strong>OCR ISO 6346</strong> (4 chữ + 7 số) đối chiếu 2 lần quét — đúng thì <strong>chuông</strong>,
+                sai thì <strong>còi cảnh báo</strong>. Chế độ giám sát phát hiện <strong>lửa</strong>,
+                <strong>người ngã</strong>, <strong>vật thể đứng im bất thường</strong> — tự chụp ảnh, ghi video
+                và <strong>báo kèm vị trí</strong> về Phòng an ninh.
+            </div>
+        </div>
+        <div class="col-lg-3 text-lg-end mt-2 mt-lg-0">
+            <a class="btn btn-sm btn-light fw-semibold" href="@Url.Action("Index")"><i class="bi bi-building-lock me-1"></i>Phòng an ninh</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <!-- ===== CAMERA ===== -->
+    <div class="col-lg-7">
+        <div class="card-sp p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-camera-video me-1"></i>CAMERA GIÁM SÁT</h6>
+                <span id="sgWatchMeta" class="small text-muted">—</span>
+            </div>
+            <div id="sgStatus" class="small mb-2 text-muted">Đang tải engine AI...</div>
+            <div style="position:relative;border-radius:12px;overflow:hidden;background:#0b1520;min-height:300px;">
+                <canvas id="sgCanvas" style="width:100%;display:block;"></canvas>
+                <video id="sgVideo" playsinline muted style="display:none;"></video>
+            </div>
+            <div class="row g-2 mt-2">
+                <div class="col-md-4">
+                    <button id="btnCam" class="btn btn-navy w-100" disabled><i class="bi bi-camera-video me-1"></i>Bật camera</button>
+                </div>
+                <div class="col-md-4">
+                    <input type="file" id="fileInput" accept="image/*" class="form-control" disabled />
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-outline-primary w-100 sg-sample" disabled data-src="@Url.Content("~/Content/img/alpr-demo-1.png")?v=5">
+                        <i class="bi bi-image me-1"></i>Ảnh mẫu container
+                    </button>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap gap-3 align-items-center mt-3">
+                <div>
+                    <label class="form-label small fw-semibold mb-1">📍 Vị trí camera (gửi kèm khi báo an ninh)</label>
+                    <select id="sgViTri" class="form-select form-select-sm">
+                        <option>Cổng chính</option>
+                        <option>Cổng phụ</option>
+                        <option>Bãi container</option>
+                        <option>Cầu bến</option>
+                        <option>Kho CFS</option>
+                    </select>
+                </div>
+                <div class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" id="sgAutoSiren" checked />
+                    <label class="form-check-label small fw-semibold" for="sgAutoSiren">Tự hú còi khi NGUY HIỂM</label>
+                </div>
+                <button id="btnSiren" class="btn btn-sm btn-outline-danger mt-3" disabled><i class="bi bi-megaphone me-1"></i>Thử còi báo động</button>
+                <button id="btnChime" class="btn btn-sm btn-outline-success mt-3"><i class="bi bi-bell me-1"></i>Thử chuông</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 2 CHUC NANG ===== -->
+    <div class="col-lg-5">
+        <!-- OCR 2 buoc -->
+        <div class="card-sp p-3 mb-3" style="border-left:5px solid #0891b2;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-upc-scan me-1"></i>Xác nhận container 2 bước</h6>
+                <span id="sgStepBadge" class="badge" style="background:#0891b2;">BƯỚC 1/2</span>
+            </div>
+            <p class="small text-muted mb-2">
+                Lần 1: chụp và <b>lưu mã + ảnh gốc</b>. Lần 2: quét lại để <b>đối chiếu</b> —
+                đúng ✔ chuông báo, sai ✘ còi cảnh báo + báo an ninh.
+            </p>
+            <button id="btnStep" class="btn btn-accent w-100" disabled><i class="bi bi-camera me-1"></i>Quét lần 1 — LƯU MÃ</button>
+            <div id="sgOcrKq" class="small mt-2" style="line-height:1.6;">Chưa có lượt quét nào.</div>
+        </div>
+
+        <!-- Giam sat -->
+        <div class="card-sp p-3 mb-3" style="border-left:5px solid #dc2626;">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-eye me-1"></i>Giám sát nguy hiểm (thời gian thực)</h6>
+            <div class="small text-muted mb-2">
+                🔥 Lửa/nhiệt (phân tích màu + nhấp nháy) · 🧍 Người ngã (khung nằm ngang) ·
+                📦 Vật thể đứng im bất thường (theo dõi chuyển động)
+            </div>
+            <button id="btnWatch" class="btn btn-navy w-100" disabled><i class="bi bi-eye me-1"></i>Bật giám sát an ninh</button>
+        </div>
+
+        <!-- Nhat ky -->
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-journal-text me-1"></i>Nhật ký trạm</h6>
+            <div id="sgLog" class="sg-log"><div class="text-muted small">Chưa có sự kiện.</div></div>
+        </div>
+    </div>
+</div>
+
+<canvas id="sgWork" style="display:none;"></canvas>
+
+<style>
+    .sg-code { font-family: Consolas, monospace; background: #fff; color: #0a0a0a; border: 2px solid #111; border-radius: 6px; padding: 1px 8px; font-weight: 800; }
+    .sg-ok { color: #15803d; font-weight: 900; font-size: 1.05rem; }
+    .sg-bad { color: #dc2626; font-weight: 900; font-size: 1.05rem; animation: sgBlink 1s ease-in-out 3; }
+    @@keyframes sgBlink { 50% { opacity: .35; } }
+    .sg-log { max-height: 220px; overflow-y: auto; }
+    .sg-log-item { font-size: .82rem; padding: 5px 0; border-bottom: 1px dashed var(--line); line-height: 1.5; }
+</style>
+
+@section scripts {
+<script src="@Url.Content("~/Scripts/security.js")?v=7"></script>
+}

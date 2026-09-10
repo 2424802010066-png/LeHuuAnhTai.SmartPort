@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Trạm cân xe (weighbridge)";
+    var ganDay = ViewBag.GanDay as List<SmartPort.Models.PhieuCan>;
+}
+
+<div class="ai-box mb-3">
+    <span class="ai-tag"><i class="bi bi-speedometer2"></i> TRẠM CÂN ĐIỆN TỬ · VGM</span>
+    <div style="color:#c9dcef;font-size:.9rem;" class="mt-2">
+        Cân 2 lần như trạm cân cảng thật: <strong>lần 1 lúc vào</strong> (xe + hàng hoặc xe rỗng) —
+        <strong>lần 2 lúc ra</strong> → hiệu số = <strong>khối lượng hàng</strong>, phục vụ khai
+        <strong>VGM</strong> (khối lượng xác minh theo công ước SOLAS). Phiếu chốt xong tự ghi vào Kho chứng từ.
+    </div>
+</div>
+
+@if (TempData["ThongBao"] != null) { <div class="alert alert-success py-2">@TempData["ThongBao"]</div> }
+@if (TempData["Loi"] != null) { <div class="alert alert-danger py-2">@TempData["Loi"]</div> }
+
+<div class="row g-3">
+    <div class="col-lg-5">
+        <div class="card-sp p-3 mb-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-1-circle me-1"></i>CÂN LẦN 1 — xe vào trạm</h6>
+            @using (Html.BeginForm("LuuCan", "Gate", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="mb-2"><label class="form-label small">Biển số xe *</label><input name="bienSo" class="form-control" placeholder="VD: 51C-638.72" required /></div>
+                <div class="mb-2"><label class="form-label small">Số container (nếu chở)</label><input name="soCont" class="form-control" maxlength="11" placeholder="VD: MSCU2201417" /></div>
+                <div class="mb-2"><label class="form-label small">Số cân hiển thị (kg) *</label><input name="khoiLuong" type="number" step="0.1" min="1" class="form-control" placeholder="VD: 32500" required /></div>
+                <div class="mb-2"><label class="form-label small">Ghi chú</label><input name="ghiChu" class="form-control" /></div>
+                <button class="btn btn-navy w-100" type="submit"><i class="bi bi-plus-circle me-1"></i>Tạo phiếu — cân lần 1</button>
+            }
+        </div>
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-2-circle me-1"></i>CÂN LẦN 2 — chốt phiếu</h6>
+            @using (Html.BeginForm("LuuCan", "Gate", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="mb-2">
+                    <label class="form-label small">Chọn phiếu đang chờ cân lần 2 *</label>
+                    <select name="maPC" class="form-select" required>
+                        <option value="">— Chọn phiếu —</option>
+                        @if (ganDay != null)
+                        {
+                            foreach (var p in ganDay.Where(x => x.CanLan2 == null))
+                            {
+                                <option value="@p.MaPC">@p.SoPhieu · @p.BienSoXe · lần 1: @p.CanLan1.ToString("N0") kg</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <input type="hidden" name="bienSo" value="x" />
+                <div class="mb-2"><label class="form-label small">Số cân lần 2 (kg) *</label><input name="khoiLuong" type="number" step="0.1" min="1" class="form-control" required /></div>
+                <button class="btn btn-accent w-100" type="submit"><i class="bi bi-check2-circle me-1"></i>Chốt phiếu cân</button>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-clock-history me-1"></i>Phiếu cân gần đây</h6>
+            <div class="table-responsive">
+                <table class="table table-sm table-hover align-middle">
+                    <thead><tr class="small text-muted"><th>SỐ PHIẾU</th><th>BIỂN SỐ</th><th>CONT</th><th>CÂN 1</th><th>CÂN 2</th><th>HÀNG (kg)</th><th></th></tr></thead>
+                    <tbody>
+                        @if (ganDay == null || ganDay.Count == 0)
+                        {
+                            <tr><td colspan="7" class="text-center text-muted py-4">Chưa có phiếu cân nào.</td></tr>
+                        }
+                        else
+                        {
+                            foreach (var p in ganDay)
+                            {
+                                <tr>
+                                    <td class="fw-bold" style="font-family:Consolas,monospace;">@p.SoPhieu</td>
+                                    <td>@p.BienSoXe</td>
+                                    <td class="small" style="font-family:Consolas,monospace;">@(string.IsNullOrEmpty(p.SoCont) ? "—" : p.SoCont)</td>
+                                    <td class="small">@p.CanLan1.ToString("N0")</td>
+                                    <td class="small">@(p.CanLan2 != null ? p.CanLan2.Value.ToString("N0") : "chờ...")</td>
+                                    <td class="fw-bold" style="color:#c2410c;">@(p.KhoiLuongHang != null ? p.KhoiLuongHang.Value.ToString("N0") : "—")</td>
+                                    <td class="text-end">
+                                        <a class="btn btn-sm btn-outline-sp" target="_blank" href="@Url.Action("InPhieuCan", new { id = p.MaPC })" title="In phiếu"><i class="bi bi-printer"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

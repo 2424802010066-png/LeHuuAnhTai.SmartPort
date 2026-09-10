@@ -1,0 +1,204 @@
+﻿@model List<SmartPort.Models.TheXe>
+@{ ViewBag.Title = "Thẻ xe qua cổng"; }
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <div>
+        <a class="btn btn-sm btn-outline-sp" href="@Url.Action("Index")"><i class="bi bi-arrow-left me-1"></i>Biểu giá</a>
+        <span class="fs-5 fw-bold ms-2" style="color:#0a2f57;"><i class="bi bi-credit-card-2-front me-1"></i>Thẻ xe qua cổng</span>
+    </div>
+    <div class="small text-muted">
+        Tổng số dư trả trước đang giữ hộ: <b style="color:#7e22ce;">@ViewBag.TongSoDu.ToString("N0")đ</b>
+    </div>
+</div>
+
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success py-2"><i class="bi bi-check-circle me-1"></i>@TempData["ThongBao"]</div>
+}
+@if (TempData["Loi"] != null)
+{
+    <div class="alert alert-warning py-2"><i class="bi bi-exclamation-triangle me-1"></i>@TempData["Loi"]</div>
+}
+
+<div class="row g-3">
+    <div class="col-lg-4">
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#7e22ce;"><i class="bi bi-plus-square me-1"></i>Cấp thẻ mới</h6>
+            @using (Html.BeginForm("LuuThe", "PhiCong", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="MaThe" value="0" />
+                <input type="hidden" name="KichHoat" value="true" />
+
+                <label class="form-label small fw-semibold">BIỂN SỐ XE</label>
+                <input class="form-control mb-2" name="BienSo" required placeholder="51C-638.72"
+                       style="font-weight:700;letter-spacing:.5px;text-transform:uppercase;" />
+
+                <label class="form-label small fw-semibold">CHỦ XE / NHÀ XE</label>
+                <input class="form-control mb-2" name="TenChuXe" placeholder="Công ty vận tải Trường Thành" />
+
+                <div class="row g-2 mb-2">
+                    <div class="col-7">
+                        <label class="form-label small fw-semibold">ĐIỆN THOẠI</label>
+                        <input class="form-control" name="DienThoai" placeholder="0912xxxxxx" />
+                    </div>
+                    <div class="col-5">
+                        <label class="form-label small fw-semibold">LOẠI THẺ</label>
+                        <select class="form-select" name="LoaiThe" id="loaiThe">
+                            <option value="Trả trước">Trả trước</option>
+                            <option value="Tháng">Tháng</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label class="form-label small fw-semibold">KHÁCH HÀNG (nếu thuộc công ty)</label>
+                <select class="form-select mb-2" name="MaKH">
+                    <option value="">— Không gắn —</option>
+                    @foreach (var k in (SelectList)ViewBag.KhList)
+                    {
+                        <option value="@k.Value">@k.Text</option>
+                    }
+                </select>
+
+                <div id="oNap">
+                    <label class="form-label small fw-semibold">NẠP TIỀN BAN ĐẦU (đ)</label>
+                    <input class="form-control mb-2" name="napThem" placeholder="500.000" />
+                </div>
+                <div id="oHan" style="display:none;">
+                    <label class="form-label small fw-semibold">HẠN ĐẾN</label>
+                    <input class="form-control mb-2" name="HanDen" type="date" />
+                </div>
+
+                <label class="form-label small fw-semibold">GHI CHÚ</label>
+                <input class="form-control mb-3" name="GhiChu" />
+
+                <button class="btn btn-accent w-100" type="submit"><i class="bi bi-credit-card me-1"></i>Cấp thẻ</button>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card-sp p-3">
+            <form method="get" class="d-flex gap-2 mb-3">
+                <input class="form-control" name="q" value="@ViewBag.Q" placeholder="Tìm biển số hoặc tên chủ xe..." />
+                <button class="btn btn-outline-sp" type="submit"><i class="bi bi-search"></i></button>
+            </form>
+
+            @if (Model.Count == 0)
+            {
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-credit-card-2-front" style="font-size:2.6rem;opacity:.35;"></i>
+                    <div class="mt-2">Chưa có thẻ nào.</div>
+                    <div class="small">Xe không có thẻ vẫn qua cổng bình thường — chỉ là thu tiền mặt.</div>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-sp align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Biển số · chủ xe</th>
+                                <th>Loại</th>
+                                <th class="text-end">Số dư / hạn</th>
+                                <th class="text-center">Trạng thái</th>
+                                <th class="text-end">Nạp / sửa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var t in Model)
+                            {
+                                <tr class="@(t.KichHoat ? "" : "opacity-50")">
+                                    <td>
+                                        <a class="lk-xe" href="@Url.Action("HoSoXe", "Gate", new { bienSo = t.BienSo })">@t.BienSo</a>
+                                        <div class="small text-muted">
+                                            @(t.TenChuXe ?? "—")
+                                            @if (t.KhachHang != null) { <text> · @t.KhachHang.TenCongTy</text> }
+                                        </div>
+                                    </td>
+                                    <td><span class="badge @(t.LoaiThe == "Tháng" ? "bg-primary" : "bg-info text-dark")">@t.LoaiThe</span></td>
+                                    <td class="text-end">
+                                        @if (t.LoaiThe == "Tháng")
+                                        {
+                                            <div class="small">@(t.HanDen != null ? t.HanDen.Value.ToString("dd/MM/yyyy") : "chưa đặt hạn")</div>
+                                            @if (t.HanDen != null)
+                                            {
+                                                <div class="small @(t.SoNgayConLai < 0 ? "text-danger fw-bold" : t.SoNgayConLai <= 7 ? "text-warning fw-bold" : "text-muted")">
+                                                    @(t.SoNgayConLai < 0 ? "quá hạn " + (-t.SoNgayConLai) + " ngày" : "còn " + t.SoNgayConLai + " ngày")
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="fw-bold" style="color:@(t.SoDu > 0 ? "#7e22ce" : "#dc2626");">@t.SoDu.ToString("N0")đ</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (t.ConDung)
+                                        {
+                                            <span class="badge bg-success">Còn dùng</span>
+                                        }
+                                        else if (!t.KichHoat)
+                                        {
+                                            <span class="badge bg-secondary">Đã khóa</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">@(t.LoaiThe == "Tháng" ? "Hết hạn" : "Hết tiền")</span>
+                                        }
+                                    </td>
+                                    <td class="text-end text-nowrap">
+                                        @using (Html.BeginForm("LuuThe", "PhiCong", FormMethod.Post, new { @class = "d-inline-flex gap-1" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="MaThe" value="@t.MaThe" />
+                                            <input type="hidden" name="BienSo" value="@t.BienSo" />
+                                            <input type="hidden" name="TenChuXe" value="@t.TenChuXe" />
+                                            <input type="hidden" name="DienThoai" value="@t.DienThoai" />
+                                            <input type="hidden" name="MaKH" value="@t.MaKH" />
+                                            <input type="hidden" name="LoaiThe" value="@t.LoaiThe" />
+                                            <input type="hidden" name="GhiChu" value="@t.GhiChu" />
+                                            <input type="hidden" name="KichHoat" value="true" />
+                                            @if (t.LoaiThe == "Tháng")
+                                            {
+                                                <input type="date" class="form-control form-control-sm" name="HanDen" style="width:140px;"
+                                                       value="@(t.HanDen != null ? t.HanDen.Value.ToString("yyyy-MM-dd") : "")" title="Gia hạn đến" />
+                                            }
+                                            else
+                                            {
+                                                <input class="form-control form-control-sm text-end" name="napThem" placeholder="Nạp thêm" style="width:110px;" />
+                                            }
+                                            <button class="btn btn-sm btn-accent" type="submit" title="Lưu"><i class="bi bi-save"></i></button>
+                                        }
+                                        @using (Html.BeginForm("XoaThe", "PhiCong", new { id = t.MaThe }, FormMethod.Post, null,
+                                                new { @class = "d-inline", onsubmit = "return confirm('Xóa thẻ xe " + t.BienSo + "?');" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-trash"></i></button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="small text-muted mt-2">
+                    💡 Ô “Nạp thêm” <b>cộng dồn</b> vào số dư hiện tại, không ghi đè — nạp 200.000 vào thẻ còn 50.000 thì thành 250.000.
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var sel = document.getElementById('loaiThe');
+        if (!sel) return;
+        function doi() {
+            var thang = sel.value === 'Tháng';
+            document.getElementById('oNap').style.display = thang ? 'none' : '';
+            document.getElementById('oHan').style.display = thang ? '' : 'none';
+        }
+        sel.addEventListener('change', doi); doi();
+    })();
+</script>

@@ -1,0 +1,22 @@
+{
+  "name": "SmartPort — Cảng thông minh AI",
+  "short_name": "SmartPort",
+  "description": "Nền tảng AI quản lý và giám sát toàn diện cảng logistics: check-in tài xế, tình trạng cổng realtime, tra cứu container, hàng & lệnh của tôi.",
+  "lang": "vi",
+  "start_url": "/Mobile",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a2f57",
+  "theme_color": "#0a2f57",
+  "icons": [
+    { "src": "/Content/img/app-icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/Content/img/app-icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/Content/img/app-icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Check-in tài xế", "url": "/TaiXe", "icons": [{ "src": "/Content/img/app-icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Tình trạng cổng", "url": "/Cong", "icons": [{ "src": "/Content/img/app-icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Tra cứu container", "url": "/Tracking", "icons": [{ "src": "/Content/img/app-icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

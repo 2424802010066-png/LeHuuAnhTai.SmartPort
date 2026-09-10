@@ -1,0 +1,69 @@
+╔══════════════════════════════════════════════════════════════════╗
+║   BỘ TÀI LIỆU BÁO CÁO ĐỒ ÁN — SMARTPORT                            ║
+║   Sinh viên: Lê Hữu Anh Tài — MSSV 2424802010066                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+📁 CÁC FILE TRONG THƯ MỤC NÀY
+──────────────────────────────────────────────────────────────────
+1. BaoCao_DoAn_QuanLyCangTrongNganhLogistics_SmartPort_Lê Hữu Anh Tài_2424802010066.docx
+   ← BÁO CÁO WORD (83 trang, 57 hình, 6 bảng) — đã dựng lại đúng
+     theo file "Mẫu báo cáo Lập trình WEB.docx" của giảng viên.
+2. Cùng tên nhưng đuôi .pdf      ← Bản PDF của báo cáo (để xem/in nhanh)
+3. Slide_ThuyetTrinh_SmartPort.pptx ← SLIDE THUYẾT TRÌNH (30 slide, đồng bộ 5 chương)
+4. img-doc/                     ← ảnh chụp gốc + 5 sơ đồ khoa học (PNG)
+5. diagrams/                    ← mã nguồn HTML/SVG của 5 sơ đồ (không cần nộp)
+6. *.ps1                        ← Script tạo tự động (không cần nộp)
+
+
+✅ BÁO CÁO ĐÃ ĐÚNG 100% CẤU TRÚC MẪU CỦA GIẢNG VIÊN
+──────────────────────────────────────────────────────────────────
+• Bìa: TRƯỜNG ĐH THỦ DẦU MỘT — VIỆN CHUYỂN ĐỔI SỐ, logo trường,
+  đúng tên đề tài, thành viên + MSSV, GVHD (ThS. Nguyễn Thành Trung
+  — đã điền sẵn), khung viền đôi màu navy.
+• Đủ 5 chương đúng tên/mục con theo mẫu: Chương I → V (số La Mã),
+  mục con đánh số Ả Rập (1.1 → 1.1.1) đúng quy định của thầy.
+• Có đủ MỞ ĐẦU, MỤC LỤC, DANH MỤC BẢNG, DANH MỤC HÌNH,
+  DANH MỤC TỪ VIẾT TẮT — tất cả đều có số trang thật, tự cập nhật.
+• Tiêu đề lớn (LỜI CẢM ƠN, CHƯƠNG I...) đã canh GIỮA; các đoạn văn
+  đã THỤT ĐẦU DÒNG — đúng góp ý của thầy.
+• Các khái niệm (ASP.NET MVC, EF6, YOLO, OCR, TensorFlow.js...) đều
+  có trích dẫn [1]...[11] trỏ tới mục TÀI LIỆU THAM KHẢO cuối bài.
+• Có 5 sơ đồ khoa học tự vẽ: Kiến trúc hệ thống, Use Case, Activity,
+  Class Diagram, Mô hình vật lý CSDL (mục 2.3, 3.1.2–3.1.4, 3.2.1).
+
+Không còn ô nào cần bạn tự điền — file đã sẵn sàng nộp.
+
+
+📑 CẬP NHẬT MỤC LỤC (nếu số trang lệch sau khi sửa)
+──────────────────────────────────────────────────────────────────
+Mở file Word → bấm chuột phải vào MỤC LỤC → chọn "Update Field"
+→ "Update entire table" → OK. (Mục lục đã có sẵn số trang, bước này
+chỉ cần khi bạn thêm/bớt nội dung.)
+
+
+🎤 GỢI Ý KHI THUYẾT TRÌNH (dùng file .pptx)
+──────────────────────────────────────────────────────────────────
+• 30 slide, đồng bộ đúng 5 chương của báo cáo — trình bày khoảng
+  15–18 phút là hợp lý.
+• Slide 5, 7, 8, 9, 10 là các SƠ ĐỒ UML/kiến trúc mới (Kiến trúc hệ
+  thống, Use Case, Activity, Class Diagram, Mô hình vật lý CSDL) —
+  đây là điểm cộng lớn, nên dừng lại giải thích kỹ.
+• 2 slide nền tím-đen (slide 23, 24) là ĐIỂM NHẤN Deep Learning —
+  nên dừng lại lâu hơn, nhấn mạnh "chạy thật trên trình duyệt".
+• Nếu máy có mạng: mở website thật demo trực tiếp Camera AI (YOLO)
+  và AI Lab (huấn luyện mạng nơ-ron) — sẽ gây ấn tượng mạnh nhất.
+
+Cấu trúc kể chuyện: Chương I vấn đề (slide 3) → Chương II công nghệ
++ kiến trúc (4-6) → Chương III sơ đồ UML + CSDL (7-10) → Chương IV
+sản phẩm + Deep Learning (11-27) → Chương V kết quả + kết luận (28-29).
+
+
+🌐 CHẠY WEBSITE ĐỂ DEMO
+──────────────────────────────────────────────────────────────────
+Mở Visual Studio → mở SmartPort.sln → nhấn F5.
+Tài khoản demo (mật khẩu chung: 123456):
+  • admin  → quản trị viên (xem Camera AI, AI Lab, Dashboard)
+  • taile  → khách hàng (đặt dịch vụ, hóa đơn)
+Xem thêm README.md ở thư mục gốc SmartPort để biết chi tiết.
+
+Chúc bạn bảo vệ đồ án đạt điểm A+! 🎓

@@ -1,0 +1,153 @@
+﻿@{ ViewBag.Title = "Quét giấy tờ tài xế"; }
+
+<div class="ai-box mb-3" style="background:linear-gradient(120deg,#164e63,#0e7490);">
+    <span class="ai-tag"><i class="bi bi-qr-code-scan"></i> QUÉT CCCD GẮN CHIP</span>
+    <div style="color:#cffafe;font-size:.9rem;" class="mt-2">
+        Thẻ CCCD gắn chip có sẵn <strong>mã QR ở mặt trước</strong> chứa đủ họ tên, ngày sinh, địa chỉ.
+        Quét một cái là xong — <strong>chính xác tuyệt đối</strong>, không phụ thuộc ảnh mờ/nghiêng như OCR.
+        Bằng lái không có QR nên mới phải dùng OCR, và chỉ bóc 3 thứ quan trọng nhất.
+    </div>
+</div>
+
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success py-2"><i class="bi bi-check-circle me-1"></i>@TempData["ThongBao"]</div>
+}
+@if (TempData["Loi"] != null)
+{
+    <div class="alert alert-warning py-2"><i class="bi bi-exclamation-triangle me-1"></i>@TempData["Loi"]</div>
+}
+
+<div class="row g-3">
+    <div class="col-lg-5">
+        <div class="card-sp p-3 mb-3">
+            <h6 class="fw-bold mb-2" style="color:#0e7490;"><i class="bi bi-camera-video me-1"></i>Bước 1 — quét QR mặt trước CCCD</h6>
+            <div class="qt-khung">
+                <video id="cam" playsinline muted style="width:100%;border-radius:10px;background:#0f172a;"></video>
+                <div class="qt-vien"></div>
+                <canvas id="canvasQr" style="display:none;"></canvas>
+            </div>
+            <div class="d-flex gap-2 mt-2">
+                <button class="btn btn-accent flex-fill" type="button" id="btnCam"><i class="bi bi-camera-video me-1"></i>Bật camera</button>
+                <label class="btn btn-outline-sp mb-0">
+                    <i class="bi bi-image me-1"></i>Chọn ảnh
+                    <input type="file" id="fileQr" accept="image/*" hidden />
+                </label>
+            </div>
+            <div class="small mt-2" id="tinhTrangQr" style="min-height:22px;color:#64748b;">
+                Đưa mặt trước thẻ vào khung — hệ thống tự nhận, không cần bấm chụp.
+            </div>
+        </div>
+
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#0e7490;"><i class="bi bi-card-text me-1"></i>Bước 2 — chụp bằng lái (tùy chọn)</h6>
+            <div class="small text-muted mb-2">
+                Bằng lái không có QR nên phải dùng OCR — kết quả có thể sai, <b>xem lại rồi sửa tay</b>.
+            </div>
+            <label class="btn btn-outline-sp w-100 mb-0">
+                <i class="bi bi-image me-1"></i>Chọn ảnh bằng lái
+                <input type="file" id="fileGplx" accept="image/*" hidden />
+            </label>
+            <div class="small mt-2" id="tinhTrangGplx" style="min-height:22px;color:#64748b;"></div>
+            <div class="progress mt-1" id="thanhOcr" style="height:5px;display:none;">
+                <div class="progress-bar" id="thanhOcrIn" style="width:0%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-person-vcard me-1"></i>Bước 3 — kiểm tra rồi lưu</h6>
+            <div id="bangKhach" class="alert alert-info py-2 small" style="display:none;"></div>
+            <div id="bangGplx" class="alert py-2 small" style="display:none;"></div>
+
+            @using (Html.BeginForm("Luu", "TaiXe", FormMethod.Post, new { id = "fLuu" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="LoaiGiayTo" value="CCCD" />
+
+                <div class="row g-2">
+                    <div class="col-md-5">
+                        <label class="form-label small fw-semibold">SỐ CCCD</label>
+                        <input class="form-control" name="SoGiayTo" id="fSo" required style="font-weight:700;letter-spacing:.5px;" />
+                    </div>
+                    <div class="col-md-7">
+                        <label class="form-label small fw-semibold">HỌ TÊN</label>
+                        <input class="form-control" name="HoTen" id="fTen" required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">NGÀY SINH</label>
+                        <input class="form-control" name="NgaySinh" id="fNs" type="date" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">GIỚI TÍNH</label>
+                        <input class="form-control" name="GioiTinh" id="fGt" />
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label small fw-semibold">NGÀY CẤP</label>
+                        <input class="form-control" name="NgayCapCCCD" id="fNc" type="date" />
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label small fw-semibold">ĐỊA CHỈ</label>
+                        <input class="form-control" name="DiaChi" id="fDc" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">SỐ GPLX</label>
+                        <input class="form-control" name="SoGPLX" id="fGplx" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">HẠNG</label>
+                        <input class="form-control" name="HangGPLX" id="fHang" placeholder="FC / C / B2" />
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label small fw-semibold">GPLX HẠN ĐẾN</label>
+                        <input class="form-control" name="HanGPLX" id="fHan" type="date" />
+                    </div>
+
+                    <div class="col-md-5">
+                        <label class="form-label small fw-semibold">BIỂN SỐ XE ĐANG LÁI</label>
+                        <input class="form-control" name="BienSo" id="fBien" placeholder="51C-638.72"
+                               style="font-weight:700;text-transform:uppercase;" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">ĐIỆN THOẠI</label>
+                        <input class="form-control" name="DienThoai" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">GHI CHÚ</label>
+                        <input class="form-control" name="GhiChu" />
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-accent flex-fill" type="submit"><i class="bi bi-save me-1"></i>Lưu hồ sơ tài xế</button>
+                    <button class="btn btn-outline-success" type="button" id="btnVaoCong"><i class="bi bi-box-arrow-in-right me-1"></i>Ghi vào cổng</button>
+                    <a class="btn btn-outline-sp" href="@Url.Action("Index")"><i class="bi bi-list-ul"></i></a>
+                </div>
+            }
+        </div>
+
+        <div class="card-sp p-3 mt-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-shield-lock me-1"></i>Về dữ liệu cá nhân</h6>
+            <ul class="small text-muted mb-0" style="line-height:1.9;padding-left:18px;">
+                <li>Hệ thống <b>không tự lưu ảnh</b> mặt trước/sau CCCD — chỉ lưu các trường cần cho việc ra vào cổng.</li>
+                <li>Mã QR được <b>máy chủ tự bóc trường</b>, không tin dữ liệu trình duyệt gửi lên.</li>
+                <li>Chỉ tài khoản Admin/Nhân viên xem được danh sách này.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+    .qt-khung { position: relative; }
+    .qt-vien { position: absolute; inset: 12%; border: 3px dashed rgba(34,211,238,.75); border-radius: 12px; pointer-events: none; }
+</style>
+
+@section scripts {
+    <script src="@Url.Content("~/Scripts/vendor/qr/jsQR.js")"></script>
+    <script src="@Url.Content("~/Scripts/vendor/tess/tesseract.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/cccd.js")?v=1"></script>
+}

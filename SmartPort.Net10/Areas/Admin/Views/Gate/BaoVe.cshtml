@@ -1,0 +1,264 @@
+﻿@{
+    Layout = null;
+    var ganNhat = ViewBag.GanNhat as List<object[]>;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chốt cổng — SmartPort</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0a2f57" />
+    <style>
+        /* Man hinh CHOT BAO VE: chu to, tuong phan cao, nut to bam bang tay ban.
+           Khong dung Bootstrap de tai nhanh va chay duoc khi mang yeu. */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; background: #0f172a; color: #f8fafc; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .thanh { background: #0a2f57; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .thanh h1 { font-size: 1.4rem; margin: 0; letter-spacing: .5px; }
+        .dem { display: flex; gap: 18px; font-size: 1.05rem; }
+        .dem b { font-size: 1.5rem; }
+        .mang { padding: 6px 14px; border-radius: 999px; font-weight: 800; font-size: .9rem; }
+        .mang.on { background: #16a34a; } .mang.off { background: #dc2626; }
+        .khung { max-width: 900px; margin: 0 auto; padding: 20px 18px 40px; }
+        label { display: block; font-size: 1rem; color: #94a3b8; font-weight: 700; margin: 18px 0 8px; letter-spacing: 1px; }
+        #bienSo { width: 100%; font-size: 3.4rem; font-weight: 800; text-align: center; letter-spacing: 3px;
+                  padding: 14px; border-radius: 16px; border: 4px solid #38bdf8; background: #fff; color: #0f172a; text-transform: uppercase; }
+        .hangNut { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+        button { font-size: 1.6rem; font-weight: 800; padding: 26px 10px; border: 0; border-radius: 18px; color: #fff; cursor: pointer; }
+        button:active { transform: scale(.97); }
+        .vao { background: #16a34a; } .ra { background: #b45309; }
+        .phu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+        .phu button { font-size: 1.05rem; padding: 16px 8px; background: #334155; }
+        /* Bang ket qua doi chieu lenh — to nhat man hinh */
+        #kq { margin-top: 20px; border-radius: 20px; padding: 22px; display: none; }
+        #kq.co { background: #14532d; border: 4px solid #22c55e; }
+        #kq.khong { background: #7f1d1d; border: 4px solid #ef4444; }
+        #kqTieu { font-size: 2.2rem; font-weight: 900; letter-spacing: 1px; }
+        #kqChiTiet { font-size: 1.15rem; margin-top: 10px; line-height: 1.6; }
+        .banner { margin-top: 14px; padding: 14px 16px; border-radius: 14px; font-size: 1.05rem; font-weight: 700; display: none; }
+        .banner.cho { background: #78350f; border: 2px solid #f59e0b; }
+        .lichSu { margin-top: 26px; }
+        .lichSu h2 { font-size: 1rem; color: #94a3b8; letter-spacing: 1px; }
+        .dong { display: flex; justify-content: space-between; padding: 12px 14px; background: #1e293b; border-radius: 12px; margin-bottom: 8px; font-size: 1.05rem; }
+        .dong .b { font-weight: 800; }
+        .huong { padding: 2px 10px; border-radius: 999px; font-size: .85rem; font-weight: 800; }
+        .huong.v { background: #16a34a; } .huong.r { background: #b45309; }
+        .ghi { color: #64748b; font-size: .8rem; text-align: center; margin-top: 24px; line-height: 1.7; }
+        .ghi a { color: #7dd3fc; }
+    </style>
+</head>
+<body>
+    <div class="thanh">
+        <h1>⚓ CHỐT CỔNG</h1>
+        <div class="dem">
+            <span>VÀO <b id="dVao">@ViewBag.VaoHomNay</b></span>
+            <span>RA <b id="dRa">@ViewBag.RaHomNay</b></span>
+        </div>
+        <span class="mang on" id="trangThaiMang">● CÓ MẠNG</span>
+    </div>
+
+    <div class="khung">
+        <label for="bienSo">BIỂN SỐ XE</label>
+        <input id="bienSo" autocomplete="off" autocapitalize="characters" placeholder="51C-638.72" />
+
+        <div class="hangNut">
+            <button class="vao" onclick="ghi('Vào')">⬅ XE VÀO</button>
+            <button class="ra" onclick="ghi('Ra')">XE RA ➡</button>
+        </div>
+        <div class="phu">
+            <button onclick="xoa()">✖ XÓA</button>
+            <button onclick="inPhieuTay()">🖨 IN PHIẾU TAY</button>
+        </div>
+
+        <div class="banner cho" id="bannerCho"></div>
+
+        <div id="kq">
+            <div id="kqTieu"></div>
+            <div id="kqChiTiet"></div>
+        </div>
+
+        <div class="lichSu">
+            <h2>LƯỢT GẦN NHẤT</h2>
+            <div id="dsGanNhat">
+                @if (ganNhat != null)
+                {
+                    foreach (var x in ganNhat)
+                    {
+                        <div class="dong">
+                            <span class="b">@x[0]</span>
+                            <span class="huong @((string)x[1] == "Vào" ? "v" : "r")">@x[1]</span>
+                            <span>@(((DateTime)x[2]).ToString("HH:mm"))</span>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="ghi">
+            Mất mạng vẫn bấm được — máy tự nhớ và gửi lên khi có mạng lại.<br />
+            Hệ thống hỏng hoàn toàn thì bấm <b>IN PHIẾU TAY</b>, ghi tay rồi nhập bù sau — không kẹt xe nào.<br />
+            <a href="/Admin/Gate">Màn hình đầy đủ (có camera AI)</a>
+        </div>
+    </div>
+
+    <script>
+        var HANG_DOI = 'sp_chotcong_hangdoi';
+        var els = {
+            bienSo: document.getElementById('bienSo'),
+            kq: document.getElementById('kq'),
+            kqTieu: document.getElementById('kqTieu'),
+            kqChiTiet: document.getElementById('kqChiTiet'),
+            banner: document.getElementById('bannerCho'),
+            mang: document.getElementById('trangThaiMang'),
+            dVao: document.getElementById('dVao'),
+            dRa: document.getElementById('dRa'),
+            ds: document.getElementById('dsGanNhat')
+        };
+
+        function docHangDoi() {
+            try { return JSON.parse(localStorage.getItem(HANG_DOI) || '[]'); } catch (e) { return []; }
+        }
+        function luuHangDoi(ds) {
+            try { localStorage.setItem(HANG_DOI, JSON.stringify(ds.slice(-200))); } catch (e) { }
+        }
+        function veBanner() {
+            var n = docHangDoi().length;
+            if (n === 0) { els.banner.style.display = 'none'; return; }
+            els.banner.style.display = 'block';
+            els.banner.innerHTML = '⏳ <b>' + n + '</b> lượt xe đang chờ gửi lên hệ thống (đã ghi an toàn trong máy). '
+                + '<u style="cursor:pointer" onclick="dongBo()">Gửi ngay</u>';
+        }
+        function veMang(on) {
+            els.mang.className = 'mang ' + (on ? 'on' : 'off');
+            els.mang.textContent = on ? '● CÓ MẠNG' : '● MẤT MẠNG — vẫn ghi được';
+        }
+
+        function xoa() {
+            els.bienSo.value = '';
+            els.kq.style.display = 'none';
+            els.bienSo.focus();
+        }
+
+        function themDong(bienSo, huong) {
+            var d = document.createElement('div');
+            d.className = 'dong';
+            var gio = new Date().toTimeString().slice(0, 5);
+            d.innerHTML = '<span class="b">' + bienSo + '</span>'
+                + '<span class="huong ' + (huong === 'Vào' ? 'v' : 'r') + '">' + huong + '</span>'
+                + '<span>' + gio + '</span>';
+            els.ds.insertBefore(d, els.ds.firstChild);
+            while (els.ds.children.length > 6) els.ds.removeChild(els.ds.lastChild);
+            if (huong === 'Vào') els.dVao.textContent = (+els.dVao.textContent) + 1;
+            else els.dRa.textContent = (+els.dRa.textContent) + 1;
+        }
+
+        async function ghi(huong) {
+            var bs = (els.bienSo.value || '').trim().toUpperCase();
+            if (bs.length < 4) { hienKq(false, 'CHƯA NHẬP BIỂN SỐ', 'Gõ biển số xe rồi bấm lại.'); return; }
+
+            // 1) Doi chieu lenh giao nhan (neu co mang)
+            var lenh = null;
+            try {
+                var r = await fetch('/Admin/Gate/DoiChieuLenh?bienSo=' + encodeURIComponent(bs), { headers: { 'Accept': 'application/json' } });
+                if (r.ok) { var j = await r.json(); if (j && j.co) lenh = j; }
+            } catch (e) { }
+
+            // 2) Ghi lai luot xe
+            var thanhCong = false, tinDongBo = '';
+            try {
+                // Gui FORM-DATA (khong phai JSON): action Save nhan tham so roi,
+                // ASP.NET Core chi bind duoc tu form/query chu khong tu JSON body.
+                var fd = new FormData();
+                fd.append('bienSo', bs);
+                fd.append('huongDi', huong);
+                fd.append('cong', 'A1');
+                fd.append('nguon', 'ChotCong');
+                if (lenh) { fd.append('loaiXe', 'Đầu kéo container'); fd.append('maLenh', lenh.maLenh); }
+                var res = await fetch('/Admin/Gate/Save', { method: 'POST', body: fd, credentials: 'same-origin' });
+                if (res.ok) {
+                    var kq = await res.json();
+                    thanhCong = !!(kq && kq.ok);
+                    // May chu tra ve ket qua dong bo container -> bao ve nhin thay
+                    // ngay la he thong da cap nhat bai, khong phai tin suong.
+                    if (kq && kq.dongBo) tinDongBo = kq.dongBo;
+                }
+                else { thanhCong = false; }
+            } catch (e) { thanhCong = false; }
+
+            if (!thanhCong) {
+                // MAT MANG -> nho lai trong may, khong chan bao ve lam viec
+                var dsq = docHangDoi();
+                dsq.push({ bienSo: bs, huongDi: huong, cong: 'A1', luc: new Date().toISOString() });
+                luuHangDoi(dsq);
+                veMang(false); veBanner();
+            } else {
+                veMang(true);
+            }
+
+            themDong(bs, huong);
+            if (lenh) {
+                hienKq(true, '✅ KHỚP LỆNH — CHO QUA',
+                    'Lệnh <b>' + lenh.soLenh + '</b> · ' + (lenh.loai || '')
+                    + (lenh.soCont ? '<br>Container <b>' + lenh.soCont + '</b>' : '')
+                    + (lenh.taiXe ? '<br>Tài xế: ' + lenh.taiXe : '')
+                    + '<br>Hẹn: ' + lenh.hen
+                    + (lenh.daCheckIn ? '<br>✅ Đã check-in online — ƯU TIÊN' : '')
+                    + (lenh.dungGio ? '' : '<br>⚠ NGOÀI KHUNG GIỜ HẸN')
+                    + (tinDongBo ? '<br><span style="opacity:.85">🔄 ' + tinDongBo + '</span>' : ''));
+            } else {
+                hienKq(false, '⛔ KHÔNG CÓ LỆNH',
+                    'Xe <b>' + bs + '</b> không khớp lệnh giao nhận nào đang hiệu lực.<br>Hỏi tài xế số lệnh, hoặc gọi điều độ.'
+                    + (thanhCong ? '' : '<br>(Đang mất mạng — đã ghi tạm trong máy)'));
+            }
+            els.bienSo.value = '';
+            els.bienSo.focus();
+        }
+
+        function hienKq(ok, tieu, chiTiet) {
+            els.kq.className = ok ? 'co' : 'khong';
+            els.kq.style.display = 'block';
+            els.kqTieu.textContent = tieu;
+            els.kqChiTiet.innerHTML = chiTiet;
+        }
+
+        async function dongBo() {
+            var ds = docHangDoi();
+            if (ds.length === 0) return;
+            try {
+                var res = await fetch('/Admin/Gate/DongBoLo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items: ds })
+                });
+                if (!res.ok) return;
+                var j = await res.json();
+                if (j && j.ok) {
+                    luuHangDoi([]);
+                    veBanner(); veMang(true);
+                    els.banner.style.display = 'block';
+                    els.banner.innerHTML = '✅ Đã gửi lên hệ thống <b>' + j.daLuu + '</b> lượt xe'
+                        + (j.boQua ? ' (bỏ qua ' + j.boQua + ' bản trùng)' : '') + '.';
+                    setTimeout(veBanner, 6000);
+                }
+            } catch (e) { }
+        }
+
+        function inPhieuTay() {
+            var bs = (els.bienSo.value || '').trim().toUpperCase();
+            window.open('/Admin/Gate/PhieuTay?bienSo=' + encodeURIComponent(bs), '_blank');
+        }
+
+        // Enter = xe vao (thao tac pho bien nhat)
+        els.bienSo.addEventListener('keydown', function (e) { if (e.key === 'Enter') ghi('Vào'); });
+        window.addEventListener('online', function () { veMang(true); dongBo(); });
+        window.addEventListener('offline', function () { veMang(false); });
+        veMang(navigator.onLine);
+        veBanner();
+        if (navigator.onLine) dongBo();
+        setInterval(function () { if (navigator.onLine && docHangDoi().length) dongBo(); }, 30000);
+        els.bienSo.focus();
+    </script>
+</body>
+</html>

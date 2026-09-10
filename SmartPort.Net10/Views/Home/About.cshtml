@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Giới thiệu";
+}
+<div class="page-head">
+    <div class="container">
+        <h1><i class="bi bi-anchor me-2"></i>Giới thiệu Cảng Quốc tế SmartPort</h1>
+        <nav><ol class="breadcrumb mt-2"><li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li><li class="breadcrumb-item active">Giới thiệu</li></ol></nav>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card-sp p-4 mb-4">
+                <div class="row g-3 mb-4">
+                    <div class="col-4"><div class="ph-mini" style="@Photos.Bg("gal1")" title="Tàu mẹ cập cảng"></div></div>
+                    <div class="col-4"><div class="ph-mini" style="@Photos.Bg("gal2")" title="Cẩu STS làm hàng"></div></div>
+                    <div class="col-4"><div class="ph-mini" style="@Photos.Bg("gal3")" title="Cầu bến SmartPort"></div></div>
+                </div>
+                <h4 class="fw-bold" style="color:#0a2f57;">Cảng container thông minh hàng đầu khu vực</h4>
+                <p>Cảng Quốc tế <strong>SmartPort</strong> là cảng container nước sâu hiện đại tọa lạc tại cửa ngõ giao thương TP. Hồ Chí Minh, với tổng diện tích khai thác hơn <strong>120 ha</strong>, năng lực thông qua trên <strong>600.000 TEU/năm</strong>.</p>
+                <p>SmartPort tiên phong <strong>chuyển đổi số toàn diện</strong>: hệ thống quản lý khai thác cảng trực tuyến, cổng dịch vụ ePort cho phép khách hàng đặt dịch vụ và theo dõi trạng thái theo thời gian thực, cùng các mô-đun <strong>trí tuệ nhân tạo (AI)</strong>:</p>
+                <ul>
+                    <li><strong>PortBot</strong> — chatbot AI hỗ trợ tra cứu container, lịch tàu, biểu phí 24/7;</li>
+                    <li><strong>AI điều độ</strong> — gợi ý phân bổ bến tối ưu theo thông số tàu và lịch khai thác;</li>
+                    <li><strong>AI dự báo</strong> — dự báo sản lượng thông qua bằng mô hình hồi quy trên dữ liệu lịch sử.</li>
+                </ul>
+                <p class="mb-0">Với đội ngũ hơn 800 cán bộ nhân viên và mạng lưới đối tác gồm các hãng tàu hàng đầu thế giới (Maersk, MSC, CMA CGM, ONE, Evergreen, Hapag-Lloyd...), SmartPort cam kết mang lại dịch vụ nhanh chóng — chính xác — minh bạch cho doanh nghiệp xuất nhập khẩu.</p>
+            </div>
+
+            <div class="card-sp p-4 mb-4">
+                <h5 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-signpost-2 me-2"></i>Chặng đường phát triển</h5>
+                <div class="tl">
+                    <div class="tl-item done"><h6>2015 — Khởi công xây dựng</h6><small>Động thổ khu bến 120 ha với tổng vốn đầu tư 6.800 tỷ đồng.</small></div>
+                    <div class="tl-item done"><h6>2017 — Đón chuyến tàu đầu tiên</h6><small>Tàu container 2.500 TEU đầu tiên cập bến B1, chính thức khai thác.</small></div>
+                    <div class="tl-item done"><h6>2020 — Vượt mốc 300.000 TEU/năm</h6><small>Hoàn thiện 5 bến, 15 cẩu STS, kết nối 30 tuyến dịch vụ.</small></div>
+                    <div class="tl-item done"><h6>2023 — Ra mắt ePort</h6><small>Số hóa toàn bộ quy trình đặt dịch vụ, tra cứu trực tuyến.</small></div>
+                    <div class="tl-item done"><h6>2025 — Ứng dụng AI vận hành</h6><small>6 trợ lý AI: chatbot, điều độ bến, dự báo, cảnh báo thông minh...</small></div>
+                    <div class="tl-item now"><h6>2026 — Hướng tới top 5 cảng khu vực</h6><small>Mục tiêu 600.000 TEU/năm, cảng xanh giảm 40% phát thải CO₂.</small></div>
+                </div>
+            </div>
+
+            <div class="card-sp p-4">
+                <h5 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-bounding-box me-2"></i>Năng lực cầu bến</h5>
+                <div class="table-responsive">
+                    <table class="table table-sp mb-0">
+                        <thead>
+                            <tr><th>Bến</th><th>Chiều dài</th><th>Độ sâu</th><th>Cẩu bờ</th><th>Trạng thái</th><th>Công năng</th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Ben b in ViewBag.Bens)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">@b.TenBen</td>
+                                    <td>@Ui.Num(b.ChieuDai) m</td>
+                                    <td>@Ui.Num(b.DoSau) m</td>
+                                    <td>@b.SoCau</td>
+                                    <td><span class="badge-st @Ui.Badge(b.TrangThai)">@b.TrangThai</span></td>
+                                    <td class="text-muted small">@b.MoTa</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card-sp p-4 mb-4" style="background:linear-gradient(160deg,#071f3a,#0d4f8b);color:#fff;border:none;">
+                <h5 class="fw-bold mb-3"><i class="bi bi-award me-2"></i>Số liệu nổi bật</h5>
+                <div class="d-flex justify-content-between border-bottom border-light border-opacity-25 py-2"><span>Diện tích khai thác</span><strong>120 ha</strong></div>
+                <div class="d-flex justify-content-between border-bottom border-light border-opacity-25 py-2"><span>Năng lực thông qua</span><strong>600.000+ TEU/năm</strong></div>
+                <div class="d-flex justify-content-between border-bottom border-light border-opacity-25 py-2"><span>Tuyến dịch vụ</span><strong>50+ tuyến</strong></div>
+                <div class="d-flex justify-content-between border-bottom border-light border-opacity-25 py-2"><span>Cẩu bờ STS</span><strong>15 chiếc</strong></div>
+                <div class="d-flex justify-content-between py-2"><span>Ô tô chở container/ngày</span><strong>2.500+ lượt</strong></div>
+            </div>
+            <div class="card-sp p-4">
+                <h5 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-clock-history me-2"></i>Giờ hoạt động</h5>
+                <p class="mb-1"><strong>Cổng cảng &amp; bãi container:</strong> 24/7</p>
+                <p class="mb-1"><strong>Văn phòng thương vụ:</strong> 7h30 – 17h00 (T2–T7)</p>
+                <p class="mb-3"><strong>Hotline:</strong> 0387 562 579</p>
+                <a class="btn btn-accent w-100" href="@Url.Action("Contact", "Home")"><i class="bi bi-envelope me-1"></i>Gửi liên hệ</a>
+            </div>
+        </div>
+    </div>
+</div>

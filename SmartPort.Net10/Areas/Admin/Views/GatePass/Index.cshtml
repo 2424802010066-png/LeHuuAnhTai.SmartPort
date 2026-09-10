@@ -1,0 +1,89 @@
+﻿@model List<SmartPort.Models.LenhGiaoNhan>
+@{ ViewBag.Title = "Lệnh giao nhận điện tử (eGate Pass)"; }
+
+<div class="ai-box mb-3">
+    <span class="ai-tag"><i class="bi bi-qr-code-scan"></i> eGATE PASS · LỆNH GIAO NHẬN ĐIỆN TỬ</span>
+    <div style="color:#c9dcef;font-size:.9rem;" class="mt-2">
+        Quy trình cảng thật: khách/điều độ <strong>đăng ký lệnh TRƯỚC</strong> (xe nào · container nào · khung giờ nào)
+        → hệ thống cấp <strong>số lệnh + mã PIN</strong> → xe tới cổng, camera ALPR đọc biển số và
+        <strong>tự đối chiếu lệnh</strong> → khớp thì mở barrier. Không lệnh = không vào.
+    </div>
+</div>
+
+@if (TempData["ThongBao"] != null) { <div class="alert alert-success py-2">@TempData["ThongBao"]</div> }
+
+<div class="row g-3 mb-3">
+    <div class="col-md-4 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#b45309,#fbbf24);">
+            <div class="ps-num">@ViewBag.ChoXe</div><div class="ps-lbl">Lệnh đang chờ xe</div><i class="bi bi-hourglass-split"></i>
+        </div>
+    </div>
+    <div class="col-md-4 col-6">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#0a2f57,#1c5fa8);">
+            <div class="ps-num">@ViewBag.DaVao</div><div class="ps-lbl">Xe đã vào cổng</div><i class="bi bi-truck"></i>
+        </div>
+    </div>
+    <div class="col-md-4 col-12">
+        <div class="pay-stat" style="background:linear-gradient(120deg,#15803d,#22c55e);">
+            <div class="ps-num">@ViewBag.HomNay</div><div class="ps-lbl">Lệnh tạo hôm nay</div><i class="bi bi-calendar-check"></i>
+        </div>
+    </div>
+</div>
+
+<div class="card-sp p-3">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2">
+        <form class="d-flex gap-2" method="get">
+            <input name="q" value="@ViewBag.Q" class="form-control form-control-sm" placeholder="Số lệnh / biển số / container..." style="max-width:240px;" />
+            <select name="trangThai" class="form-select form-select-sm" style="max-width:150px;" onchange="this.form.submit()">
+                <option value="">— Tất cả —</option>
+                @foreach (var t in new[] { "Chờ xe", "Đã vào cổng", "Hoàn tất", "Quá hạn", "Hủy" })
+                {
+                    <option value="@t" @(ViewBag.TrangThai as string == t ? "selected" : "")>@t</option>
+                }
+            </select>
+            <button class="btn btn-sm btn-navy" type="submit"><i class="bi bi-search"></i></button>
+        </form>
+        <a class="btn btn-sm btn-accent" href="@Url.Action("Form")"><i class="bi bi-plus-lg me-1"></i>Tạo lệnh mới</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle">
+            <thead><tr class="small text-muted"><th>SỐ LỆNH</th><th>LOẠI</th><th>BIỂN SỐ</th><th>CONTAINER</th><th>TÀI XẾ</th><th>KHUNG GIỜ HẸN</th><th>PIN</th><th>TRẠNG THÁI</th><th></th></tr></thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr><td colspan="9" class="text-center text-muted py-4">Chưa có lệnh nào — bấm "Tạo lệnh mới".</td></tr>
+                }
+                @foreach (var l in Model)
+                {
+                    <tr>
+                        <td class="fw-bold" style="font-family:Consolas,monospace;">@l.SoLenh</td>
+                        <td class="small">@l.TenLoaiLenh</td>
+                        <td class="fw-semibold"><a class="lk-xe" href="@Url.Action("HoSoXe", "Gate", new { bienSo = l.BienSoXe })" title="Hồ sơ xe @l.BienSoXe">@l.BienSoXe</a></td>
+                        <td class="small" style="font-family:Consolas,monospace;">
+                            @if (string.IsNullOrEmpty(l.SoCont)) { <text>—</text> }
+                            else { <a class="lk-cont" href="@Url.Action("TraCuu", "Containers", new { so = l.SoCont })" title="Hồ sơ container">@l.SoCont</a> }
+                        </td>
+                        <td class="small">@l.TenTaiXe</td>
+                        <td class="small">@l.HenTuLuc.ToString("HH:mm") – @l.HenDenLuc.ToString("HH:mm dd/MM")</td>
+                        <td class="small" style="font-family:Consolas,monospace;">@l.MaPin</td>
+                        <td>
+                            <span class="badge @(l.TrangThai == "Hoàn tất" ? "bg-success" : l.TrangThai == "Đã vào cổng" ? "bg-primary" : l.TrangThai == "Chờ xe" ? "bg-warning text-dark" : "bg-secondary")">@l.TrangThai</span>
+                        </td>
+                        <td class="text-end text-nowrap">
+                            <a class="btn btn-sm btn-outline-sp" target="_blank" href="@Url.Action("In", new { id = l.MaLenh })" title="In lệnh"><i class="bi bi-printer"></i></a>
+                            <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Form", new { id = l.MaLenh })"><i class="bi bi-pencil"></i></a>
+                            @if (l.TrangThai == "Chờ xe" || l.TrangThai == "Quá hạn")
+                            {
+                                using (Html.BeginForm("Huy", "GatePass", new { id = l.MaLenh }, FormMethod.Post, null, new { @class = "d-inline", onsubmit = "return confirm('Hủy lệnh " + l.SoLenh + "?');" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-x-lg"></i></button>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+﻿@model SmartPort.Models.BanTinEDI
+@{
+    ViewBag.Title = "Bản tin " + Model.SoChungTu;
+    var giai = ViewBag.GiaiThich as List<KeyValuePair<string, string>>;
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <div>
+        <a class="btn btn-sm btn-outline-sp" href="@Url.Action("Index")"><i class="bi bi-arrow-left me-1"></i>Danh sách</a>
+        <span class="fs-5 fw-bold ms-2" style="color:#0a2f57;">@Model.SoChungTu</span>
+        <span class="badge ms-1" style="background:@(Model.LoaiBT == "CODECO" ? "#0284c7" : "#7c3aed");">@Model.LoaiBT</span>
+        <span class="badge bg-light text-dark border ms-1">@Model.Huong</span>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-outline-sp" onclick="chepEdi()"><i class="bi bi-clipboard me-1"></i>Sao chép</button>
+        <a class="btn btn-sm btn-accent" href="@Url.Action("Tai", new { id = Model.MaBT })"><i class="bi bi-download me-1"></i>Tải tệp .edi</a>
+    </div>
+</div>
+
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success py-2"><i class="bi bi-check-circle me-1"></i>@TempData["ThongBao"]</div>
+}
+
+<div class="row g-3">
+    <div class="col-lg-5">
+        <div class="card-sp p-3 mb-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-info-circle me-1"></i>Thông tin bản tin</h6>
+            <table class="table table-sm align-middle mb-0">
+                <tr><td class="text-muted" style="width:150px;">Số chứng từ</td><td class="fw-semibold">@Model.SoChungTu</td></tr>
+                <tr><td class="text-muted">Số tham chiếu</td><td><code>@Model.SoThamChieu</code></td></tr>
+                <tr><td class="text-muted">Hãng tàu</td><td>@(Model.HangTau != null ? Model.HangTau.TenHangTau + (string.IsNullOrEmpty(Model.HangTau.MaSCAC) ? "" : " (" + Model.HangTau.MaSCAC + ")") : "—")</td></tr>
+                <tr><td class="text-muted">Số container</td><td class="fw-bold">@Model.SoLuongCont</td></tr>
+                @if (Model.TuNgay != null)
+                {
+                    <tr><td class="text-muted">Kỳ báo cáo</td><td>@Model.TuNgay.Value.ToString("HH:mm dd/MM") → @Model.DenNgay.Value.ToString("HH:mm dd/MM/yyyy")</td></tr>
+                }
+                <tr><td class="text-muted">Người tạo</td><td>@Model.NguoiTao · @Model.NgayTao.ToString("HH:mm dd/MM/yyyy")</td></tr>
+                <tr><td class="text-muted">Trạng thái</td><td><b>@Model.TrangThai</b> @(Model.NgayGui != null ? "· gửi " + Model.NgayGui.Value.ToString("HH:mm dd/MM") : "")</td></tr>
+                @if (!string.IsNullOrEmpty(Model.GhiChu))
+                {
+                    <tr><td class="text-muted">Ghi chú</td><td class="small">@Model.GhiChu</td></tr>
+                }
+            </table>
+        </div>
+
+        <div class="card-sp p-3">
+            <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-translate me-1"></i>Bản tin nói gì (tiếng Việt)</h6>
+            <div class="small text-muted mb-2" style="font-size:.75rem;">
+                Không cần biết EDIFACT vẫn kiểm tra được trước khi gửi.
+            </div>
+            <div style="max-height:520px;overflow-y:auto;">
+                @foreach (var g in giai)
+                {
+                    <div class="edi-dong">
+                        <code class="edi-ma">@(g.Key.Length > 3 ? g.Key.Substring(0, 3) : g.Key)</code>
+                        <span class="edi-mo">@g.Value</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card-sp p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold mb-0" style="color:#0a2f57;"><i class="bi bi-code-slash me-1"></i>Nội dung EDIFACT gốc</h6>
+                <span class="badge bg-light text-dark border">@giai.Count đoạn</span>
+            </div>
+            <pre id="ediGoc" class="edi-goc">@Model.NoiDung</pre>
+            <div class="small text-muted mt-2">
+                Đây chính là tệp gửi cho hãng tàu. Ký tự <code>'</code> kết thúc đoạn,
+                <code>+</code> ngăn phần tử, <code>:</code> ngăn thành phần, <code>?</code> là ký tự thoát.
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .edi-goc {
+        background: #0f172a; color: #7dd3fc; padding: 14px 16px; border-radius: 10px;
+        font-size: .8rem; line-height: 1.75; max-height: 620px; overflow: auto;
+        white-space: pre; margin: 0; font-family: Consolas, "Courier New", monospace;
+    }
+    .edi-dong { display: flex; gap: .5rem; align-items: flex-start; padding: .28rem 0; border-bottom: 1px solid rgba(100,116,139,.14); }
+    .edi-dong:last-child { border-bottom: 0; }
+    .edi-ma { flex: 0 0 42px; font-weight: 700; color: #0284c7; font-size: .74rem; }
+    .edi-mo { font-size: .78rem; color: #475569; line-height: 1.45; }
+    html[data-theme="dark"] .edi-mo { color: #9fb6cc; }
+</style>
+
+<script>
+    function chepEdi() {
+        var t = document.getElementById('ediGoc').textContent;
+        if (navigator.clipboard) { navigator.clipboard.writeText(t); }
+        event.target.closest('button').innerHTML = '<i class="bi bi-check2 me-1"></i>Đã chép';
+    }
+</script>

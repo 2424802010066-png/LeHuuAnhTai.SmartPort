@@ -1,0 +1,233 @@
+﻿@model SmartPort.Models.ThanhToan
+@{
+    var booking = (SmartPort.Models.DatDichVu)ViewBag.Booking;
+    ViewBag.Title = "Thanh toán " + booking.MaSoBooking;
+    bool demo = ViewBag.DemoMode ?? true;
+    bool coTk = ViewBag.CoTaiKhoan ?? false;
+    string qr = ViewBag.QrUrl as string;
+    int giay = ViewBag.GiaySconLai ?? 0;
+    bool dangCho = Model.TrangThai == "Chờ thanh toán";
+}
+<div class="page-head">
+    <div class="container">
+        <h1><i class="bi bi-qr-code me-2"></i>Hoàn tất thanh toán</h1>
+        <nav>
+            <ol class="breadcrumb mt-2">
+                <li class="breadcrumb-item"><a href="@Url.Action("My", "Booking")">Booking của tôi</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("Details", "Booking", new { id = booking.MaBooking })">@booking.MaSoBooking</a></li>
+                <li class="breadcrumb-item active">Thanh toán</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="container mb-5">
+    @if (TempData["Ok"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show"><i class="bi bi-check-circle me-2"></i>@TempData["Ok"]<button class="btn-close" data-bs-dismiss="alert"></button></div>
+    }
+    @if (demo)
+    {
+        <div class="pay-demo-banner mb-4">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <strong>Chế độ DEMO đồ án</strong> — mã QR bên dưới đúng chuẩn VietQR/NAPAS 247. Vui lòng <u>không chuyển tiền thật</u>.
+        </div>
+    }
+
+    <!-- Thanh tien trinh -->
+    <div class="pay-steps mb-4">
+        <div class="ps-item done"><span class="ps-dot"><i class="bi bi-check"></i></span><span>Chọn phương thức</span></div>
+        <div class="ps-line done"></div>
+        <div class="ps-item @(Model.TrangThai == "Đã thanh toán" ? "done" : "active")"><span class="ps-dot">2</span><span>Thanh toán</span></div>
+        <div class="ps-line @(Model.TrangThai == "Đã thanh toán" ? "done" : "")"></div>
+        <div class="ps-item @(Model.TrangThai == "Đã thanh toán" ? "active" : "")"><span class="ps-dot">3</span><span>Hoàn tất</span></div>
+    </div>
+
+    <div class="row g-4">
+        <!-- ==== Khu vuc thanh toan ==== -->
+        <div class="col-lg-7">
+            <div class="card-sp p-4 pay-main" id="payBox" data-id="@Model.MaTT" data-giay="@giay">
+
+                @if (Model.PhuongThuc == "ChuyenKhoan")
+                {
+                    <h5 class="fw-bold mb-1" style="color:#0a2f57;"><i class="bi bi-qr-code-scan me-1"></i>Quét mã QR để chuyển khoản</h5>
+                    <p class="text-muted small mb-3">Mở app ngân hàng → chọn <strong>Quét QR</strong> → số tiền và nội dung đã được điền sẵn.</p>
+
+                    <div class="qr-wrap">
+                        <div class="qr-frame">
+                            @if (coTk && !string.IsNullOrEmpty(qr))
+                            {
+                                <img src="@qr" alt="Mã QR thanh toán" class="qr-img" id="qrImg" />
+                                <span class="qr-scan"></span>
+                            }
+                            else
+                            {
+                                <div class="qr-empty">
+                                    <i class="bi bi-qr-code"></i>
+                                    <div class="mt-2 small">Chưa cấu hình tài khoản nhận<br />(khai báo <code>BankAccount</code> trong Web.config)</div>
+                                </div>
+                            }
+                        </div>
+                        <div class="qr-banks">
+                            <span>Hỗ trợ toàn bộ ngân hàng qua</span>
+                            <strong>NAPAS 247 · VietQR</strong>
+                        </div>
+                    </div>
+
+                    <div class="bank-info mt-3">
+                        <div class="bi-row"><span>Ngân hàng</span><strong>@ViewBag.BankName</strong></div>
+                        <div class="bi-row"><span>Chủ tài khoản</span><strong>@ViewBag.BankAccountName</strong></div>
+                        <div class="bi-row">
+                            <span>Số tài khoản</span>
+                            <strong class="copyable" data-copy="@ViewBag.BankAccount">@ViewBag.BankAccount <i class="bi bi-clipboard ms-1"></i></strong>
+                        </div>
+                        <div class="bi-row">
+                            <span>Số tiền</span>
+                            <strong class="copyable text-danger" data-copy="@((long)Model.SoTien)">@Ui.Vnd(Model.SoTien) <i class="bi bi-clipboard ms-1"></i></strong>
+                        </div>
+                        <div class="bi-row">
+                            <span>Nội dung CK</span>
+                            <strong class="copyable" data-copy="@Model.NoiDungCK">@Model.NoiDungCK <i class="bi bi-clipboard ms-1"></i></strong>
+                        </div>
+                    </div>
+                    <div class="small text-muted mt-2"><i class="bi bi-exclamation-triangle me-1"></i>Vui lòng giữ nguyên nội dung <strong>@Model.NoiDungCK</strong> để hệ thống đối soát tự động.</div>
+                }
+                else if (Model.PhuongThuc == "TheNganHang")
+                {
+                    <h5 class="fw-bold mb-1" style="color:#0a2f57;"><i class="bi bi-credit-card me-1"></i>Thanh toán bằng thẻ</h5>
+                    <p class="text-muted small mb-3">Nhập thông tin thẻ để hoàn tất giao dịch (mô phỏng cổng thanh toán).</p>
+                    <div class="card-visual mb-4">
+                        <div class="cv-chip"></div>
+                        <div class="cv-num" id="cvNum">•••• •••• •••• ••••</div>
+                        <div class="cv-bottom">
+                            <div><span>CHỦ THẺ</span><div id="cvName">NGUYEN VAN A</div></div>
+                            <div><span>HẾT HẠN</span><div id="cvExp">MM/YY</div></div>
+                        </div>
+                        <div class="cv-brand">VISA</div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold">Số thẻ</label>
+                            <input class="form-control" id="inpCard" maxlength="19" placeholder="0000 0000 0000 0000" inputmode="numeric" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-semibold">Tên chủ thẻ</label>
+                            <input class="form-control" id="inpName" placeholder="NGUYEN VAN A" />
+                        </div>
+                        <div class="col-3">
+                            <label class="form-label small fw-semibold">Hết hạn</label>
+                            <input class="form-control" id="inpExp" maxlength="5" placeholder="MM/YY" />
+                        </div>
+                        <div class="col-3">
+                            <label class="form-label small fw-semibold">CVV</label>
+                            <input class="form-control" id="inpCvv" maxlength="3" placeholder="•••" type="password" inputmode="numeric" />
+                        </div>
+                    </div>
+                    <div class="small text-muted mt-2"><i class="bi bi-shield-lock me-1"></i>Đây là biểu mẫu mô phỏng — <strong>không nhập số thẻ thật</strong>.</div>
+                }
+                else if (Model.PhuongThuc == "ViDienTu")
+                {
+                    <h5 class="fw-bold mb-1" style="color:#0a2f57;"><i class="bi bi-wallet2 me-1"></i>Thanh toán qua ví điện tử</h5>
+                    <p class="text-muted small mb-3">Chọn ví và xác nhận trên ứng dụng.</p>
+                    <div class="wallet-grid">
+                        <label class="wallet-item active"><input type="radio" name="vi" checked /><span class="wi-logo" style="background:#ae2070;">MoMo</span><span>Ví MoMo</span></label>
+                        <label class="wallet-item"><input type="radio" name="vi" /><span class="wi-logo" style="background:#0068ff;">Zalo</span><span>ZaloPay</span></label>
+                        <label class="wallet-item"><input type="radio" name="vi" /><span class="wi-logo" style="background:#005baa;">VNPay</span><span>VNPay</span></label>
+                    </div>
+                    <div class="wallet-note mt-3"><i class="bi bi-phone me-2"></i>Mở app ví trên điện thoại và xác nhận yêu cầu thanh toán <strong>@Ui.Vnd(Model.SoTien)</strong>.</div>
+                }
+                else
+                {
+                    <h5 class="fw-bold mb-1" style="color:#0a2f57;"><i class="bi bi-cash-coin me-1"></i>Thanh toán tiền mặt tại quầy</h5>
+                    <p class="text-muted small mb-3">Vui lòng đến quầy thu ngân của cảng để hoàn tất.</p>
+                    <div class="cash-card">
+                        <div class="cash-row"><i class="bi bi-geo-alt-fill"></i><div><strong>Địa điểm</strong><div class="text-muted small">Quầy thu ngân — Khu bến cảng Cát Lái, TP. Thủ Đức, TP.HCM</div></div></div>
+                        <div class="cash-row"><i class="bi bi-clock-fill"></i><div><strong>Giờ làm việc</strong><div class="text-muted small">Thứ 2 – Thứ 7, 07:30 – 17:00</div></div></div>
+                        <div class="cash-row"><i class="bi bi-upc-scan"></i><div><strong>Mã tham chiếu</strong><div class="text-muted small">Đọc mã <strong>@Model.NoiDungCK</strong> cho nhân viên thu ngân</div></div></div>
+                        <div class="cash-row"><i class="bi bi-cash-stack"></i><div><strong>Số tiền cần thanh toán</strong><div class="fw-bold text-danger">@Ui.Vnd(Model.SoTien)</div></div></div>
+                    </div>
+                }
+
+                <!-- Trang thai + hanh dong -->
+                <div class="pay-actions mt-4">
+                    @if (Model.TrangThai == "Đã thanh toán")
+                    {
+                        <div class="pay-done"><i class="bi bi-check-circle-fill"></i> Giao dịch đã hoàn tất</div>
+                        <a class="btn btn-success w-100 mt-2" href="@Url.Action("Receipt", new { id = Model.MaTT })"><i class="bi bi-receipt me-1"></i>Xem biên lai</a>
+                    }
+                    else if (Model.TrangThai == "Đã hủy")
+                    {
+                        <div class="alert alert-secondary mb-0"><i class="bi bi-x-circle me-1"></i>Giao dịch đã hủy.</div>
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(Model.MaGiaoDich))
+                        {
+                            <div class="alert alert-warning py-2 mb-3">
+                                <i class="bi bi-hourglass-split me-1"></i>Đã ghi nhận báo có — mã <strong>@Model.MaGiaoDich</strong>. Kế toán đang đối chiếu.
+                            </div>
+                        }
+                        using (Html.BeginForm("Confirm", "Payment", new { id = Model.MaTT }, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button class="btn btn-navy btn-lg w-100" type="submit" id="btnConfirm">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                @(Model.PhuongThuc == "TienMat" ? "Xác nhận sẽ thanh toán tại quầy" : "Tôi đã thanh toán")
+                            </button>
+                        }
+                        using (Html.BeginForm("Cancel", "Payment", new { id = Model.MaTT }, FormMethod.Post, null, new { onsubmit = "return confirm('Hủy giao dịch thanh toán này?');" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button class="btn btn-outline-danger w-100 mt-2" type="submit"><i class="bi bi-x-circle me-1"></i>Hủy giao dịch</button>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- ==== Cot phai: dong ho + thong tin ==== -->
+        <div class="col-lg-5">
+            @if (dangCho)
+            {
+                <div class="card-sp p-4 mb-3 countdown-card">
+                    <div class="text-muted small mb-1">Đơn được giữ trong</div>
+                    <div class="countdown" id="cdText">--:--</div>
+                    <div class="cd-bar"><span id="cdBar"></span></div>
+                    <div class="small text-muted mt-2" id="cdNote">Quá thời gian, giao dịch sẽ hết hiệu lực và bạn cần tạo lại.</div>
+                </div>
+            }
+
+            <div class="card-sp p-4">
+                <h6 class="fw-bold mb-3" style="color:#0a2f57;"><i class="bi bi-info-circle me-1"></i>Thông tin giao dịch</h6>
+                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Mã giao dịch</span><strong>#@Model.MaTT</strong></div>
+                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Booking</span><strong>@booking.MaSoBooking</strong></div>
+                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Phương thức</span><strong>@Model.TenPhuongThuc</strong></div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Trạng thái</span>
+                    <span class="badge-st @Ui.Badge(Model.TrangThai)" id="ttBadge">@Model.TrangThai</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Tạo lúc</span><strong>@Ui.Dt(Model.NgayTao)</strong></div>
+                <div class="pay-amount mt-3">
+                    <span>Số tiền</span>
+                    <span class="pay-amount-num">@Ui.Vnd(Model.SoTien)</span>
+                </div>
+                <div class="small text-muted mt-1 fst-italic">@ViewBag.SoTienChu</div>
+            </div>
+
+            <div class="card-sp p-4 mt-3">
+                <h6 class="fw-bold mb-2" style="color:#0a2f57;"><i class="bi bi-question-circle me-1"></i>Hướng dẫn nhanh</h6>
+                <ol class="pay-guide">
+                    <li>Mở ứng dụng ngân hàng / ví trên điện thoại</li>
+                    <li>Chọn chức năng <strong>Quét mã QR</strong></li>
+                    <li>Kiểm tra số tiền &amp; nội dung đã điền sẵn</li>
+                    <li>Xác nhận → bấm <strong>“Tôi đã thanh toán”</strong></li>
+                </ol>
+                <div class="small text-muted">Cần hỗ trợ? Hotline <strong>0387 562 579</strong></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script src="@Url.Content("~/Scripts/payment.js")"></script>
+}

@@ -1,0 +1,87 @@
+﻿@model SmartPort.Models.Container
+@{
+    Layout = null;
+    var soPhieu = "EIR-" + DateTime.Now.ToString("yyMM") + "-" + Model.MaCont.ToString("D5");
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>@soPhieu — Phiếu giao nhận container</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Segoe UI", Arial, sans-serif; color: #111827; background: #eef2f6; padding: 24px; }
+        .to { max-width: 820px; margin: 0 auto; background: #fff; border: 1px solid #cbd5e1; padding: 26px 30px; }
+        .dau { display: flex; justify-content: space-between; border-bottom: 3px double #0a2f57; padding-bottom: 12px; }
+        .dau h1 { font-size: 17px; color: #0a2f57; letter-spacing: .5px; }
+        .dau .ct { font-size: 11.5px; color: #475569; line-height: 1.5; }
+        .sophieu { text-align: right; font-size: 12px; }
+        .sophieu b { font-size: 16px; font-family: Consolas, monospace; color: #b91c1c; }
+        h2 { text-align: center; font-size: 18px; margin: 16px 0 2px; letter-spacing: 1px; color: #0a2f57; }
+        .en { text-align: center; font-size: 11px; color: #64748b; margin-bottom: 14px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+        th, td { border: 1px solid #94a3b8; padding: 6px 9px; font-size: 12.5px; text-align: left; }
+        th { background: #f1f5f9; width: 30%; font-weight: 600; color: #334155; }
+        .cont-so { font-family: Consolas, monospace; font-size: 17px; font-weight: 800; letter-spacing: 1px; }
+        .tien td { background: #fffbeb; font-weight: 800; color: #b45309; }
+        .kyten { display: flex; margin-top: 22px; text-align: center; }
+        .kyten div { flex: 1; font-size: 12px; }
+        .kyten b { display: block; margin-bottom: 52px; }
+        .kyten i { color: #94a3b8; font-size: 10.5px; }
+        .chan { margin-top: 14px; border-top: 1px dashed #cbd5e1; padding-top: 8px; font-size: 10.5px; color: #64748b; display: flex; justify-content: space-between; }
+        .nutin { position: fixed; top: 14px; right: 16px; }
+        .nutin button { background: #0d4f8b; color: #fff; border: 0; border-radius: 8px; padding: 9px 18px; font-weight: 700; cursor: pointer; }
+        @@media print {
+            body { background: #fff; padding: 0; }
+            .to { border: 0; max-width: none; }
+            .nutin { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="nutin"><button onclick="window.print()">🖨 In phiếu</button></div>
+    <div class="to">
+        <div class="dau">
+            <div>
+                <h1>⚓ CẢNG QUỐC TẾ SMARTPORT</h1>
+                <div class="ct">Khu bến cảng Cát Lái, TP. Thủ Đức, TP.HCM<br />Hotline: 0387 562 579 · smartport.vn</div>
+            </div>
+            <div class="sophieu">
+                Số phiếu / No.:<br /><b>@soPhieu</b><br />
+                Ngày in: @DateTime.Now.ToString("HH:mm dd/MM/yyyy")
+            </div>
+        </div>
+
+        <h2>PHIẾU GIAO NHẬN CONTAINER</h2>
+        <div class="en">EQUIPMENT INTERCHANGE RECEIPT (EIR)</div>
+
+        <table>
+            <tr><th>Số container / Container No.</th><td class="cont-so">@Model.SoCont</td></tr>
+            <tr><th>Loại — Tình trạng / Type — Status</th><td>@Model.LoaiCont · @Model.TinhTrang @(Model.NhietDo != null ? " · Nhiệt độ cài đặt " + Model.NhietDo + "°C" : "")</td></tr>
+            <tr><th>Hàng hóa / Cargo</th><td>@(string.IsNullOrEmpty(Model.HangHoa) ? "—" : Model.HangHoa) @(Model.TrongLuong != null ? " · " + Model.TrongLuong + " tấn" : "")</td></tr>
+            <tr><th>Khách hàng / Consignee</th><td>@(Model.KhachHang != null ? Model.KhachHang.TenCongTy + (Model.KhachHang.MaSoThue != null ? " — MST " + Model.KhachHang.MaSoThue : "") : "—")</td></tr>
+            <tr><th>Chuyến nhập / Inbound voyage</th><td>@(Model.ChuyenNhap != null ? Model.ChuyenNhap.MaChuyenHieu + " — " + (Model.ChuyenNhap.Tau != null ? Model.ChuyenNhap.Tau.TenTau : "") : "—")</td></tr>
+            <tr><th>Vị trí bãi / Yard position</th><td>@(Model.ViTriBai ?? "—")</td></tr>
+            <tr><th>Vào bãi / Gate-in</th><td>@(Model.NgayVaoBai != null ? Model.NgayVaoBai.Value.ToString("HH:mm dd/MM/yyyy") : "—")</td></tr>
+            <tr><th>Ra bãi / Gate-out</th><td>@(Model.NgayRaBai != null ? Model.NgayRaBai.Value.ToString("HH:mm dd/MM/yyyy") : "(chưa gate-out)")</td></tr>
+            <tr><th>Trạng thái / Status</th><td><b>@Model.TrangThai</b></td></tr>
+        </table>
+
+        <table>
+            <tr><th>Phí lưu bãi / Storage charge</th><td>@ViewBag.TongNgay ngày lưu bãi — miễn phí @ViewBag.MienPhi ngày đầu → tính phí <b>@ViewBag.NgayTinhPhi ngày</b> × @string.Format("{0:N0}", (decimal)ViewBag.DonGiaLuuBai) đ</td></tr>
+            <tr class="tien"><td colspan="2">TỔNG PHÍ LƯU BÃI @(Model.NgayRaBai == null ? "(TẠM TÍNH)" : ""): @string.Format("{0:N0}", (decimal)ViewBag.PhiLuuBai) đ</td></tr>
+        </table>
+
+        <div class="kyten">
+            <div><b>ĐẠI DIỆN CẢNG<br /><i>(Terminal)</i></b><i>Ký, ghi rõ họ tên</i></div>
+            <div><b>TÀI XẾ / VẬN TẢI<br /><i>(Trucker)</i></b><i>Ký, ghi rõ họ tên</i></div>
+            <div><b>KHÁCH HÀNG<br /><i>(Consignee)</i></b><i>Ký, ghi rõ họ tên</i></div>
+        </div>
+
+        <div class="chan">
+            <span>Phiếu in từ hệ thống SmartPort — có giá trị đối chiếu giao nhận tại cổng.</span>
+            <span>Mã tra cứu: @Model.SoCont · @soPhieu</span>
+        </div>
+    </div>
+</body>
+</html>

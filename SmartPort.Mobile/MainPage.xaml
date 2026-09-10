@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartPort.Mobile.MainPage"
+             Title="SmartPort"
+             BackgroundColor="#F1F5F9">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+
+            <!-- ĐẦU TRANG -->
+            <Border BackgroundColor="#0A2F57" StrokeThickness="0" Padding="20,28,20,24">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="0,0,26,26" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="⚓ SmartPort" FontSize="28" FontAttributes="Bold" TextColor="White" />
+                    <Label Text="CẢNG THÔNG MINH AI · KHƠITRÍ" FontSize="12" TextColor="#7DD3FC" />
+                    <Label x:Name="lblTrangThai" Text="Đang kết nối máy chủ..." FontSize="13" TextColor="#DBEAFE" Margin="0,10,0,0" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- THẺ TÌNH TRẠNG CỔNG -->
+            <Border x:Name="theCong" BackgroundColor="White" Stroke="#CBD5E1" StrokeThickness="1" Padding="16" Margin="16,16,16,0">
+                <Border.StrokeShape><RoundRectangle CornerRadius="16" /></Border.StrokeShape>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="🚦 TÌNH TRẠNG CỔNG (thời gian thực)" FontSize="13" FontAttributes="Bold" TextColor="#0A2F57" />
+                    <Label x:Name="lblMatDo" Text="—" FontSize="26" FontAttributes="Bold" TextColor="#15803D" />
+                    <Label x:Name="lblChiTietCong" Text="Đang tải dữ liệu từ cảng..." FontSize="13" TextColor="#64748B" />
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8" Margin="0,6,0,0">
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label x:Name="lblVao" Text="0" FontSize="20" FontAttributes="Bold" TextColor="#15803D" HorizontalOptions="Center" />
+                            <Label Text="Vào hôm nay" FontSize="11" TextColor="#64748B" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label x:Name="lblRa" Text="0" FontSize="20" FontAttributes="Bold" TextColor="#C2410C" HorizontalOptions="Center" />
+                            <Label Text="Ra hôm nay" FontSize="11" TextColor="#64748B" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="2">
+                            <Label x:Name="lblTrongCang" Text="0" FontSize="20" FontAttributes="Bold" TextColor="#0A2F57" HorizontalOptions="Center" />
+                            <Label Text="Trong cảng" FontSize="11" TextColor="#64748B" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- LƯỚI CHỨC NĂNG -->
+            <Label Text="DÀNH CHO TÀI XẾ &amp; NHÀ XE" FontSize="12" FontAttributes="Bold" TextColor="#64748B" Margin="20,20,20,8" />
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowSpacing="12" Margin="16,0">
+                <Border Grid.Column="0" BackgroundColor="#0A2F57" StrokeThickness="0" Padding="16">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                    <Border.GestureRecognizers><TapGestureRecognizer Tapped="MoTaiXe" /></Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="🚚" FontSize="30" />
+                        <Label Text="Check-in tài xế" FontSize="15" FontAttributes="Bold" TextColor="White" />
+                        <Label Text="Nhập số lệnh + PIN, tới cổng được ưu tiên" FontSize="11" TextColor="#BAE6FD" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" BackgroundColor="White" Stroke="#CBD5E1" StrokeThickness="1" Padding="16">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                    <Border.GestureRecognizers><TapGestureRecognizer Tapped="MoTraCuu" /></Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="🔍" FontSize="30" />
+                        <Label Text="Tra cứu container" FontSize="15" FontAttributes="Bold" TextColor="#0A2F57" />
+                        <Label Text="Vị trí bãi, phí lưu, nhiệt độ" FontSize="11" TextColor="#64748B" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <Label Text="DÀNH CHO CHỦ HÀNG &amp; ĐIỀU ĐỘ" FontSize="12" FontAttributes="Bold" TextColor="#64748B" Margin="20,20,20,8" />
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowSpacing="12" Margin="16,0,16,24">
+                <Border Grid.Column="0" BackgroundColor="White" Stroke="#CBD5E1" StrokeThickness="1" Padding="16">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                    <Border.GestureRecognizers><TapGestureRecognizer Tapped="MoHangCuaToi" /></Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="📦" FontSize="30" />
+                        <Label Text="Hàng của tôi" FontSize="15" FontAttributes="Bold" TextColor="#0A2F57" />
+                        <Label Text="Đăng nhập xem container + lệnh" FontSize="11" TextColor="#64748B" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" BackgroundColor="White" Stroke="#CBD5E1" StrokeThickness="1" Padding="16">
+                    <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+                    <Border.GestureRecognizers><TapGestureRecognizer Tapped="MoReefer" /></Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="❄️" FontSize="30" />
+                        <Label Text="Container lạnh" FontSize="15" FontAttributes="Bold" TextColor="#0A2F57" />
+                        <Label Text="Nhiệt độ + cảnh báo lệch nhiệt" FontSize="11" TextColor="#64748B" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <Button Text="⚙ Cài đặt địa chỉ máy chủ" Clicked="MoCaiDat" BackgroundColor="Transparent" TextColor="#0369A1" FontSize="13" Margin="0,0,0,20" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
