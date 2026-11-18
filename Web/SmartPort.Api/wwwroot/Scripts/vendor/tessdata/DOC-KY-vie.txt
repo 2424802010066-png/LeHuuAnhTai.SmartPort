@@ -1,0 +1,5 @@
+vie.traineddata.gz: du lieu tieng Viet cho Tesseract (ban LSTM 'best_int' - dung che do OEM 1 cua tesseract.js).
+Nguon: goi npm @tesseract.js-data/vie@1.0.0, file 4.0.0_best_int/vie.traineddata.gz (1.423.003 byte),
+  https://registry.npmjs.org/@tesseract.js-data/vie/-/vie-1.0.0.tgz - tai ngay 24/09/2026, sha512 khop registry npm.
+  Du lieu goc: tesseract-ocr/tessdata_best (Apache-2.0); goi npm giay phep MIT.
+Dung o: smartport-web/src/khu/tai-xe/giayTo.js (OCR bang lai). eng.traineddata.gz van dung cho bien so / so container.

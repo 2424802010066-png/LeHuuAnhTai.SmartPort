@@ -1,0 +1,535 @@
+{
+  "//": "DANH MUC MICROSERVICES — moi dich vu: cong rieng, CSDL rieng, bang SO HUU (chi minh ghi) va BAN SAO (chi doc, cap nhat qua su kien du-lieu.<bang> tren RabbitMQ). Cong API Gateway dinh tuyen theo duongDan. Sinh boi script phan tich ma nguon; sua tay duoc.",
+  "coSoDuLieuNguon": "SmartPortDB_BaoCao",
+  "bangCucBo": [
+    "NhatKy",
+    "YeuCauDaXuLy",
+    "BanSaoPhienBan"
+  ],
+  "gateway": {
+    "//": "thoiGianChoGiay: so giay toi da mot yeu cau 'dung im' (cho phan hoi / giua 2 lan doc-ghi) truoc khi gateway cat va tra 504. tuyenDacBiet: tuyen co thoi gian cho rieng (0 = khong cat), uu tien khop truoc tuyen thuong. Dich vu co the dat thoiGianChoGiay rieng.",
+    "cong": 5100,
+    "thoiGianChoGiay": 30,
+    "tuyenDacBiet": [
+      {
+        "ten": "su-kien-sse",
+        "dichVu": "thong-bao",
+        "duongDan": "/api/su-kien",
+        "khopChinhXac": true,
+        "phuongThuc": [
+          "GET"
+        ],
+        "thoiGianChoGiay": 0,
+        "ghiChu": "Luong realtime SSE giu ket noi lau (nhip 15 giay) — khong cat"
+      },
+      {
+        "ten": "ai-video",
+        "dichVu": "ai-thi-giac",
+        "duongDan": "/api/ai-thi-giac/video",
+        "khopChinhXac": false,
+        "thoiGianChoGiay": 600,
+        "ghiChu": "Tai video toi 200 MB + xu ly video toi 10 phut"
+      },
+      {
+        "ten": "cong-dong-bo",
+        "dichVu": "cong",
+        "duongDan": "/api/cong/dong-bo",
+        "khopChinhXac": true,
+        "phuongThuc": [
+          "POST"
+        ],
+        "thoiGianChoGiay": 180,
+        "ghiChu": "Tram cong dong bo lo ngoai tuyen (<= 200 muc, co anh) — co the qua 30 giay"
+      },
+      {
+        "ten": "cong-dong-bo-lo",
+        "dichVu": "cong",
+        "duongDan": "/api/cong/dong-bo-lo",
+        "khopChinhXac": true,
+        "phuongThuc": [
+          "POST"
+        ],
+        "thoiGianChoGiay": 180,
+        "ghiChu": "Duong dan cu cua dong bo lo (cung logic moi)"
+      }
+    ]
+  },
+  "dichVu": [
+    {
+      "ten": "dinh-danh",
+      "tenHienThi": "Định danh & hệ thống",
+      "cong": 5101,
+      "coSoDuLieu": "SmartPortMS_DinhDanh",
+      "moTa": "Đăng nhập (mật khẩu, Google, số điện thoại OTP), JWT, quên mật khẩu, khuôn mặt, tài khoản, API key, quản trị hệ thống.",
+      "duongDan": [
+        "/api/auth",
+        "/api/he-thong",
+        "/api/tai-khoan-ca-nhan"
+      ],
+      "soHuu": [
+        "ApiKey",
+        "DatLaiMatKhau",
+        "KhuonMat",
+        "LienKetDangNhap",
+        "MaXacThucSdt",
+        "TaiKhoan"
+      ],
+      "banSao": [
+        "BanTinEDI",
+        "Ben",
+        "BieuPhiCong",
+        "CauHinhAgent",
+        "ChungTu",
+        "ChuyenTau",
+        "Container",
+        "DatDichVu",
+        "DatDichVuChiTiet",
+        "DichVu",
+        "HangTau",
+        "KhachHang",
+        "KiemDem",
+        "LenhGiaoNhan",
+        "LienHe",
+        "MediaAI",
+        "NhanDienAI",
+        "NhanDienChiTiet",
+        "NhatKyAgent",
+        "NhietDoLog",
+        "PhieuCan",
+        "PhieuLuuBai",
+        "PhieuSuaChua",
+        "SuCoAnNinh",
+        "TaiXe",
+        "Tau",
+        "ThanhToan",
+        "TheXe",
+        "XeRaVao"
+      ]
+    },
+    {
+      "ten": "kinh-doanh",
+      "tenHienThi": "Kinh doanh & khách hàng",
+      "cong": 5102,
+      "coSoDuLieu": "SmartPortMS_KinhDoanh",
+      "moTa": "Khách hàng, dịch vụ, đặt dịch vụ, thanh toán & đối soát, tin tức, trang công khai, tiện ích tra cứu.",
+      "duongDan": [
+        "/api/cong-khai",
+        "/api/dat-dich-vu-khach",
+        "/api/doi-soat-thanh-toan",
+        "/api/hang-cua-toi",
+        "/api/kinh-doanh",
+        "/api/thanh-toan-khach",
+        "/api/tien-ich"
+      ],
+      "soHuu": [
+        "CauHinhAnh",
+        "DatDichVu",
+        "DatDichVuChiTiet",
+        "DichVu",
+        "KhachHang",
+        "LienHe",
+        "SanLuongThang",
+        "ThanhToan",
+        "TinTuc"
+      ],
+      "banSao": [
+        "ApiKey",
+        "Ben",
+        "ChungTu",
+        "ChuyenTau",
+        "Container",
+        "HangTau",
+        "LenhGiaoHangDienTu",
+        "LenhGiaoNhan",
+        "MediaAI",
+        "NhietDoLog",
+        "PhieuLuuBai",
+        "TaiKhoan",
+        "Tau",
+        "TheXe",
+        "ToKhaiHaiQuan",
+        "XeRaVao"
+      ]
+    },
+    {
+      "ten": "tau-ben",
+      "tenHienThi": "Tàu & bến",
+      "cong": 5103,
+      "coSoDuLieu": "SmartPortMS_TauBen",
+      "moTa": "Hãng tàu, tàu, chuyến tàu, bến cảng, phân bến AI.",
+      "duongDan": [
+        "/api/ben-cang",
+        "/api/chuyen-tau",
+        "/api/hang-tau",
+        "/api/ke-hoach-xep-do",
+        "/api/phan-ben-ai",
+        "/api/tau-bien"
+      ],
+      "soHuu": [
+        "Ben",
+        "ChuyenTau",
+        "HangTau",
+        "Tau"
+      ],
+      "banSao": [
+        "Container",
+        "DatDichVu",
+        "DatDichVuChiTiet",
+        "DichVu",
+        "KhachHang",
+        "TaiKhoan"
+      ],
+      "bangCucBoRieng": [
+        "KeHoachXepDo"
+      ]
+    },
+    {
+      "ten": "bai",
+      "tenHienThi": "Bãi container",
+      "cong": 5104,
+      "coSoDuLieu": "SmartPortMS_Bai",
+      "moTa": "Container, sơ đồ bãi, container lạnh (IoT nhiệt độ), depot rỗng & sửa chữa.",
+      "duongDan": [
+        "/api/container",
+        "/api/container-lanh",
+        "/api/depot",
+        "/api/hang-nguy-hiem",
+        "/api/quan-ly-container",
+        "/api/so-do-bai",
+        "/api/thiet-bi-bai"
+      ],
+      "soHuu": [
+        "Container",
+        "NhietDoLog",
+        "PhieuSuaChua"
+      ],
+      "banSao": [
+        "Ben",
+        "ChungTu",
+        "ChuyenTau",
+        "DatDichVu",
+        "DatDichVuChiTiet",
+        "DichVu",
+        "HangTau",
+        "KhachHang",
+        "LenhGiaoNhan",
+        "PhieuCan",
+        "PhieuLuuBai",
+        "SuCoAnNinh",
+        "TaiKhoan",
+        "Tau",
+        "XeRaVao"
+      ],
+      "bangCucBoRieng": [
+        "KhaiBaoNguyHiem",
+        "ThietBiBai",
+        "LenhThietBi"
+      ]
+    },
+    {
+      "ten": "cong",
+      "tenHienThi": "Cổng & lệnh giao nhận",
+      "cong": 5105,
+      "coSoDuLieu": "SmartPortMS_Cong",
+      "moTa": "Lượt xe qua cổng, lệnh giao nhận, trạm cân, chứng từ, tài xế, đối soát cổng, API đối tác & di động.",
+      "duongDan": [
+        "/api/cong",
+        "/api/doi-soat-cong",
+        "/api/ho-so-tai-xe",
+        "/api/ho-so-xe",
+        "/api/kho-chung-tu",
+        "/api/lenh-giao-nhan",
+        "/api/mobile",
+        "/api/nhat-ky-cong",
+        "/api/tram-can",
+        "/api/v1"
+      ],
+      "soHuu": [
+        "ChungTu",
+        "DemXeCong",
+        "LenhGiaoNhan",
+        "PhieuCan",
+        "TaiXe",
+        "XeRaVao",
+        "XungDemXe"
+      ],
+      "banSao": [
+        "ApiKey",
+        "BanTinEDI",
+        "Ben",
+        "BieuPhiCong",
+        "CauHinhAgent",
+        "ChuyenTau",
+        "Container",
+        "DatDichVu",
+        "DatDichVuChiTiet",
+        "DichVu",
+        "HangTau",
+        "KhachHang",
+        "KhungGioCong",
+        "LenhGiaoHangDienTu",
+        "LienHe",
+        "NhanDienAI",
+        "NhanDienChiTiet",
+        "NhatKyAgent",
+        "NhietDoLog",
+        "PhieuLuuBai",
+        "PhieuSuaChua",
+        "SuCoAnNinh",
+        "TaiKhoan",
+        "Tau",
+        "ThanhToan",
+        "TheXe",
+        "ToKhaiHaiQuan"
+      ],
+      "bangCucBoRieng": [
+        "LuotXeNgoaiTuyen"
+      ]
+    },
+    {
+      "ten": "tai-chinh",
+      "tenHienThi": "Tài chính",
+      "cong": 5106,
+      "coSoDuLieu": "SmartPortMS_TaiChinh",
+      "moTa": "Thu phí cổng, thẻ xe, phí lưu bãi, báo cáo thống kê.",
+      "duongDan": [
+        "/api/bao-cao-thong-ke",
+        "/api/luu-bai",
+        "/api/phi-cong",
+        "/api/thu-tien"
+      ],
+      "soHuu": [
+        "BieuPhiCong",
+        "PhieuLuuBai",
+        "TheXe"
+      ],
+      "banSao": [
+        "Ben",
+        "ChungTu",
+        "ChuyenTau",
+        "Container",
+        "DatDichVu",
+        "DatDichVuChiTiet",
+        "DichVu",
+        "HangTau",
+        "KhachHang",
+        "SanLuongThang",
+        "TaiKhoan",
+        "Tau",
+        "XeRaVao"
+      ],
+      "bangCucBoRieng": [
+        "GiaoDichTheXe"
+      ]
+    },
+    {
+      "ten": "an-ninh",
+      "tenHienThi": "An ninh & thị giác",
+      "cong": 5107,
+      "coSoDuLieu": "SmartPortMS_AnNinh",
+      "moTa": "Sự cố an ninh, kho media AI, camera IP, nhận diện AI, kiểm đếm.",
+      "duongDan": [
+        "/api/an-ninh",
+        "/api/camera",
+        "/api/camera-ai",
+        "/api/doi-chieu-container",
+        "/api/giam-sat-tai-xe",
+        "/api/kho-media",
+        "/api/kiem-dem"
+      ],
+      "soHuu": [
+        "CameraIP",
+        "DoiChieuContainer",
+        "KiemDem",
+        "MediaAI",
+        "NhanDienAI",
+        "NhanDienChiTiet",
+        "PhanHoiAI",
+        "SuCoAnNinh"
+      ],
+      "banSao": [
+        "KhachHang",
+        "TaiKhoan"
+      ]
+    },
+    {
+      "ten": "tich-hop",
+      "tenHienThi": "Tích hợp EDI",
+      "cong": 5108,
+      "coSoDuLieu": "SmartPortMS_TichHop",
+      "moTa": "Bản tin EDI (CODECO, COARRI, COPARN...) với hãng tàu.",
+      "duongDan": [
+        "/api/edi"
+      ],
+      "soHuu": [
+        "BanTinEDI"
+      ],
+      "banSao": [
+        "Ben",
+        "ChungTu",
+        "ChuyenTau",
+        "Container",
+        "DatDichVu",
+        "DatDichVuChiTiet",
+        "DichVu",
+        "HangTau",
+        "KhachHang",
+        "LenhGiaoNhan",
+        "PhieuCan",
+        "TaiKhoan",
+        "Tau",
+        "XeRaVao"
+      ]
+    },
+    {
+      "ten": "van-hanh",
+      "tenHienThi": "Vận hành thông minh",
+      "cong": 5109,
+      "coSoDuLieu": "SmartPortMS_VanHanh",
+      "moTa": "AI vận hành, agent điều phối & tự động, trợ lý, tổng quan, dự báo (đọc bản sao dữ liệu toàn cảng).",
+      "duongDan": [
+        "/api/agent-dieu-phoi",
+        "/api/agent-tu-dong",
+        "/api/ai-lab",
+        "/api/ai-van-hanh",
+        "/api/cang-xanh",
+        "/api/gia-tri-ai",
+        "/api/hoc-may",
+        "/api/quy-trinh-van-hanh",
+        "/api/tong-quan",
+        "/api/tro-ly"
+      ],
+      "soHuu": [
+        "CauHinhAgent",
+        "NhatKyAgent"
+      ],
+      "banSao": [
+        "BanTinEDI",
+        "Ben",
+        "BieuPhiCong",
+        "CameraIP",
+        "ChungTu",
+        "ChuyenTau",
+        "Container",
+        "DatDichVu",
+        "DatDichVuChiTiet",
+        "DemXeCong",
+        "DichVu",
+        "DoiChieuContainer",
+        "HangTau",
+        "KhachHang",
+        "KhungGioCong",
+        "KiemDem",
+        "LenhGiaoHangDienTu",
+        "LenhGiaoNhan",
+        "LichHenXe",
+        "LienHe",
+        "NhanDienAI",
+        "NhanDienChiTiet",
+        "NhietDoLog",
+        "PhanHoiAI",
+        "PhieuCan",
+        "PhieuLuuBai",
+        "PhieuSuaChua",
+        "SanLuongThang",
+        "SuCoAnNinh",
+        "TaiKhoan",
+        "TaiXe",
+        "Tau",
+        "ThanhToan",
+        "TheXe",
+        "ToKhaiHaiQuan",
+        "XeRaVao"
+      ]
+    },
+    {
+      "ten": "thong-bao",
+      "tenHienThi": "Thông báo realtime",
+      "cong": 5110,
+      "coSoDuLieu": "SmartPortMS_ThongBao",
+      "moTa": "Nghe MỌI sự kiện trên RabbitMQ, đẩy realtime (SSE) tới giao diện.",
+      "duongDan": [
+        "/api/su-kien"
+      ],
+      "soHuu": [],
+      "banSao": [
+        "KhachHang",
+        "TaiKhoan"
+      ]
+    },
+    {
+      "ten": "lich-hen",
+      "tenHienThi": "Lịch hẹn cổng (TAS)",
+      "cong": 5111,
+      "coSoDuLieu": "SmartPortMS_LichHen",
+      "moTa": "Khung giờ có sức chứa, đặt / hủy lịch, đối chiếu đúng – sớm – trễ khi xe vào, phát hiện xe không đến, gợi ý khung giờ vắng.",
+      "duongDan": [
+        "/api/lich-hen"
+      ],
+      "soHuu": [
+        "KhungGioCong",
+        "LichHenXe"
+      ],
+      "banSao": [
+        "KhachHang",
+        "LenhGiaoNhan",
+        "TaiKhoan",
+        "XeRaVao"
+      ],
+      "bangCucBoRieng": [
+        "HangChoXe",
+        "CauHinhHangCho"
+      ]
+    },
+    {
+      "ten": "edo",
+      "tenHienThi": "Lệnh giao hàng điện tử (eDO)",
+      "cong": 5112,
+      "coSoDuLieu": "SmartPortMS_Edo",
+      "moTa": "Hãng tàu phát hành eDO ký HMAC-SHA256, xác thực QR, hết hạn / hủy / đã dùng khi container rời bãi.",
+      "duongDan": [
+        "/api/edo"
+      ],
+      "soHuu": [
+        "LenhGiaoHangDienTu"
+      ],
+      "banSao": [
+        "Container",
+        "HangTau",
+        "KhachHang",
+        "TaiKhoan"
+      ]
+    },
+    {
+      "ten": "hai-quan",
+      "tenHienThi": "Hải quan (mô phỏng VASSCM)",
+      "cong": 5113,
+      "coSoDuLieu": "SmartPortMS_HaiQuan",
+      "moTa": "Khai báo tờ khai, phân luồng Xanh/Vàng/Đỏ theo mô hình rủi ro, thông quan, tạm dừng; xác nhận qua khu vực giám sát.",
+      "duongDan": [
+        "/api/hai-quan"
+      ],
+      "soHuu": [
+        "ToKhaiHaiQuan"
+      ],
+      "banSao": [
+        "Container",
+        "KhachHang",
+        "TaiKhoan"
+      ]
+    },
+    {
+      "ten": "ai-thi-giac",
+      "tenHienThi": "AI thị giác (Python)",
+      "cong": 8100,
+      "nenTang": "python",
+      "moTa": "Suy luận GPU: đọc biển số (YOLO26 / RF-DETR), đọc mã container (CRNN + ràng buộc ISO 6346). Không trạng thái, không CSDL.",
+      "duongDan": [
+        "/api/ai-thi-giac"
+      ],
+      "soHuu": [],
+      "banSao": [],
+      "thoiGianChoGiay": 60
+    }
+  ]
+}

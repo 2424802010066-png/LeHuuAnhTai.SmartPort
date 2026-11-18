@@ -1,0 +1,7 @@
+zxing-wasm 3.1.4 (ZXing-C++ WebAssembly) - ban chi DOC ma (reader), giay phep MIT (xem LICENSE).
+Nguon: goi npm zxing-wasm@3.1.4 (https://registry.npmjs.org/zxing-wasm/-/zxing-wasm-3.1.4.tgz),
+  ma nguon https://github.com/Sec-ant/zxing-wasm - tai ngay 24/09/2026, da kiem sha512 khop registry:
+  sha512-1+v8p7sauddySVNG+ye7GD/0TS95BG2ycdkrC+EnBrFBFkHeIghzUt2yVjtx3NucJeNrQnhT8yGAIz60Vx9o0w==
+  zxing-reader.js   = dist/iife/reader/index.js (bien toan cuc ZXingWASM)
+  zxing_reader.wasm = dist/reader/zxing_reader.wasm (nap tu may chu qua locateFile, KHONG dung CDN)
+Dung o: smartport-web/src/khu/tai-xe/giayTo.js (quet QR mat truoc CCCD).

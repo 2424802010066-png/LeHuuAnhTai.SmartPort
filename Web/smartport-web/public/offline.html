@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chưa có giao diện ngoại tuyến — SmartPort</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background: linear-gradient(160deg, #0a2f57, #0c4a6e);
+        color: #e0f2fe;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .hop {
+        padding: 32px;
+        max-width: 480px;
+      }
+      .bieu-tuong {
+        font-size: 60px;
+        line-height: 1;
+      }
+      h1 {
+        font-size: 1.4rem;
+        margin: 14px 0 8px;
+      }
+      p,
+      li {
+        color: #bfdbfe;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+      ul {
+        text-align: left;
+        padding-left: 1.2rem;
+      }
+      code {
+        background: rgba(255, 255, 255, 0.12);
+        padding: 1px 6px;
+        border-radius: 6px;
+      }
+      button {
+        margin-top: 16px;
+        background: #f59e0b;
+        color: #1e293b;
+        border: 0;
+        padding: 12px 28px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      .nho {
+        font-size: 0.8rem;
+        color: #93c5fd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hop">
+      <div class="bieu-tuong" aria-hidden="true">&#128246;</div>
+      <h1>Không kết nối được máy chủ SmartPort</h1>
+      <p>Máy này <b>chưa lưu sẵn giao diện</b> để mở khi mất mạng (cần mở SmartPort ít nhất 1 lần lúc có mạng).</p>
+      <ul>
+        <li>Lượt xe đã ghi tạm trước đó vẫn <b>nằm an toàn trong máy</b> và sẽ tự gửi khi mở lại được SmartPort.</li>
+        <li>Máy trạm trong mạng LAN nên mở bằng <code>https://&lt;máy-chủ&gt;:5443</code> — trình duyệt chỉ lưu giao diện ngoại tuyến trên HTTPS.</li>
+        <li>Cần cho xe qua ngay: dùng <b>phiếu ra vào cổng ghi tay</b>, nhập bù sau.</li>
+      </ul>
+      <button type="button" onclick="location.reload()">Thử lại</button>
+      <p class="nho" id="tu-thu">Tự thử lại sau mỗi 10 giây…</p>
+    </div>
+    <script>
+      // Tu thu lai: may chu song lai la vao thang ung dung, bao ve khong phai bam
+      setInterval(function () {
+        fetch('/suc-khoe', { cache: 'no-store' })
+          .then(function () {
+            location.reload()
+          })
+          .catch(function () {})
+      }, 10000)
+    </script>
+  </body>
+</html>

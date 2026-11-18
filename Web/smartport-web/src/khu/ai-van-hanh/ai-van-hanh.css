@@ -1,0 +1,344 @@
+/* ==========================================================================
+   Khu AI VAN HANH — lop rieng tien to "av-"
+   (trung tam AI, du bao roi bai, du bao cong, container lanh, luot xe bat thuong)
+   ========================================================================== */
+
+/* ---------------- O so lon ---------------- */
+.av-o-so {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  border-radius: 14px;
+  padding: 0.9rem 1.05rem;
+  color: #fff;
+  background: linear-gradient(120deg, #0a2f57, #1c5fa8);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.av-o-so.la { background: linear-gradient(120deg, #14532d, #16a34a); }
+.av-o-so.cam { background: linear-gradient(120deg, #9a3412, #ea580c); }
+.av-o-so.vang { background: linear-gradient(120deg, #92400e, #d97706); }
+.av-o-so.do { background: linear-gradient(120deg, #7f1d1d, #dc2626); }
+.av-o-so.tim { background: linear-gradient(120deg, #312e81, #6366f1); }
+.av-o-so.ngoc { background: linear-gradient(120deg, #0c4a6e, #0284c7); }
+.av-o-so.xam { background: linear-gradient(120deg, #334155, #64748b); }
+
+.av-o-so-so {
+  position: relative;
+  z-index: 1;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.av-o-so-don-vi {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-left: 0.3rem;
+  opacity: 0.9;
+}
+
+.av-o-so-nhan {
+  position: relative;
+  z-index: 1;
+  font-size: 0.82rem;
+  margin-top: 0.2rem;
+  opacity: 0.95;
+}
+
+.av-o-so-phu {
+  position: relative;
+  z-index: 1;
+  font-size: 0.72rem;
+  opacity: 0.82;
+}
+
+.av-o-so-icon {
+  position: absolute;
+  right: 0.6rem;
+  bottom: -0.35rem;
+  font-size: 3.1rem;
+  opacity: 0.2;
+}
+
+/* ---------------- The mo-dun o Trung tam AI ---------------- */
+.av-the {
+  --av-vien: #16a34a;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-left: 5px solid var(--av-vien) !important;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.av-the.warn { --av-vien: #d97706; }
+.av-the.danger { --av-vien: #dc2626; }
+
+.av-the:hover,
+.av-the:focus-visible {
+  color: inherit;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(10, 47, 87, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .av-the,
+  .av-the:hover,
+  .av-the:focus-visible {
+    transition: none;
+    transform: none;
+  }
+}
+
+.av-the-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #fff;
+  background: var(--av-vien);
+  flex-shrink: 0;
+}
+
+.av-the-so {
+  font-size: 2.3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--av-vien);
+}
+
+.av-the-dong {
+  padding-left: 1.1rem;
+  margin: 0;
+}
+
+.av-the-dong li + li {
+  margin-top: 0.15rem;
+}
+
+.av-bai-toan {
+  border-top: 1px dashed var(--bs-border-color);
+  padding-top: 0.5rem;
+  margin-top: auto;
+}
+
+.av-thuat-toan {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: #eef2ff;
+  color: #4338ca;
+  border-radius: 999px;
+  padding: 0.12rem 0.6rem;
+}
+
+[data-bs-theme='dark'] .av-thuat-toan {
+  background: rgba(99, 102, 241, 0.2);
+  color: #c7d2fe;
+}
+
+.av-muc {
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  color: #fff;
+  background: var(--av-vien);
+  white-space: nowrap;
+}
+
+/* ---------------- Nguyen tac (vi sao la AI thuc te) ---------------- */
+.av-nguyen-tac {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.av-nguyen-tac > i {
+  font-size: 1.4rem;
+  color: #4338ca;
+}
+
+[data-bs-theme='dark'] .av-nguyen-tac > i { color: #a5b4fc; }
+
+/* ---------------- Bieu do ---------------- */
+.av-bieu-do {
+  position: relative;
+  height: 290px;
+}
+
+.av-bieu-do-nho {
+  position: relative;
+  height: 190px;
+}
+
+/* ---------------- Hop "AI tinh the nao" ---------------- */
+.av-cach-tinh summary {
+  cursor: pointer;
+}
+
+.av-chu-tim { color: #4338ca; }
+[data-bs-theme='dark'] .av-chu-tim { color: #a5b4fc; }
+.av-chu-la { color: #15803d; }
+[data-bs-theme='dark'] .av-chu-la { color: #4ade80; }
+
+.av-cong-thuc {
+  font-family: Consolas, 'Cascadia Mono', monospace;
+  font-size: 0.8rem;
+  background: var(--bs-tertiary-bg);
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  margin: 0.35rem 0 0.6rem;
+  white-space: pre-wrap;
+}
+
+/* ---------------- Thanh diem ---------------- */
+.av-thanh {
+  height: 6px;
+  min-width: 56px;
+  border-radius: 99px;
+  background: var(--bs-secondary-bg);
+  overflow: hidden;
+}
+
+.av-thanh > span {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+}
+
+.av-nen-ok { background: #16a34a; }
+.av-nen-info { background: #0284c7; }
+.av-nen-warn { background: #d97706; }
+.av-nen-do { background: #dc2626; }
+.av-nen-off { background: #64748b; }
+
+/* ---------------- Chat luong mo hinh ---------------- */
+.av-chat-luong {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+  align-items: baseline;
+}
+
+.av-chat-luong b {
+  font-size: 1.15rem;
+}
+
+/* ---------------- Dong duoc chon trong bang ---------------- */
+.av-dong-chon > td {
+  background: rgba(99, 102, 241, 0.1) !important;
+}
+
+/* ---------------- Lich dong cong (ngay x gio) ---------------- */
+.av-luoi-gio {
+  display: grid;
+  grid-template-columns: 4.6rem repeat(24, minmax(1.35rem, 1fr));
+  gap: 2px;
+  font-size: 0.66rem;
+  min-width: 42rem;
+}
+
+.av-luoi-gio .av-o-gio {
+  height: 1.55rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.av-luoi-gio .av-nhan-hang {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.av-luoi-gio .av-nhan-cot {
+  text-align: center;
+  color: var(--bs-secondary-color);
+}
+
+.av-o-gio.trong { background: var(--bs-tertiary-bg); color: var(--bs-secondary-color); }
+.av-o-gio.thong-thoang { background: #16a34a; }
+.av-o-gio.binh-thuong { background: #0284c7; }
+.av-o-gio.dong { background: #d97706; }
+.av-o-gio.un-tac { background: #dc2626; }
+
+.av-chu-giai {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-right: 0.9rem;
+}
+
+.av-chu-giai > span {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* ---------------- Khung gio nen hen ---------------- */
+.av-khung {
+  display: inline-flex;
+  flex-direction: column;
+  border: 1px solid #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+  border-radius: 10px;
+  padding: 0.35rem 0.7rem;
+  line-height: 1.25;
+}
+
+[data-bs-theme='dark'] .av-khung {
+  border-color: rgba(74, 222, 128, 0.35);
+  background: rgba(22, 163, 74, 0.12);
+  color: #86efac;
+}
+
+/* ---------------- Container lanh ---------------- */
+.av-lanh-dong {
+  cursor: pointer;
+}
+
+.av-khuyen-nghi {
+  border-left: 4px solid var(--av-vien, #0284c7);
+  background: var(--bs-tertiary-bg);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+}
+
+.av-khuyen-nghi.warn { --av-vien: #d97706; }
+.av-khuyen-nghi.do { --av-vien: #dc2626; }
+.av-khuyen-nghi.ok { --av-vien: #16a34a; }
+.av-khuyen-nghi.off { --av-vien: #64748b; }
+
+.av-nhan-dien-tap {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #7c2d12;
+  background: #fed7aa;
+  border-radius: 4px;
+  padding: 0.05rem 0.35rem;
+}
+
+/* ---------------- Ly do nghi van ---------------- */
+.av-ly-do {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.78rem;
+}

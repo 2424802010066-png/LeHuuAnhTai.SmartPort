@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SMARTPORT.CORE — NHAN DUNG CHUNG (shared kernel) cua Modular Monolith.
+    Chua: thuc the + DbContext (Models), dich vu nghiep vu cu chua tach module (AppServices),
+    helper doc lap giao dien (nhat ky, chuoi bam chung tu, khoa ung dung, cau hinh).
+    Luong CONG -> BAI -> TAI CHINH da tach sang SmartPort.Modules.* (giao tiep bang su kien);
+    cac nghiep vu con lai se tach dan theo cung cach (strangler).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>SmartPort</RootNamespace>
+    <AssemblyName>SmartPort.Core</AssemblyName>
+    <NoWarn>$(NoWarn);CS0618;CS1591;SYSLIB0014;EF1003</NoWarn>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- HttpContext (nhat ky ghi IP), IConfiguration, BackgroundService cua agent chay nen -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="EPPlus" Version="4.5.3.3" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartPort.BuildingBlocks\SmartPort.BuildingBlocks.csproj" />
+    <ProjectReference Include="..\SmartPort.Contracts\SmartPort.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

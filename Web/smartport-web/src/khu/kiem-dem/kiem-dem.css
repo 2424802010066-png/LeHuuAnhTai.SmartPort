@@ -1,0 +1,178 @@
+/* ==========================================================================
+   Khu KIEM DEM AI (TALLY) · GIAM SAT TAI XE (DMS) + KHOANG HANG (Cargo)
+   Moi lop co tien to "kd-" (khong dung lop cua khu khac).
+   Khung camera co nen toi co dinh (khung hinh video) — phan con lai lay mau
+   tu bien --sp-* nen dep ca giao dien toi (data-bs-theme="dark").
+   ========================================================================== */
+
+/* ---------- Khung camera / anh (canvas ve de len tren) ---------- */
+.kd-khung {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0b1520;
+  min-height: 250px;
+  display: grid;
+  place-items: center;
+}
+
+.kd-khung canvas {
+  width: 100%;
+  display: block;
+}
+
+.kd-khung video {
+  display: none;
+}
+
+.kd-trong {
+  color: #7b8ca1;
+  text-align: center;
+  padding: 2.4rem 1rem;
+  font-size: 0.86rem;
+}
+
+.kd-trong i {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+/* ---------- Hai lan phan loai: trai = khac mau, phai = giong mau ---------- */
+.kd-lan {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  writing-mode: vertical-rl;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.kd-lan-trai {
+  left: 0;
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.35), transparent);
+  color: #f59e0b;
+}
+
+.kd-lan-phai {
+  right: 0;
+  background: linear-gradient(270deg, rgba(34, 197, 94, 0.35), transparent);
+  color: #22c55e;
+}
+
+/* ---------- Den canh bao lon giua khung hinh tai xe ---------- */
+.kd-den-canh-bao {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(185, 28, 28, 0.32);
+  z-index: 3;
+  padding: 1rem;
+  text-align: center;
+}
+
+.kd-den-canh-bao > div {
+  background: #b91c1c;
+  color: #fff;
+  font-weight: 900;
+  font-size: 1.15rem;
+  padding: 14px 26px;
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  animation: kd-nhay 0.6s step-end infinite;
+}
+
+@keyframes kd-nhay {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* ---------- HUD chi so realtime cua camera tai xe ---------- */
+.kd-hud {
+  background: rgba(13, 79, 139, 0.07);
+  border-radius: 10px;
+  padding: 7px 4px;
+  height: 100%;
+}
+
+[data-bs-theme='dark'] .kd-hud {
+  background: rgba(127, 208, 245, 0.08);
+}
+
+.kd-hud-so {
+  font-weight: 900;
+  font-size: 1.02rem;
+  line-height: 1.15;
+  color: var(--sp-navy);
+}
+
+[data-bs-theme='dark'] .kd-hud-so {
+  color: #cfe3fb;
+}
+
+.kd-hud-nhan {
+  font-size: 0.68rem;
+  color: var(--sp-chu-phu);
+}
+
+/* ---------- Thanh do bat thuong cua AI tu hoc ---------- */
+.kd-tu-hoc {
+  border: 1px solid var(--sp-vien);
+  border-radius: 10px;
+  padding: 0.5rem 0.65rem;
+  background: var(--sp-the);
+}
+
+.kd-thanh {
+  height: 7px;
+  border-radius: 4px;
+  background: rgba(13, 79, 139, 0.12);
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.kd-thanh > span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: #22c55e;
+  transition: width 0.25s;
+}
+
+/* ---------- Anh san pham mau da dang ky ---------- */
+.kd-anh-mau {
+  width: 54px;
+  height: 54px;
+  border-radius: 8px;
+  border: 2px solid #22c55e;
+  object-fit: cover;
+}
+
+/* ---------- So dem lon cua phien dem video ---------- */
+.kd-so-lon {
+  font-weight: 900;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--sp-navy);
+}
+
+[data-bs-theme='dark'] .kd-so-lon {
+  color: #cfe3fb;
+}
+
+/* ---------- Dong trang thai engine AI ---------- */
+.kd-trang-thai {
+  font-size: 0.82rem;
+  color: var(--sp-chu-phu);
+  min-height: 1.2rem;
+}

@@ -1,0 +1,253 @@
+/* =====================================================================
+   KHU EDI HANG TAU + DEPOT — moi lop dat tien to ed-
+   ===================================================================== */
+
+/* Nhan loai ban tin: nen dam + chu trang -> doc ro ca giao dien sang lan toi */
+.ed-loai {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: #475569;
+  border-radius: 6px;
+  padding: 0.15rem 0.5rem;
+}
+
+.ed-loai-codeco {
+  background: #0284c7;
+}
+
+.ed-loai-coarri {
+  background: #0d9488;
+}
+
+.ed-loai-coparn {
+  background: #7c3aed;
+}
+
+/* Noi dung EDIFACT goc: khung nen toi kieu terminal o ca hai giao dien */
+.ed-edi-goc {
+  background: #0f172a;
+  color: #7dd3fc;
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  line-height: 1.75;
+  max-height: 620px;
+  overflow: auto;
+  white-space: pre;
+  margin: 0;
+  font-family: Consolas, 'Courier New', monospace;
+}
+
+[data-bs-theme='dark'] .ed-edi-goc {
+  background: #020617;
+  border: 1px solid var(--sp-vien);
+}
+
+.ed-edi-mau {
+  color: #c4b5fd;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  max-height: 250px;
+}
+
+.ed-mono,
+.ed-o-edi {
+  font-family: Consolas, 'Courier New', monospace;
+}
+
+.ed-o-edi {
+  font-size: 0.8rem;
+}
+
+/* Giai thich tung doan EDIFACT */
+.ed-doan-ds {
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.ed-doan {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--sp-vien);
+}
+
+.ed-doan:last-child {
+  border-bottom: 0;
+}
+
+.ed-doan-ma {
+  flex: 0 0 42px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--bs-primary-text-emphasis);
+  font-family: Consolas, 'Courier New', monospace;
+}
+
+.ed-doan-mo {
+  font-size: 0.8rem;
+  color: var(--sp-chu-phu);
+  line-height: 1.45;
+}
+
+/* So lon trong the thao tac (luot chua bao cao, so chuyen...) */
+.ed-so-the {
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.ed-chu-tim {
+  color: #6d28d9;
+}
+
+[data-bs-theme='dark'] .ed-chu-tim {
+  color: #a78bfa;
+}
+
+/* The chi so tien co the dai (vd 12.345.678.900 đ) -> chu nho hon mot chut */
+.ed-chi-so-tien .sp-chi-so-so {
+  font-size: 1.2rem;
+}
+
+/* Buoc cua luong nhan COPARN */
+.ed-buoc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+  font-size: 0.85rem;
+  color: var(--sp-chu-phu);
+}
+
+.ed-buoc span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ed-buoc b {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 0.72rem;
+  background: var(--sp-vien);
+  color: var(--sp-chu);
+}
+
+.ed-buoc .dang b {
+  background: var(--sp-navy-2);
+  color: #fff;
+}
+
+.ed-buoc .dang {
+  color: var(--sp-chu);
+  font-weight: 600;
+}
+
+/* ---------------- Ban in EOR song ngu (nen giay trang o ca giao dien toi) ---------------- */
+.ed-in {
+  font-family: 'Times New Roman', Times, serif;
+  color: #000;
+}
+
+.ed-in-dau {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 3px double #000;
+  padding-bottom: 4mm;
+}
+
+.ed-in-dau h1 {
+  font-size: 17pt;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+}
+
+.ed-in-en {
+  font-size: 10pt;
+  font-style: italic;
+  font-weight: normal;
+  color: #444;
+}
+
+.ed-in-so {
+  text-align: right;
+  font-size: 11pt;
+  white-space: nowrap;
+}
+
+.ed-in-so b {
+  font-size: 14pt;
+}
+
+.ed-in-bang {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11pt;
+  margin-top: 5mm;
+}
+
+.ed-in-bang th,
+.ed-in-bang td {
+  border: 1px solid #333;
+  padding: 3mm;
+  text-align: left;
+  vertical-align: top;
+  color: #000;
+  background: #fff;
+}
+
+.ed-in-bang th {
+  background: #e2e8f0;
+  width: 32%;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.ed-in-bang th .ed-in-en {
+  display: block;
+  font-size: 8.5pt;
+  color: #555;
+}
+
+.ed-in-cont {
+  font-size: 14pt;
+  font-weight: 700;
+}
+
+.ed-in-tien {
+  font-size: 14pt;
+  font-weight: 700;
+}
+
+.ed-in-ghi-chu {
+  margin-top: 5mm;
+  font-size: 9.5pt;
+  color: #444;
+  border-left: 3px solid #b45309;
+  padding-left: 4mm;
+}
+
+.ed-in-ky {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10mm;
+  font-size: 10.5pt;
+  text-align: center;
+}
+
+.ed-in-ky > div {
+  width: 30%;
+}
+
+.ed-in-cho-ky {
+  height: 20mm;
+}

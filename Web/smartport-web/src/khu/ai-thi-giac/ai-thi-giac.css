@@ -1,0 +1,225 @@
+/* ==========================================================================
+   Khu AI THI GIAC · Camera AI (YOLO) · SafePose · Camera IP · Q-Learning
+   Moi lop co tien to "tg-" (khong dung lop cua khu khac).
+   Mau nen / vien lay tu bien --sp-* de dep ca giao dien toi (data-bs-theme="dark").
+   ========================================================================== */
+
+/* ---------- Khung hien ket qua nhan dien (anh + canvas ve khung) ---------- */
+.tg-khung-anh {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0b1520;
+  min-height: 260px;
+  display: grid;
+  place-items: center;
+}
+
+.tg-khung-anh canvas {
+  width: 100%;
+  display: block;
+}
+
+.tg-khung-trong {
+  color: #64748b;
+  text-align: center;
+  padding: 2.5rem 1rem;
+}
+
+.tg-khung-trong i {
+  font-size: 2.4rem;
+}
+
+/* ---------- Chip ket qua theo lop doi tuong + nut phan hoi dung/sai ---------- */
+.tg-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--sp-vien);
+  border-left-width: 4px;
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  margin: 0 0.35rem 0.35rem 0;
+  font-size: 0.82rem;
+  background: var(--sp-the);
+}
+
+.tg-nut-ph {
+  border: 0;
+  border-radius: 6px;
+  width: 22px;
+  height: 22px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  background: rgba(21, 128, 61, 0.14);
+  color: #15803d;
+  transition: transform 0.15s;
+}
+
+.tg-nut-ph:hover:not(:disabled) {
+  transform: scale(1.15);
+}
+
+.tg-nut-ph:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.tg-nut-ph.sai {
+  background: rgba(185, 28, 28, 0.12);
+  color: #b91c1c;
+}
+
+[data-bs-theme='dark'] .tg-nut-ph {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+}
+
+[data-bs-theme='dark'] .tg-nut-ph.sai {
+  background: rgba(248, 113, 113, 0.2);
+  color: #fca5a5;
+}
+
+/* ---------- Bang vong lap tu hoc (active learning) ---------- */
+.tg-tu-hoc {
+  border: 1px dashed var(--sp-vien);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  background: var(--sp-nen);
+}
+
+.tg-tu-hoc-dong {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  padding: 2px 0;
+}
+
+/* ---------- Bieu do cot theo gio (24 cot) ---------- */
+.tg-cot-gio {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 230px;
+  padding-top: 18px;
+}
+
+.tg-cot {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.tg-cot-than {
+  width: 100%;
+  min-height: 2px;
+  border-radius: 5px 5px 0 0;
+  background: linear-gradient(180deg, #1c5fa8, #0a2f57);
+  position: relative;
+  transition: filter 0.2s;
+}
+
+.tg-cot-than:hover {
+  filter: brightness(1.25);
+}
+
+.tg-cot-than.dinh {
+  background: linear-gradient(180deg, #ff9d4d, #e5691d);
+}
+
+.tg-cot-so {
+  position: absolute;
+  top: -17px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--sp-chu);
+}
+
+.tg-cot-nhan {
+  font-size: 0.65rem;
+  color: var(--sp-chu-phu);
+  margin-top: 4px;
+}
+
+/* ---------- Thanh ty le (co cau doi tuong, luu luong theo ngay) ---------- */
+.tg-thanh {
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--sp-vien);
+  flex-grow: 1;
+}
+
+.tg-thanh > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0a2f57, #1c5fa8);
+}
+
+.tg-thanh > span.cam {
+  background: linear-gradient(90deg, #0a2f57, #e5691d);
+}
+
+/* ---------- Du bao SSM (Mamba) 6 gio toi ---------- */
+.tg-ssm {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  height: 110px;
+}
+
+.tg-ssm-cot {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.tg-ssm-than {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, #a855f7, #7c3aed);
+  opacity: 0.85;
+}
+
+/* ---------- Camera IP: the tung camera + anh chup ---------- */
+.tg-cam {
+  border: 1px solid var(--sp-vien);
+  border-radius: 12px;
+  padding: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.tg-cam-url {
+  font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace;
+  font-size: 0.76rem;
+  color: var(--sp-chu-phu);
+  word-break: break-all;
+}
+
+.tg-cam-anh {
+  max-width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--sp-vien);
+  display: block;
+}
+
+/* ---------- Q-Learning: luoi bai container ---------- */
+.tg-rl-canvas {
+  max-width: 100%;
+  border-radius: 12px;
+  background: var(--sp-nen);
+  border: 1px solid var(--sp-vien);
+}

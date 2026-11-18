@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    SMARTPORT.API — BACK-END cua kien truc tach Front-end / Back-end.
+    Chi tra du lieu JSON qua RESTful API (khong render HTML).
+    Front-end React (smartport-web), app di dong va phan mem doi tac cung goi API nay.
+    Nghiep vu nam trong cac module (SmartPort.Modules.*) va SmartPort.Core — API chi dieu phoi.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>SmartPort.Api</RootNamespace>
+    <AssemblyName>SmartPort.Api</AssemblyName>
+    <!-- Sinh file XML tu comment /// de Swagger hien mo ta tieng Viet cho tung API -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591;CS0618</NoWarn>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <UserSecretsId>1408e58c-9b54-4e12-bb22-5ca10efc0e52</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartPort.Core\SmartPort.Core.csproj" />
+    <ProjectReference Include="..\SmartPort.NenTang\SmartPort.NenTang.csproj" />
+    <ProjectReference Include="..\SmartPort.Modules.Cong\SmartPort.Modules.Cong.csproj" />
+    <ProjectReference Include="..\SmartPort.Modules.Bai\SmartPort.Modules.Bai.csproj" />
+    <ProjectReference Include="..\SmartPort.Modules.TaiChinh\SmartPort.Modules.TaiChinh.csproj" />
+    <ProjectReference Include="..\SmartPort.Modules.ThongBao\SmartPort.Modules.ThongBao.csproj" />
+    <ProjectReference Include="..\SmartPort.Modules.CangSo\SmartPort.Modules.CangSo.csproj" />
+  </ItemGroup>
+
+  <!--
+    BAN GOP bien dich LAI controller cua MOI dich vu (lien ket, khong chep ma): cung mot ma nguon chay duoc
+    o 2 kieu trien khai — 1 tien trinh (somee) hoac nhieu microservice (DichVu/*, sau cong SmartPort.Gateway).
+  -->
+  <ItemGroup>
+    <Compile Include="..\DichVu\*\Controllers\**\*.cs" LinkBase="Controllers" />
+  </ItemGroup>
+
+</Project>

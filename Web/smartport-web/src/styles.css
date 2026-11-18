@@ -1,0 +1,959 @@
+/* ==========================================================================
+   SmartPort web — giao dien dieu hanh B2B (Bootstrap 5 + lop rieng "sp-")
+   ========================================================================== */
+:root {
+  --sp-navy: #0a2f57;
+  --sp-navy-2: #0d4f8b;
+  --sp-cam: #f97316;
+  --sp-nen: #f1f5f9;
+  --sp-the: #ffffff;
+  --sp-vien: #e2e8f0;
+  --sp-chu: #0f172a;
+  --sp-chu-phu: #64748b;
+  --sp-tim: #7c3aed;
+  --bs-body-font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+  background: var(--sp-nen);
+  color: var(--sp-chu);
+}
+
+/* ---------------- Giao dien toi (nut mat trang tren thanh tren) ---------------- */
+[data-bs-theme='dark'] {
+  --sp-nen: #0b1220;
+  --sp-the: #111a2b;
+  --sp-vien: #22324a;
+  --sp-chu: #e2e8f0;
+  --sp-chu-phu: #94a3b8;
+  --bs-body-bg: #0b1220;
+  --bs-body-color: #e2e8f0;
+  --bs-border-color: #22324a;
+}
+
+[data-bs-theme='dark'] .card,
+[data-bs-theme='dark'] .modal-content,
+[data-bs-theme='dark'] .dropdown-menu {
+  --bs-card-bg: var(--sp-the);
+  --bs-modal-bg: var(--sp-the);
+  --bs-dropdown-bg: var(--sp-the);
+}
+
+[data-bs-theme='dark'] .sp-bang thead th,
+[data-bs-theme='dark'] .sp-canh-bao,
+[data-bs-theme='dark'] .sp-tien-trinh {
+  background: #0f1a2c;
+}
+
+.min-w-0 {
+  min-width: 0;
+}
+
+/* ---------------- Khung: menu trai + noi dung ---------------- */
+.sp-khung {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sp-menu {
+  width: 272px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, var(--sp-navy), #072440);
+  color: #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 1040;
+}
+
+.sp-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.1rem 1.25rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.sp-logo i {
+  color: var(--sp-cam);
+}
+
+.sp-logo:hover {
+  color: #fff;
+}
+
+.sp-logo span {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-left: auto;
+}
+
+.sp-menu .nav-link {
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.42rem 1.1rem 0.42rem 1.25rem;
+  border-left: 3px solid transparent;
+  font-size: 0.9rem;
+}
+
+.sp-menu .nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sp-menu .nav-link.active {
+  color: #fff;
+  background: rgba(249, 115, 22, 0.14);
+  border-left-color: var(--sp-cam);
+  font-weight: 600;
+}
+
+.sp-menu-duoi {
+  margin-top: auto;
+  padding-bottom: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sp-kien-truc {
+  font-size: 0.7rem;
+  color: #64748b;
+  padding: 0.25rem 1.25rem 0;
+}
+
+.sp-noi-dung {
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sp-dau {
+  display: flex;
+  align-items: center;
+  background: var(--sp-the);
+  border-bottom: 1px solid var(--sp-vien);
+  padding: 0.7rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+.sp-trang {
+  padding: 1.5rem;
+}
+
+.sp-den-truc-tiep i {
+  font-size: 0.55rem;
+  margin-right: 0.35rem;
+  vertical-align: middle;
+}
+
+.sp-den-truc-tiep.text-success i {
+  animation: sp-nhap-nhay 1.6s ease-in-out infinite;
+}
+
+@keyframes sp-nhap-nhay {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.sp-man-che {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  .sp-menu {
+    position: fixed;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+
+  .sp-menu.mo {
+    transform: none;
+  }
+
+  .sp-man-che {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 1035;
+  }
+
+  .sp-trang {
+    padding: 1rem;
+  }
+
+  .sp-dau {
+    padding: 0.6rem 1rem;
+  }
+}
+
+/* ---------------- The, chi so ---------------- */
+.sp-the {
+  border: 1px solid var(--sp-vien);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.sp-the > .card-header {
+  background: transparent;
+  font-weight: 600;
+  border-bottom-color: var(--sp-vien);
+  padding: 0.8rem 1rem;
+}
+
+.sp-chi-so {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: var(--sp-the);
+  border: 1px solid var(--sp-vien);
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+  height: 100%;
+}
+
+.sp-chi-so-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.sp-chi-so-icon.xanh { background: #dbeafe; color: #1d4ed8; }
+.sp-chi-so-icon.xanh-ngoc { background: #cffafe; color: #0e7490; }
+.sp-chi-so-icon.cam { background: #ffedd5; color: #c2410c; }
+.sp-chi-so-icon.do { background: #fee2e2; color: #b91c1c; }
+.sp-chi-so-icon.la { background: #dcfce7; color: #15803d; }
+.sp-chi-so-icon.tim { background: #ede9fe; color: #6d28d9; }
+
+.sp-chi-so-so {
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.sp-chi-so-nhan {
+  font-size: 0.78rem;
+  color: var(--sp-chu-phu);
+}
+
+.sp-hop-ai {
+  background: linear-gradient(120deg, var(--sp-navy), var(--sp-navy-2) 60%, #1173c4);
+  color: #fff;
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+}
+
+.sp-hop-ai.tim {
+  background: linear-gradient(120deg, #2e1065, #6d28d9 60%, #8b5cf6);
+}
+
+.sp-nhan-ai {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem;
+}
+
+.sp-so-lon {
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.sp-chu-nhat {
+  color: #c7d7ea;
+}
+
+.sp-chon-nguon {
+  max-width: 420px;
+}
+
+.sp-bieu-do {
+  height: 320px;
+}
+
+.sp-canh-bao {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border-left: 4px solid;
+  border-radius: 8px;
+  background: #f8fafc;
+  margin-bottom: 0.5rem;
+}
+
+.sp-canh-bao > i {
+  font-size: 1.15rem;
+}
+
+.sp-bang thead th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sp-chu-phu);
+  font-weight: 600;
+  background: #f8fafc;
+  white-space: nowrap;
+}
+
+.sp-bang-cuon {
+  max-height: 900px;
+  overflow-y: auto;
+}
+
+.sp-bang-cuon thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* ---------------- Su kien realtime ---------------- */
+.sp-dong-su-kien {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.sp-su-kien-moi {
+  animation: sp-hien-ra 1.2s ease-out;
+}
+
+@keyframes sp-hien-ra {
+  from {
+    background: #fef3c7;
+  }
+  to {
+    background: transparent;
+  }
+}
+
+/* ---------------- Cong thong minh ---------------- */
+.sp-bien-so {
+  display: inline-block;
+  font-family: Consolas, 'Courier New', monospace;
+  font-weight: 800;
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  background: #fff;
+  color: #0a0a0a;
+  border: 2px solid #111;
+  border-radius: 6px;
+  padding: 0 0.45rem;
+  white-space: nowrap;
+}
+
+.sp-man-hinh-camera {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0b1520;
+  min-height: 280px;
+  display: grid;
+  place-items: center;
+}
+
+.sp-man-hinh-camera canvas,
+.sp-man-hinh-camera video {
+  width: 100%;
+  display: block;
+}
+
+.sp-camera-trong {
+  color: #64748b;
+  text-align: center;
+}
+
+.sp-camera-trong i {
+  font-size: 2.4rem;
+}
+
+.sp-camera-dang-doc {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  background: rgba(2, 6, 23, 0.8);
+  color: #e2e8f0;
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.sp-o-bien-so {
+  border: 2px dashed #22d3ee;
+  background: rgba(34, 211, 238, 0.04);
+}
+
+.sp-o-nhap-bien {
+  font-family: Consolas, 'Courier New', monospace;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  border: 2px solid #111;
+}
+
+.sp-anh-vung-bien {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 2px solid #22d3ee;
+}
+
+.sp-anh-nho {
+  width: 62px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid #22d3ee;
+  cursor: zoom-in;
+}
+
+.sp-badge-dock {
+  background: #0d9488;
+  color: #fff;
+}
+
+.sp-lop-phu {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  background: rgba(4, 12, 22, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.sp-hop-anh {
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px;
+  max-width: min(920px, 100%);
+  max-height: 92vh;
+  overflow: auto;
+}
+
+.sp-hop-anh img {
+  max-width: 100%;
+  max-height: 76vh;
+  border-radius: 10px;
+  display: block;
+}
+
+/* ---------------- AI Lab ---------------- */
+.sp-nut-tim {
+  color: #fff;
+  background: linear-gradient(120deg, #6d28d9, #8b5cf6);
+  border: 0;
+}
+
+.sp-nut-tim:hover,
+.sp-nut-tim:disabled {
+  color: #fff;
+  background: linear-gradient(120deg, #5b21b6, #7c3aed);
+}
+
+.sp-thanh-tim {
+  background: #8b5cf6;
+}
+
+.sp-chu-tim {
+  color: var(--sp-tim);
+}
+
+/* ---------------- Tra cuu container ---------------- */
+.sp-truong-nhan {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sp-chu-phu);
+}
+
+.sp-truong-gia-tri {
+  font-weight: 600;
+}
+
+.sp-o-chuyen {
+  border: 1px solid var(--sp-vien);
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  height: 100%;
+}
+
+.sp-tong-tien {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--sp-navy-2);
+}
+
+.sp-anh-ocr {
+  max-width: 100%;
+  max-height: 160px;
+  border-radius: 8px;
+  border: 1px solid var(--sp-vien);
+}
+
+.sp-dong-thoi-gian {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sp-dong-thoi-gian li {
+  display: flex;
+  gap: 0.8rem;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.sp-dong-thoi-gian li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 32px;
+  bottom: 0;
+  width: 2px;
+  background: var(--sp-vien);
+}
+
+.sp-cham {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.sp-trang-cong-khai {
+  min-height: 100vh;
+}
+
+.sp-dau-cong-khai {
+  background: var(--sp-navy);
+  color: #fff;
+  padding: 0.8rem 0;
+}
+
+.sp-logo-chu {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.sp-logo-chu i {
+  color: var(--sp-cam);
+}
+
+/* ---------------- Dang nhap ---------------- */
+.sp-dang-nhap {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: radial-gradient(circle at 20% 20%, #1c5fa8 0, transparent 45%), linear-gradient(135deg, var(--sp-navy), #04172b);
+}
+
+.sp-logo-lon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 0.5rem;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--sp-navy-2), var(--sp-cam));
+}
+
+/* ---------------- Tien trinh xu ly qua su kien ---------------- */
+.sp-tien-trinh {
+  border: 1px solid var(--sp-vien);
+  border-left: 4px solid var(--sp-navy-2);
+  border-radius: 10px;
+  background: #f8fafc;
+  padding: 0.6rem 0.8rem;
+}
+
+/* ---------------- Menu nhom (khu dieu hanh) ---------------- */
+.sp-menu-cuon {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+}
+
+.sp-loc-menu {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+}
+
+.sp-loc-menu::placeholder {
+  color: #94a3b8;
+}
+
+.sp-loc-menu:focus {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.sp-nhom-menu {
+  margin-bottom: 0.15rem;
+}
+
+.sp-nhom-menu-dau {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #8fb3d9;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.6rem 1.1rem 0.35rem 1.25rem;
+}
+
+.sp-nhom-menu-dau:hover {
+  color: #fff;
+}
+
+.sp-mui-ten {
+  font-size: 0.65rem;
+}
+
+.sp-nhan-menu {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 0.1rem 0.35rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.sp-menu .nav-link.active .sp-nhan-menu {
+  background: var(--sp-cam);
+  color: #fff;
+}
+
+/* ---------------- Thanh tren: tim kiem toan cuc, chuong, nut tron ---------------- */
+.sp-tieu-de-trang {
+  max-width: 34%;
+}
+
+.sp-tim-toan-cuc {
+  position: relative;
+  max-width: 520px;
+  margin-right: 1rem;
+}
+
+.sp-tim-toan-cuc .form-control {
+  padding-left: 2rem;
+  padding-right: 4rem;
+  border-radius: 999px;
+  background: var(--sp-nen);
+}
+
+.sp-tim-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--sp-chu-phu);
+  font-size: 0.85rem;
+}
+
+.sp-tim-kbd {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.65rem;
+  background: var(--sp-vien);
+  color: var(--sp-chu-phu);
+  border-radius: 6px;
+  padding: 0.1rem 0.35rem;
+}
+
+.sp-tim-ket-qua {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  min-width: 360px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: var(--sp-the);
+  border: 1px solid var(--sp-vien);
+  border-radius: 12px;
+  z-index: 1060;
+  padding: 0.35rem;
+}
+
+.sp-tim-hang {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  border-radius: 8px;
+  padding: 0.45rem 0.55rem;
+}
+
+.sp-tim-hang.chon {
+  background: rgba(13, 79, 139, 0.1);
+}
+
+.sp-tim-cham {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.sp-tim-nhom {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sp-chu-phu);
+  white-space: nowrap;
+}
+
+.sp-nut-tron {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--sp-vien);
+  background: var(--sp-the);
+  color: #b26a00;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.sp-nut-tron:hover {
+  border-color: var(--sp-cam);
+}
+
+.sp-so-thong-bao {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.sp-hop-thong-bao {
+  right: 0;
+  left: auto;
+  top: calc(100% + 6px);
+  min-width: 300px;
+}
+
+/* ---------------- Thong bao nhanh (toast) ---------------- */
+.sp-toast-vung {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(380px, calc(100vw - 28px));
+}
+
+.sp-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.25);
+  animation: sp-toast-vao 0.25s ease-out;
+  font-size: 0.9rem;
+}
+
+.sp-toast > i {
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+@keyframes sp-toast-vao {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* ---------------- Nhan trang thai (giong Ui.Badge ban MVC) ---------------- */
+.sp-nhan {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.sp-nhan-ok { background: #e6f7ee; color: #0f8a4d; }
+.sp-nhan-info { background: #e8f1fc; color: #1266b0; }
+.sp-nhan-warn { background: #fff4e0; color: #b26a00; }
+.sp-nhan-off { background: #f1f3f6; color: #6b7684; }
+.sp-nhan-run { background: #e6f6fb; color: #0b7ea8; }
+.sp-nhan-do { background: #fde8e8; color: #b91c1c; }
+
+[data-bs-theme='dark'] .sp-nhan-ok { background: rgba(16, 185, 129, 0.16); color: #6ee7b7; }
+[data-bs-theme='dark'] .sp-nhan-info { background: rgba(59, 130, 246, 0.16); color: #93c5fd; }
+[data-bs-theme='dark'] .sp-nhan-warn { background: rgba(245, 158, 11, 0.16); color: #fcd34d; }
+[data-bs-theme='dark'] .sp-nhan-off { background: rgba(148, 163, 184, 0.14); color: #cbd5e1; }
+[data-bs-theme='dark'] .sp-nhan-run { background: rgba(14, 165, 233, 0.16); color: #7dd3fc; }
+[data-bs-theme='dark'] .sp-nhan-do { background: rgba(239, 68, 68, 0.16); color: #fca5a5; }
+
+.sp-dong-bam {
+  cursor: pointer;
+}
+
+/* ---------------- Trang in (lenh, phieu, hoa don) ---------------- */
+.sp-trang-in-nen {
+  min-height: 100vh;
+  background: #e2e8f0;
+  padding: 16px;
+}
+
+.sp-thanh-in {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 12px;
+}
+
+.sp-trang-in {
+  background: #fff;
+  color: #0f172a;
+  width: 210mm;
+  max-width: 100%;
+  min-height: 200mm;
+  margin: 0 auto;
+  padding: 14mm 14mm;
+  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.15);
+}
+
+@media print {
+  .sp-trang-in-nen {
+    background: #fff;
+    padding: 0;
+  }
+
+  .sp-trang-in {
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+}
+
+/* ---------------- In tu man hinh khu dieu hanh ----------------
+   Bam Ctrl+P o bat ky man hinh nao: bo menu trai, thanh tren, nut noi va vien the —
+   chi con noi dung. (Trang in chuyen dung thi dung boCuc 'in' o so dang ky tuyen.) */
+@media print {
+  .sp-menu,
+  .sp-dau,
+  .sp-man-che,
+  .sp-toast-vung,
+  .tl-fab,
+  .tl-panel {
+    display: none !important;
+  }
+
+  .sp-khung {
+    display: block;
+  }
+
+  .sp-trang {
+    padding: 0;
+  }
+
+  .sp-the,
+  .card {
+    border: 0 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  body {
+    background: #fff;
+  }
+}
+
+/* Bao dong toan cuc (su co an ninh / an toan NGUY HIEM realtime) — goc duoi trai, tren moi trang quan tri */
+.sp-bao-dong {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 1090;
+  width: min(420px, calc(100vw - 2rem));
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.sp-bao-dong-the {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.6rem;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+.sp-bao-dong-the.nguy { background: #b91c1c; }
+.sp-bao-dong-the.chu-y { background: #b45309; }
+
+/* So thu tu cong doan tren menu: 1 la ngoai cong */
+.sp-so-menu {
+  display: inline-block;
+  min-width: 1.6em;
+  margin-right: .15em;
+  font-weight: 700;
+  opacity: .75;
+}

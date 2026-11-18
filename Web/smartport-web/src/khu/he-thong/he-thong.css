@@ -1,0 +1,230 @@
+/* ==========================================================================
+   KHU HE THONG — van hanh, nhat ky, tai khoan, tich hop API
+   Moi lop co tien to "ht-" de khong dung khu khac. Mau lay tu bien --sp-* / Bootstrap
+   nen giao dien toi tu doi theo.
+   ========================================================================== */
+
+/* ---------------- Van hanh he thong ---------------- */
+.ht-o-so {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 10px;
+  background: var(--bs-tertiary-bg);
+  height: 100%;
+}
+
+.ht-o-so > i {
+  color: var(--sp-navy-2);
+  font-size: 1.15rem;
+}
+
+[data-bs-theme='dark'] .ht-o-so > i {
+  color: #6cb6f5;
+}
+
+.ht-o-so-so {
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.ht-o-so-nhan {
+  font-size: 0.72rem;
+  color: var(--sp-chu-phu);
+}
+
+.ht-dong-loi {
+  border-left: 3px solid var(--bs-danger);
+  padding: 0.1rem 0 0.1rem 0.6rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.85rem;
+  word-break: break-word;
+}
+
+.ht-dong-loi:last-child {
+  margin-bottom: 0;
+}
+
+.ht-tien-trinh {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--sp-vien);
+}
+
+.ht-tien-trinh:first-child {
+  padding-top: 0;
+}
+
+.ht-tien-trinh:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.ht-tien-trinh > i {
+  font-size: 1.2rem;
+  color: var(--sp-navy-2);
+  margin-top: 0.1rem;
+}
+
+[data-bs-theme='dark'] .ht-tien-trinh > i {
+  color: #6cb6f5;
+}
+
+/* The chi so bam duoc (link hoac nut loc nhanh) */
+.ht-the-bam {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ht-the-bam:hover .sp-chi-so,
+.ht-the-bam:focus-visible .sp-chi-so,
+.ht-the-bam.dang-chon .sp-chi-so {
+  border-color: var(--sp-cam);
+}
+
+.ht-the-bam:focus-visible {
+  outline: 2px solid var(--sp-cam);
+  outline-offset: 2px;
+  border-radius: 14px;
+}
+
+/* ---------------- Tai khoan ---------------- */
+.ht-dong-khoa > td {
+  color: var(--sp-chu-phu);
+}
+
+/* ---------------- Nhat ky ---------------- */
+.ht-noi-dung-nk {
+  font-size: 0.85rem;
+  word-break: break-word;
+  min-width: 240px;
+}
+
+/* ---------------- Tich hop API ---------------- */
+.ht-khoa-moi {
+  font-size: 1rem;
+  background: var(--sp-the);
+  color: var(--sp-chu);
+  padding: 0.45rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #d6b656;
+  word-break: break-all;
+  user-select: all;
+}
+
+.ht-khoa-thu-hoi td {
+  opacity: 0.55;
+}
+
+.ht-khoa-thu-hoi td:last-child {
+  opacity: 1;
+}
+
+/* ---------------- Tai lieu API ---------------- */
+.ht-code {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 0.7rem 0.85rem;
+  border-radius: 9px;
+  font-size: 0.78rem;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+  white-space: pre;
+}
+
+.ht-json {
+  background: #052e16;
+  color: #bbf7d0;
+}
+
+.ht-ep {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--sp-vien);
+}
+
+.ht-ep:first-child {
+  padding-top: 0;
+}
+
+.ht-ep:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.ht-ep-duong {
+  color: var(--sp-navy);
+  font-weight: 600;
+  word-break: break-all;
+}
+
+[data-bs-theme='dark'] .ht-ep-duong {
+  color: #6cb6f5;
+}
+
+.ht-verb {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 800;
+  padding: 0.13rem 0.45rem;
+  border-radius: 5px;
+  color: #fff;
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+
+.ht-verb.get {
+  background: #15803d;
+}
+
+.ht-verb.post {
+  background: #b45309;
+}
+
+/* In tai lieu gui khach: chi in noi dung trang (an menu, thanh tren, nut, tro ly) — chi ap dung khi trang tai lieu dang mo */
+@media print {
+  body.ht-in-tai-lieu .sp-menu,
+  body.ht-in-tai-lieu .sp-dau,
+  body.ht-in-tai-lieu .sp-man-che,
+  body.ht-in-tai-lieu .ht-an-khi-in,
+  body.ht-in-tai-lieu .tl-fab,
+  body.ht-in-tai-lieu .tl-panel,
+  body.ht-in-tai-lieu .sp-toast-vung {
+    display: none !important;
+  }
+
+  body.ht-in-tai-lieu,
+  body.ht-in-tai-lieu .sp-trang {
+    background: #fff !important;
+    padding: 0 !important;
+  }
+
+  body.ht-in-tai-lieu .ht-tai-lieu {
+    --sp-the: #fff;
+    --sp-chu: #0f172a;
+    --sp-vien: #e2e8f0;
+    --bs-body-color: #0f172a;
+    --bs-card-bg: #fff;
+    color: #0f172a;
+  }
+
+  body.ht-in-tai-lieu .ht-tai-lieu .sp-the {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+
+  body.ht-in-tai-lieu .ht-code,
+  body.ht-in-tai-lieu .ht-verb {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

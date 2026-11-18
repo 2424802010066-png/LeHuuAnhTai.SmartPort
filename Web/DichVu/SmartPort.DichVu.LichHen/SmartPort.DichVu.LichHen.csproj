@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    DICH VU LỊCH HẸN CỔNG (TAS) — MICROSERVICE: tien trinh rieng (cong 5111), CSDL rieng (SmartPortMS_LichHen),
+    chi ghi bang minh so huu; doc du lieu dich vu khac qua BAN SAO cap nhat bang su kien RabbitMQ.
+    Khung giờ có sức chứa, đặt / hủy lịch, đối chiếu đúng – sớm – trễ khi xe vào, phát hiện xe không đến, gợi ý khung giờ vắng.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>SmartPort.Api</RootNamespace>
+    <AssemblyName>SmartPort.DichVu.LichHen</AssemblyName>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591;CS0618</NoWarn>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SmartPort.NenTang\SmartPort.NenTang.csproj" />
+    <ProjectReference Include="..\..\SmartPort.Contracts\SmartPort.Contracts.csproj" />
+    <ProjectReference Include="..\..\SmartPort.Modules.CangSo\SmartPort.Modules.CangSo.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    MODULE THONG BAO — dua su kien toi con nguoi: doc Outbox (su kien cua MOI module, ca tu
+    ban MVC) va day realtime toi giao dien; dich su kien thanh cau tieng Viet.
+    Khong so huu du lieu nghiep vu, khong tham chieu Core hay module khac.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>SmartPort.Modules.ThongBao</RootNamespace>
+    <AssemblyName>SmartPort.Modules.ThongBao</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartPort.Contracts\SmartPort.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    MODULE CANG SO — phan ung su kien cua 4 chuc nang moi (eDO, hai quan, lich hen TAS, doi chieu container).
+    Ban gop dang ky ca 4; che do microservices moi dich vu chi dang ky phan cua minh (AddModuleEdo, AddModuleHaiQuan...).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>SmartPort.Modules.CangSo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartPort.Core\SmartPort.Core.csproj" />
+    <ProjectReference Include="..\SmartPort.Contracts\SmartPort.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

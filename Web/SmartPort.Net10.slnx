@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/DichVu/">
+    <Project Path="DichVu/SmartPort.DichVu.AnNinh/SmartPort.DichVu.AnNinh.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.Bai/SmartPort.DichVu.Bai.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.Cong/SmartPort.DichVu.Cong.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.DinhDanh/SmartPort.DichVu.DinhDanh.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.Edo/SmartPort.DichVu.Edo.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.HaiQuan/SmartPort.DichVu.HaiQuan.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.KinhDoanh/SmartPort.DichVu.KinhDoanh.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.LichHen/SmartPort.DichVu.LichHen.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.TaiChinh/SmartPort.DichVu.TaiChinh.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.TauBen/SmartPort.DichVu.TauBen.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.ThongBao/SmartPort.DichVu.ThongBao.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.TichHop/SmartPort.DichVu.TichHop.csproj" />
+    <Project Path="DichVu/SmartPort.DichVu.VanHanh/SmartPort.DichVu.VanHanh.csproj" />
+  </Folder>
+  <Project Path="SmartPort.Api/SmartPort.Api.csproj" />
+  <Project Path="SmartPort.BuildingBlocks/SmartPort.BuildingBlocks.csproj" />
+  <Project Path="SmartPort.Contracts/SmartPort.Contracts.csproj" />
+  <Project Path="SmartPort.Core/SmartPort.Core.csproj" />
+  <Project Path="SmartPort.Gateway/SmartPort.Gateway.csproj" />
+  <Project Path="SmartPort.Modules.Bai/SmartPort.Modules.Bai.csproj" />
+  <Project Path="SmartPort.Modules.CangSo/SmartPort.Modules.CangSo.csproj" />
+  <Project Path="SmartPort.Modules.Cong/SmartPort.Modules.Cong.csproj" />
+  <Project Path="SmartPort.Modules.TaiChinh/SmartPort.Modules.TaiChinh.csproj" />
+  <Project Path="SmartPort.Modules.ThongBao/SmartPort.Modules.ThongBao.csproj" />
+  <Project Path="SmartPort.NenTang/SmartPort.NenTang.csproj" />
+  <Project Path="tests/SmartPort.KiemThu/SmartPort.KiemThu.csproj" />
+</Solution>

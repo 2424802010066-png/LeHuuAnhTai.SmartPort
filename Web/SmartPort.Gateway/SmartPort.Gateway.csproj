@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    SMARTPORT.GATEWAY — CONG API (API Gateway) cua kien truc microservices:
+      - MOT dia chi duy nhat cho trinh duyet / app di dong (http://localhost:5100)
+      - Dinh tuyen /api/<khu>/... toi dung dich vu theo dich-vu.json (YARP reverse proxy)
+      - Phuc vu giao dien React + mo hinh AI + anh tai len (file tinh)
+      - Gom suc khoe moi dich vu + hang doi RabbitMQ cho trang giam sat
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>SmartPort.Gateway</RootNamespace>
+    <AssemblyName>SmartPort.Gateway</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartPort.BuildingBlocks\SmartPort.BuildingBlocks.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
+  </ItemGroup>
+
+</Project>

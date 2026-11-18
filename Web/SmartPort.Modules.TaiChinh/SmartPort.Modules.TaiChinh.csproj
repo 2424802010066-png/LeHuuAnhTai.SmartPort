@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    MODULE TAI CHINH — so huu: phi cong, phieu thu phi luu bai, so chung tu.
+    Nghe: cong.xe-da-qua-cong (thu phi cong khi xe ra), bai.container-da-roi-bai (chot phi luu bai).
+    Phat: tai-chinh.phi-cong-da-xu-ly, tai-chinh.phi-luu-bai-da-chot.
+    KHONG tham chieu module khac (chi Contracts).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>SmartPort.Modules.TaiChinh</RootNamespace>
+    <AssemblyName>SmartPort.Modules.TaiChinh</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartPort.Core\SmartPort.Core.csproj" />
+    <ProjectReference Include="..\SmartPort.Contracts\SmartPort.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

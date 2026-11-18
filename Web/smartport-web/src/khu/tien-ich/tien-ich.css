@@ -1,0 +1,279 @@
+/* ==========================================================================
+   Khu TIEN ICH CONG KHAI (tin tuc, dich vu, lich tau, bao gia, tra cuu, cong, tai xe, app)
+   Moi lop deu bat dau bang ".ti-" de khong dung ten voi khu khac.
+   Mau lay tu bien cua giao dien chung (--sp-*) nen giao dien TOI cung dung.
+   ========================================================================== */
+
+/* ---- Dai tieu de dau moi trang cong khai ---- */
+.ti-dau-trang {
+  background: linear-gradient(120deg, var(--sp-navy), var(--sp-navy-2));
+  color: #fff;
+  padding: 1.2rem 0;
+}
+
+.ti-dau-trang h1 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.ti-dau-trang .breadcrumb {
+  --bs-breadcrumb-divider-color: rgba(255, 255, 255, 0.5);
+  --bs-breadcrumb-item-active-color: #bae6fd;
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+}
+
+.ti-dau-trang .breadcrumb a {
+  color: #bae6fd;
+  text-decoration: none;
+}
+
+/* ---- The tin tuc ---- */
+.ti-the-tin {
+  background: var(--sp-the);
+  border: 1px solid var(--sp-vien);
+  border-radius: 14px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ti-the-tin:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(2, 32, 71, 0.14);
+}
+
+.ti-anh-tin {
+  width: 100%;
+  height: 168px;
+  object-fit: cover;
+  background: var(--sp-vien);
+  display: block;
+}
+
+.ti-anh-bai {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.ti-anh-nho {
+  width: 74px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: var(--sp-vien);
+}
+
+.ti-tieu-de-tin {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.ti-tieu-de-tin a {
+  color: var(--sp-chu);
+  text-decoration: none;
+}
+
+.ti-tieu-de-tin a:hover {
+  color: var(--sp-navy-2);
+}
+
+/* Noi dung bai viet do admin soan (HTML da loc the an toan) */
+.ti-noi-dung-bai {
+  line-height: 1.8;
+}
+
+.ti-noi-dung-bai img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.ti-noi-dung-bai table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.ti-noi-dung-bai th,
+.ti-noi-dung-bai td {
+  border: 1px solid var(--sp-vien);
+  padding: 0.4rem 0.6rem;
+}
+
+/* ---- Con so lon (bang tinh trang cong, bao gia) ---- */
+.ti-so-lon {
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.ti-tong-tien {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--sp-cam);
+  line-height: 1.1;
+}
+
+/* ---- O nhap so lenh / so container (chu to, deu) ---- */
+.ti-o-ma {
+  font-family: Consolas, 'Courier New', monospace;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---- Hanh trinh container ---- */
+.ti-hanh-trinh {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ti-hanh-trinh li {
+  display: flex;
+  gap: 0.8rem;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.ti-hanh-trinh li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 13px;
+  top: 30px;
+  bottom: 0;
+  width: 2px;
+  background: var(--sp-vien);
+}
+
+.ti-cham {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+}
+
+.ti-cham.xong {
+  background: #16a34a;
+}
+
+.ti-cham.hien-tai {
+  background: var(--sp-navy-2);
+}
+
+.ti-cham.du-kien {
+  background: var(--sp-chu-phu);
+}
+
+/* ---- Luoi chuc nang trang app di dong ---- */
+.ti-o-app {
+  background: var(--sp-the);
+  border: 1px solid var(--sp-vien);
+  border-radius: 16px;
+  padding: 1rem 0.9rem;
+  text-decoration: none;
+  color: var(--sp-chu);
+  display: block;
+  height: 100%;
+  transition: transform 0.12s ease;
+}
+
+.ti-o-app:hover {
+  color: var(--sp-chu);
+  transform: translateY(-2px);
+}
+
+.ti-o-app:active {
+  transform: scale(0.97);
+}
+
+.ti-o-app.noi-bat {
+  background: linear-gradient(140deg, var(--sp-navy), var(--sp-navy-2));
+  border-color: transparent;
+  color: #fff;
+}
+
+.ti-o-app.noi-bat .ti-o-app-mo {
+  color: #bae6fd;
+}
+
+.ti-o-app-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.ti-o-app-ten {
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-top: 0.5rem;
+}
+
+.ti-o-app-mo {
+  font-size: 0.74rem;
+  color: var(--sp-chu-phu);
+  line-height: 1.35;
+}
+
+/* ---- Anh xem truoc OCR ---- */
+.ti-anh-ocr {
+  max-width: 100%;
+  max-height: 150px;
+  border-radius: 8px;
+  border: 1px solid var(--sp-vien);
+}
+
+/* ---- Ghi chu AI trang bao gia ---- */
+.ti-ghi-chu-ai {
+  border-left: 3px solid var(--sp-cam);
+  background: var(--bs-tertiary-bg);
+  border-radius: 0 8px 8px 0;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.88rem;
+}
+
+/* ---- Du bao AI 12 gio toi (trang tinh trang cong) ---- */
+.ti-du-bao-gio {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(3.1rem, 1fr));
+  gap: 4px;
+  min-width: 40rem;
+}
+
+.ti-o-du-bao {
+  border-radius: 8px;
+  padding: 0.35rem 0.2rem;
+  text-align: center;
+  color: #fff;
+  line-height: 1.2;
+  font-size: 0.72rem;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.ti-o-du-bao b {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.ti-o-du-bao.thong-thoang { background: #16a34a; }
+.ti-o-du-bao.binh-thuong { background: #0284c7; }
+.ti-o-du-bao.dong { background: #d97706; }
+.ti-o-du-bao.un-tac { background: #dc2626; }
+
+.ti-o-du-bao.nen-den {
+  outline: 3px solid #facc15;
+  outline-offset: 1px;
+}

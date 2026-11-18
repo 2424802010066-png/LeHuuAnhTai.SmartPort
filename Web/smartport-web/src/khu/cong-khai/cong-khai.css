@@ -1,0 +1,1192 @@
+/* ==========================================================================
+   Website cong khai SmartPort — khung trang, trang chu, gioi thieu, lien he, PortBot.
+   Moi lop deu co tien to "ck-" de khong dung voi khu khac.
+   Mau lay tu bien dung chung (--sp-*) nen tu dep ca giao dien SANG va TOI.
+   ========================================================================== */
+.ck-web {
+  --ck-navy: #071f3a;
+  --ck-navy-2: #0d4f8b;
+  --ck-xanh: #38bdf8;
+  --ck-cam: #ff7d2d;
+  --ck-vang: #ffb25e;
+  --ck-luc: #22c55e;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--sp-nen);
+  color: var(--sp-chu);
+}
+
+.ck-than {
+  flex: 1 1 auto;
+}
+
+/* ---------------- Thanh tien do cuon ---------------- */
+.ck-tien-do {
+  position: fixed;
+  inset: 0 auto auto 0;
+  height: 3px;
+  width: 0;
+  z-index: 1060;
+  background: linear-gradient(90deg, var(--ck-xanh), var(--ck-cam));
+}
+
+/* ---------------- Dau trang (navbar) ---------------- */
+.ck-dau {
+  position: sticky;
+  top: 0;
+  z-index: 1045;
+  background: linear-gradient(120deg, var(--ck-navy), #0a3a68);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 6px 24px rgba(3, 18, 36, 0.25);
+}
+
+.ck-hieu {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.15rem;
+  line-height: 1.05;
+}
+
+.ck-hieu:hover {
+  color: #fff;
+}
+
+.ck-hieu small {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8fb6da;
+}
+
+.ck-logo {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+}
+
+.ck-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ck-menu a,
+.ck-menu .ck-nut-nhom {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.6rem;
+  color: #cfe2f4;
+  background: none;
+  border: 0;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ck-menu a:hover,
+.ck-menu .ck-nut-nhom:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.ck-menu a.ck-dang {
+  color: #fff;
+  background: rgba(56, 189, 248, 0.16);
+  box-shadow: inset 0 -2px 0 var(--ck-xanh);
+}
+
+.ck-nhan-ai {
+  font-size: 0.58rem;
+  font-weight: 800;
+  padding: 0.05rem 0.28rem;
+  border-radius: 0.3rem;
+  background: linear-gradient(135deg, #8b5cf6, #c084fc);
+  color: #fff;
+  letter-spacing: 0.06em;
+}
+
+/* Nhom "Tien ich" — menu thu xuong tu viet (khong can bootstrap.js) */
+.ck-nhom {
+  position: relative;
+}
+
+.ck-nhom-hop {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
+  min-width: 232px;
+  background: var(--sp-the);
+  border: 1px solid var(--sp-vien);
+  border-radius: 0.75rem;
+  box-shadow: 0 18px 40px rgba(2, 14, 30, 0.25);
+  padding: 0.35rem;
+  z-index: 40;
+}
+
+.ck-nhom-hop a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 0.5rem;
+  color: var(--sp-chu);
+  font-size: 0.88rem;
+  text-decoration: none;
+}
+
+.ck-nhom-hop a:hover {
+  background: rgba(13, 79, 139, 0.1);
+  color: var(--sp-chu);
+}
+
+.ck-nhom-hop hr {
+  margin: 0.3rem 0.2rem;
+  border-color: var(--sp-vien);
+  opacity: 1;
+}
+
+.ck-nut-vao {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 0.6rem;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ck-nut-vao:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.ck-nut-chinh {
+  background: linear-gradient(135deg, var(--ck-cam), var(--ck-vang));
+  border: 0;
+  color: #24160a;
+  font-weight: 700;
+  border-radius: 0.6rem;
+  padding: 0.4rem 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.ck-nut-chinh:hover {
+  color: #24160a;
+  filter: brightness(1.06);
+}
+
+.ck-nut-tron {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.ck-nut-tron:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Menu dien thoai */
+.ck-menu-dt {
+  display: none;
+  padding: 0.5rem 0 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ck-menu-dt.ck-mo {
+  display: block;
+}
+
+.ck-menu-dt a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.4rem;
+  color: #d7e7f6;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.ck-menu-dt a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.ck-menu-dt .ck-nhom-ten {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #7f9cbd;
+  padding: 0.7rem 0.4rem 0.2rem;
+}
+
+@media (max-width: 1199.98px) {
+  .ck-an-nho {
+    display: none !important;
+  }
+}
+
+/* ---------------- Dong tin chay ---------------- */
+.ck-tin-chay {
+  display: flex;
+  align-items: stretch;
+  background: #04162b;
+  color: #cfe6ff;
+  font-size: 0.8rem;
+  overflow: hidden;
+}
+
+.ck-tin-nhan {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  padding: 0.4rem 0.9rem;
+  background: linear-gradient(135deg, #b91c1c, #ef4444);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: 0.7rem;
+}
+
+.ck-cham {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  animation: ck-nhap 1.4s infinite;
+}
+
+@keyframes ck-nhap {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.ck-chay {
+  overflow: hidden;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ck-chay-day {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.2rem;
+  padding: 0.4rem 1rem;
+  white-space: nowrap;
+  animation: ck-truot 42s linear infinite;
+}
+
+.ck-chay:hover .ck-chay-day {
+  animation-play-state: paused;
+}
+
+@keyframes ck-truot {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------------- Hero ---------------- */
+.ck-hero {
+  position: relative;
+  color: #fff;
+  padding: 3.6rem 0 4.2rem;
+  overflow: hidden;
+  background: linear-gradient(135deg, #061a31, #0d4f8b);
+}
+
+.ck-hero-nen {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.06);
+  animation: ck-tho 26s ease-in-out infinite alternate;
+}
+
+@keyframes ck-tho {
+  from {
+    transform: scale(1.02) translateY(0);
+  }
+  to {
+    transform: scale(1.12) translateY(-12px);
+  }
+}
+
+.ck-hero-phu {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(4, 17, 33, 0.94) 8%, rgba(6, 30, 56, 0.76) 48%, rgba(8, 47, 88, 0.42) 100%);
+}
+
+.ck-hero > .container {
+  position: relative;
+  z-index: 2;
+}
+
+.ck-nhan-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.ck-hero h1 {
+  font-size: clamp(1.9rem, 4.4vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1.12;
+  margin: 0.8rem 0 0;
+}
+
+.ck-hero h1 span {
+  background: linear-gradient(120deg, var(--ck-vang), var(--ck-cam));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ck-hero p {
+  color: #c6dcf1;
+  max-width: 34rem;
+}
+
+.ck-tim {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(6px);
+  border-radius: 1rem;
+  padding: 0.9rem;
+  max-width: 34rem;
+}
+
+.ck-goi-y {
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: #d7e9fb;
+  border-radius: 999px;
+  padding: 0.12rem 0.6rem;
+  font-size: 0.74rem;
+}
+
+.ck-goi-y:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+/* The radar AIS ben phai hero */
+.ck-radar {
+  background: rgba(4, 18, 34, 0.72);
+  border: 1px solid rgba(120, 190, 250, 0.3);
+  border-radius: 1.1rem;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(2, 10, 22, 0.45);
+}
+
+.ck-radar-dau {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0.5rem 0.8rem;
+  background: rgba(8, 32, 58, 0.9);
+  border-bottom: 1px solid rgba(120, 190, 250, 0.18);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+}
+
+.ck-radar-anh {
+  position: relative;
+  height: 172px;
+  background-size: cover;
+  background-position: center;
+}
+
+.ck-quet {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.7rem;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 1px solid rgba(124, 252, 154, 0.5);
+  background: radial-gradient(circle, rgba(6, 40, 30, 0.85), rgba(4, 20, 34, 0.9));
+  overflow: hidden;
+}
+
+.ck-quet::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(from 0deg, rgba(124, 252, 154, 0.55), transparent 28%);
+  animation: ck-xoay 3.4s linear infinite;
+}
+
+@keyframes ck-xoay {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ck-hud {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(120, 190, 250, 0.16);
+}
+
+.ck-hud div {
+  background: rgba(6, 26, 48, 0.94);
+  padding: 0.45rem 0.5rem;
+  text-align: center;
+}
+
+.ck-hud span {
+  display: block;
+  font-size: 0.62rem;
+  color: #8fb6da;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ck-hud strong {
+  font-size: 0.86rem;
+  color: #dff1ff;
+}
+
+/* ---------------- Chi so ---------------- */
+.ck-so-band {
+  margin-top: -2.2rem;
+  position: relative;
+  z-index: 3;
+}
+
+.ck-so {
+  height: 100%;
+  background: var(--sp-the);
+  border: 1px solid var(--sp-vien);
+  border-radius: 1rem;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 10px 26px rgba(9, 30, 56, 0.08);
+}
+
+.ck-so-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 0.7rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  background: rgba(13, 79, 139, 0.12);
+  color: var(--ck-navy-2);
+}
+
+.ck-so-num {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--sp-chu);
+  font-variant-numeric: tabular-nums;
+}
+
+.ck-so-nhan {
+  font-size: 0.82rem;
+  color: var(--sp-chu-phu);
+}
+
+.ck-so-them {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #16a34a;
+}
+
+/* ---------------- Khu vuc chung ---------------- */
+.ck-muc {
+  padding: 3rem 0;
+}
+
+.ck-muc-nho {
+  padding: 1.8rem 0;
+}
+
+.ck-kicker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ck-cam);
+}
+
+.ck-tieu-de {
+  font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+  font-weight: 800;
+  color: var(--sp-chu);
+  margin: 0.2rem 0 0;
+}
+
+.ck-the {
+  background: var(--sp-the);
+  border: 1px solid var(--sp-vien);
+  border-radius: 1rem;
+  height: 100%;
+}
+
+.ck-dv {
+  padding: 1.1rem;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.ck-dv:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px rgba(9, 30, 56, 0.14);
+}
+
+.ck-dv-ico {
+  width: 44px;
+  height: 44px;
+  border-radius: 0.8rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ck-navy-2), var(--ck-xanh));
+  margin-bottom: 0.6rem;
+}
+
+.ck-gia {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--ck-navy-2);
+}
+
+[data-bs-theme='dark'] .ck-gia {
+  color: var(--ck-xanh);
+}
+
+/* Bang lich tau */
+.ck-bang {
+  background: var(--sp-the);
+  border: 1px solid var(--sp-vien);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.ck-bang table {
+  margin: 0;
+  --bs-table-bg: transparent;
+}
+
+.ck-bang thead th {
+  background: rgba(13, 79, 139, 0.08);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sp-chu-phu);
+  white-space: nowrap;
+}
+
+/* Anh thu vien */
+.ck-anh {
+  position: relative;
+  display: block;
+  border-radius: 1rem;
+  overflow: hidden;
+  height: 190px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--ck-navy);
+  transition: transform 0.4s;
+}
+
+.ck-anh:hover {
+  transform: scale(1.02);
+}
+
+.ck-anh span {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1.6rem 0.8rem 0.6rem;
+  background: linear-gradient(transparent, rgba(3, 16, 31, 0.86));
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Doi tac + giai thuong */
+.ck-vien-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--sp-vien);
+  background: var(--sp-the);
+  font-size: 0.84rem;
+  white-space: nowrap;
+}
+
+.ck-scac {
+  font-weight: 800;
+  color: var(--ck-cam);
+  font-family: 'Consolas', 'Menlo', monospace;
+}
+
+/* Tin tuc */
+.ck-tin {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ck-tin-anh {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--ck-navy);
+}
+
+.ck-tin h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.ck-tin a {
+  color: var(--sp-chu);
+  text-decoration: none;
+}
+
+.ck-tin a:hover {
+  color: var(--ck-navy-2);
+}
+
+/* Dai bang so lieu co anh nen */
+.ck-dai {
+  position: relative;
+  padding: 2.6rem 0;
+  color: #fff;
+  background-size: cover;
+  background-position: center;
+  background-attachment: scroll;
+}
+
+.ck-dai::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(4, 20, 38, 0.92), rgba(8, 47, 88, 0.72));
+}
+
+.ck-dai > .container {
+  position: relative;
+}
+
+.ck-dai-so {
+  font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+  font-weight: 800;
+  color: var(--ck-vang);
+  font-variant-numeric: tabular-nums;
+}
+
+.ck-dai-nhan {
+  font-size: 0.82rem;
+  color: #c9dcef;
+}
+
+/* CTA + ban tin */
+.ck-cta,
+.ck-ban-tin {
+  position: relative;
+  border-radius: 1.2rem;
+  padding: 1.6rem;
+  color: #fff;
+  overflow: hidden;
+  background: linear-gradient(120deg, #06203c, #0d4f8b);
+}
+
+.ck-cta-anh {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.28;
+}
+
+.ck-cta > *,
+.ck-ban-tin > * {
+  position: relative;
+}
+
+.ck-ban-tin p {
+  color: #d8ecff;
+}
+
+/* Chan trang */
+.ck-chan {
+  background: linear-gradient(180deg, #05182d, #030f1d);
+  color: #9fb6ce;
+  padding: 2.4rem 0 1.2rem;
+  margin-top: 3rem;
+}
+
+.ck-chan h4 {
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.ck-chan a {
+  color: #9fb6ce;
+  text-decoration: none;
+}
+
+.ck-chan a:hover {
+  color: #fff;
+}
+
+.ck-chan ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+}
+
+.ck-chan-duoi {
+  margin-top: 1.6rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.78rem;
+}
+
+.ck-ico-tron {
+  width: 38px;
+  height: 38px;
+  border-radius: 0.7rem;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cfe2f4;
+  flex-shrink: 0;
+}
+
+/* Dau trang phu (breadcrumb) cho trang trong */
+.ck-dau-muc {
+  background: linear-gradient(120deg, var(--ck-navy), var(--ck-navy-2));
+  color: #fff;
+  padding: 1.8rem 0;
+}
+
+.ck-dau-muc h1 {
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  font-weight: 800;
+  margin: 0;
+}
+
+.ck-dau-muc .breadcrumb {
+  --bs-breadcrumb-divider-color: #8fb6da;
+  --bs-breadcrumb-item-active-color: #cfe2f4;
+  margin: 0.4rem 0 0;
+  font-size: 0.84rem;
+}
+
+.ck-dau-muc .breadcrumb a {
+  color: #cfe2f4;
+  text-decoration: none;
+}
+
+/* Moc thoi gian trang gioi thieu */
+.ck-moc {
+  position: relative;
+  padding-left: 1.4rem;
+  border-left: 2px solid var(--sp-vien);
+  display: grid;
+  gap: 1rem;
+}
+
+.ck-moc-item::before {
+  content: '';
+  position: absolute;
+  left: -0.46rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  background: var(--ck-navy-2);
+  border: 2px solid var(--sp-the);
+}
+
+.ck-moc-item {
+  position: relative;
+}
+
+.ck-moc-item.ck-nay::before {
+  background: var(--ck-cam);
+  box-shadow: 0 0 0 4px rgba(255, 125, 45, 0.22);
+}
+
+.ck-moc-item h3 {
+  font-size: 0.94rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--sp-chu);
+}
+
+/* ---------------- PortBot ---------------- */
+.ck-pb-nut {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  z-index: 1050;
+  color: #fff;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, var(--ck-navy-2), var(--ck-xanh));
+  box-shadow: 0 12px 30px rgba(6, 40, 74, 0.45);
+}
+
+.ck-pb-nut::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(56, 189, 248, 0.5);
+  animation: ck-song 2.4s ease-out infinite;
+}
+
+@keyframes ck-song {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+.ck-pb-hop {
+  position: fixed;
+  right: 18px;
+  bottom: 84px;
+  width: min(370px, calc(100vw - 36px));
+  height: min(520px, calc(100vh - 140px));
+  z-index: 1051;
+  display: flex;
+  flex-direction: column;
+  background: var(--sp-the);
+  border: 1px solid var(--sp-vien);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 26px 60px rgba(3, 18, 36, 0.35);
+}
+
+.ck-pb-dau {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  color: #fff;
+  background: linear-gradient(120deg, var(--ck-navy), var(--ck-navy-2));
+}
+
+.ck-pb-than {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--sp-nen);
+}
+
+.ck-pb-tin {
+  max-width: 86%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.9rem;
+  font-size: 0.88rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.45;
+}
+
+.ck-pb-tin.ck-bot {
+  align-self: flex-start;
+  background: var(--sp-the);
+  border: 1px solid var(--sp-vien);
+  color: var(--sp-chu);
+  border-bottom-left-radius: 0.25rem;
+}
+
+.ck-pb-tin.ck-toi {
+  align-self: flex-end;
+  background: linear-gradient(135deg, var(--ck-navy-2), #1173c4);
+  color: #fff;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.ck-pb-nguon {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  color: var(--sp-chu-phu);
+}
+
+.ck-pb-goi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.ck-pb-goi button {
+  border: 1px solid var(--sp-vien);
+  background: var(--sp-the);
+  color: var(--sp-chu);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.76rem;
+}
+
+.ck-pb-goi button:hover {
+  border-color: var(--ck-navy-2);
+  color: var(--ck-navy-2);
+}
+
+.ck-pb-chan {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem;
+  border-top: 1px solid var(--sp-vien);
+  background: var(--sp-the);
+}
+
+.ck-pb-chan input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 1px solid var(--sp-vien);
+  background: var(--sp-nen);
+  color: var(--sp-chu);
+  border-radius: 999px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.88rem;
+}
+
+.ck-pb-chan input:focus {
+  outline: 2px solid rgba(56, 189, 248, 0.45);
+}
+
+.ck-pb-icon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--sp-vien);
+  background: var(--sp-the);
+  color: var(--sp-chu-phu);
+  display: grid;
+  place-items: center;
+}
+
+.ck-pb-icon.ck-bat {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #fff;
+}
+
+.ck-pb-gui {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 0;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ck-navy-2), var(--ck-xanh));
+  display: grid;
+  place-items: center;
+}
+
+.ck-pb-go span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 3px;
+  border-radius: 50%;
+  background: var(--sp-chu-phu);
+  animation: ck-go 1s infinite;
+}
+
+.ck-pb-go span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.ck-pb-go span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes ck-go {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.ck-zalo {
+  position: fixed;
+  right: 18px;
+  bottom: 84px;
+  z-index: 1049;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: #fff;
+  text-decoration: none;
+  background: #0068ff;
+  box-shadow: 0 10px 24px rgba(0, 104, 255, 0.4);
+}
+
+.ck-zalo:hover {
+  color: #fff;
+  filter: brightness(1.1);
+}
+
+/* Khi khung chat mo thi day nut Zalo len de khong che nhau */
+.ck-web.ck-chat-mo .ck-zalo {
+  display: none;
+}
+
+/* ---------------- Hieu ung xuat hien (IntersectionObserver) ---------------- */
+.ck-hien {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.ck-hien.ck-ro {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ck-hien,
+  .ck-hien.ck-ro {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ck-chay-day,
+  .ck-hero-nen,
+  .ck-quet::after,
+  .ck-pb-nut::after,
+  .ck-cham {
+    animation: none;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .ck-hero {
+    padding: 2.4rem 0 3rem;
+  }
+
+  .ck-muc {
+    padding: 2rem 0;
+  }
+
+  .ck-so-band {
+    margin-top: -1.6rem;
+  }
+
+  .ck-anh {
+    height: 150px;
+  }
+}
+
+/* Nut doi giao dien sang/toi dung chung, dat tren nen navy cua dau trang */
+.ck-dau .sp-nut-tron {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffd98a;
+}
+
+.ck-dau .sp-nut-tron:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* Muc bam trong menu thu xuong (vd nut Dang xuat) */
+.ck-nhom-hop .ck-nut-nhom {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: none;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.ck-nhom-hop .ck-nut-nhom:hover {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+/* Cac the dich vu / AI dung the <button> van phai giong the tinh */
+button.ck-the {
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}

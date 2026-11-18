@@ -1,0 +1,131 @@
+/* =====================================================================
+   KHU TAI XE (quet CCCD / GPLX) + DOI SOAT CONG — moi lop co tien to tx-
+   Mau nen/vien lay tu bien chung (--sp-*, --bs-*) de dep ca giao dien toi.
+   ===================================================================== */
+
+/* ---------------- Khung camera quet QR ---------------- */
+.tx-khung-quet {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0b1520;
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+}
+
+.tx-video {
+  width: 100%;
+  display: block;
+}
+
+/* Vien net dut goi y vi tri dat the */
+.tx-vien-quet {
+  position: absolute;
+  inset: 12%;
+  border: 3px dashed rgba(34, 211, 238, 0.75);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.tx-camera-trong {
+  color: #64748b;
+  text-align: center;
+}
+
+.tx-camera-trong i {
+  font-size: 2.6rem;
+}
+
+.tx-trang-thai {
+  min-height: 1.4em;
+}
+
+.tx-tien-do {
+  height: 5px;
+}
+
+/* ---------------- Ho so tai xe ---------------- */
+.tx-so-giay-to {
+  font-family: Consolas, 'Courier New', monospace;
+  letter-spacing: 0.04em;
+}
+
+input.tx-so-giay-to {
+  font-weight: 700;
+}
+
+.tx-o-bien-so {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tx-dia-chi {
+  max-width: 320px;
+}
+
+/* The chi so bam duoc de loc danh sach */
+.tx-the-bam {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  border-radius: 14px;
+}
+
+.tx-the-bam .sp-chi-so {
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.tx-the-bam:hover .sp-chi-so {
+  border-color: var(--bs-primary-border-subtle);
+}
+
+.tx-the-bam.tx-dang-chon .sp-chi-so {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.15rem rgba(var(--bs-primary-rgb), 0.2);
+}
+
+.tx-the-bam:focus-visible {
+  outline: 2px solid var(--bs-primary);
+  outline-offset: 2px;
+}
+
+/* ---------------- Doi soat cong ---------------- */
+.tx-o-he-thong {
+  border: 1px dashed var(--sp-vien);
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+  background: var(--bs-tertiary-bg);
+}
+
+.tx-so-he-thong {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.25;
+  min-height: 2rem;
+}
+
+.tx-chu-giai {
+  font-size: 0.78rem;
+  color: var(--sp-chu-phu);
+}
+
+.tx-o-so-dem {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* So tien dai (12.500.000 đ) khong tran the tren man hinh hep */
+.tx-chi-so-tien .sp-chi-so-so {
+  font-size: clamp(1rem, 3.6vw, 1.45rem);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}

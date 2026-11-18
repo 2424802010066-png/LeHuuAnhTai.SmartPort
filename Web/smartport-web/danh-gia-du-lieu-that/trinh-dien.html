@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartPort — Chạy thử AI trên dữ liệu thật</title>
+    <style>
+      :root {
+        --nen: #f4f6fa; --the: #fff; --chu: #1a2433; --phu: #5f6b76; --dung: #1f8a4c; --sai: #c0392b;
+        --vien: #dfe5ee; --navy: #0b2545; --ngoc: #0fa3b1; --cam: #e67e22;
+      }
+      body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--nen); color: var(--chu); }
+      header { background: var(--navy); color: #fff; padding: 14px 20px; }
+      header h1 { margin: 0; font-size: 20px; }
+      header p { margin: 4px 0 0; color: #c9d6e8; font-size: 13px; }
+      .thanh { display: flex; gap: 12px; align-items: center; padding: 12px 20px; flex-wrap: wrap; }
+      button { background: var(--ngoc); color: #fff; border: 0; border-radius: 8px; padding: 9px 18px; font-size: 14px;
+               font-weight: 600; cursor: pointer; }
+      button:disabled { opacity: 0.5; cursor: default; }
+      .dem { display: flex; gap: 12px; flex-wrap: wrap; padding: 0 20px 6px; }
+      .o-dem { background: var(--the); border: 1px solid var(--vien); border-radius: 10px; padding: 10px 14px; min-width: 200px; }
+      .o-dem b { font-size: 22px; display: block; }
+      .o-dem span { font-size: 12.5px; color: var(--phu); }
+      h2 { font-size: 16px; margin: 14px 20px 8px; }
+      .luoi { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; padding: 0 20px 16px; }
+      .the { background: var(--the); border: 1px solid var(--vien); border-radius: 10px; overflow: hidden; }
+      .the.dung-vien { border-color: #9fd6b4; } .the.sai-vien { border-color: #f0b4ac; }
+      .the canvas { width: 100%; display: block; background: #111; }
+      .the .noi { padding: 8px 10px; font-size: 13px; line-height: 1.5; }
+      .dung { color: var(--dung); font-weight: 700; } .sai { color: var(--sai); font-weight: 700; }
+      .xam { color: var(--phu); } .nho { font-size: 12px; }
+      .the.cho { opacity: 0.45; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>SmartPort — chạy thử AI trên dữ liệu thật</h1>
+      <p>Code AI đúng như ứng dụng (src/ai/alpr.js, src/ai/ocrContainer.js) · ảnh camera bãi xe Việt Nam (nhóm Mì AI) ·
+         ảnh camera cổng container (GitHub lbf4616) · mỗi lần bấm chọn ngẫu nhiên ảnh khác</p>
+    </header>
+    <div class="thanh">
+      <button id="nut">▶ Chạy thử</button>
+      <span id="tt" class="xam">Bấm “Chạy thử” để AI đọc ảnh thật.</span>
+    </div>
+    <div class="dem" id="dem"></div>
+    <h2>Biển số xe — ảnh camera bãi xe thật (472×303)</h2>
+    <div class="luoi" id="luoi-bien"></div>
+    <h2>Mã container — vùng mã cắt từ ảnh camera cổng thật (1920×1080)</h2>
+    <div class="luoi" id="luoi-cont"></div>
+    <script type="module" src="./trinh-dien.js"></script>
+  </body>
+</html>

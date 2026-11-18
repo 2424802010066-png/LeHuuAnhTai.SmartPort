@@ -1,0 +1,289 @@
+/* ==========================================================================
+   Khu THU TIEN (phi luu bai, phi cong, doi soat thanh toan, bao cao) — moi lop tien to "tc-"
+   ========================================================================== */
+
+/* So tien dang treo / phai thu: mau ho phach, giao dien toi sang hon cho de doc */
+.tc-tien {
+  color: #b45309;
+}
+
+[data-bs-theme='dark'] .tc-tien {
+  color: #fbbf24;
+}
+
+.tc-so-tien-lon {
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.tc-o-loc {
+  max-width: 230px;
+}
+
+.tc-o-tien {
+  min-width: 110px;
+  max-width: 150px;
+  text-align: right;
+}
+
+.tc-dong-huy {
+  opacity: 0.55;
+}
+
+.tc-ma {
+  font-family: Consolas, 'Courier New', monospace;
+  letter-spacing: 0.02em;
+}
+
+/* Thanh ty le co cau phuong thuc thanh toan */
+.tc-thanh {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--sp-vien);
+  overflow: hidden;
+}
+
+.tc-thanh > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--sp-navy-2), #1c8ad8);
+}
+
+/* Dong "nhan — gia tri" cua the thong tin giao dich */
+.tc-dong-tt {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed var(--sp-vien);
+}
+
+.tc-dong-tt > span:first-child {
+  color: var(--sp-chu-phu);
+  flex-shrink: 0;
+}
+
+.tc-dong-tt > :last-child {
+  text-align: right;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tc-hop-tien {
+  border: 1px solid var(--sp-vien);
+  border-radius: 12px;
+  background: var(--bs-tertiary-bg);
+  padding: 0.9rem 1rem;
+}
+
+.tc-qr-anh {
+  max-width: 230px;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--sp-vien);
+  background: #fff;
+}
+
+/* ----------------------------------------------------------------------------
+   GIAY IN (phieu thu, bang giao ca, bao cao in): luon nen trang chu toi —
+   ca khi nguoi dung dang dung giao dien toi.
+   ---------------------------------------------------------------------------- */
+.tc-giay {
+  position: relative;
+  color: #0f172a;
+  font-size: 0.88rem;
+}
+
+.tc-thanh-in-trong {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed #cbd5e1;
+}
+
+.tc-giay-dau {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 2px solid #0a2f57;
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+
+.tc-giay-cang {
+  font-weight: 800;
+  color: #0a2f57;
+  font-size: 1.02rem;
+  letter-spacing: 0.3px;
+}
+
+.tc-giay-so {
+  font-weight: 800;
+  color: #b45309;
+  font-size: 1.1rem;
+  font-family: Consolas, monospace;
+}
+
+.tc-nho {
+  font-size: 0.74rem;
+  color: #64748b;
+}
+
+.tc-en {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.tc-giay-ten {
+  text-align: center;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0a2f57;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.tc-bang-tt {
+  width: 100%;
+  margin-bottom: 14px;
+  border-collapse: collapse;
+}
+
+.tc-bang-tt td {
+  padding: 6px 8px;
+  vertical-align: top;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.tc-nhan {
+  width: 110px;
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
+.tc-bang-in {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tc-bang-in th {
+  background: #0a2f57;
+  color: #fff;
+  padding: 7px 9px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.tc-bang-in td {
+  padding: 8px 9px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+.tc-bang-in .tc-tong td {
+  background: #fef3c7;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #b45309;
+  padding: 10px 9px;
+}
+
+.tc-bang-in .tc-phu td {
+  background: #f1f5f9;
+  font-weight: 700;
+}
+
+.tc-duoi {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  margin-top: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  padding: 12px 14px;
+}
+
+.tc-qr img {
+  width: 132px;
+  height: 132px;
+  display: block;
+}
+
+.tc-ky {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  margin-top: 26px;
+  font-size: 0.8rem;
+}
+
+.tc-cho-ky {
+  height: 58px;
+}
+
+/* Dau "ĐÃ HỦY" / "ĐÃ THU" tren giay: khong ai cam phieu da huy di doi tien duoc */
+.tc-dau-an {
+  position: absolute;
+  top: 70px;
+  right: 10px;
+  transform: rotate(-12deg);
+  border: 3px solid;
+  border-radius: 8px;
+  padding: 2px 14px;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 2px;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.tc-dau-an.huy {
+  color: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.tc-dau-an.da-thu {
+  color: #15803d;
+  border-color: #15803d;
+}
+
+.tc-o-chi-so-in {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.tc-o-chi-so-in b {
+  display: block;
+  font-size: 1.1rem;
+  color: #0a2f57;
+}
+
+.tc-bieu-do-in {
+  height: 260px;
+}
+
+@media print {
+  .tc-bang-in th,
+  .tc-bang-in .tc-tong td,
+  .tc-bang-in .tc-phu td,
+  .tc-duoi,
+  .tc-dau-an {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .tc-giay {
+    font-size: 0.84rem;
+  }
+}

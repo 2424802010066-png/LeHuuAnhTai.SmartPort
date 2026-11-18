@@ -1,0 +1,359 @@
+/* =====================================================================
+   Khu KINH DOANH: don dat dich vu, khach hang, dich vu & gia, tin tuc,
+   thu vien anh, hop thu lien he. Moi lop deu co tien to "kd-".
+   ===================================================================== */
+
+/* ---------- The chi so bam duoc (loc nhanh danh sach) ---------- */
+.kd-the-lien-ket {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.kd-the-lien-ket .sp-chi-so {
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.kd-the-lien-ket:hover .sp-chi-so,
+.kd-the-lien-ket:focus-visible .sp-chi-so {
+  border-color: var(--sp-navy-2);
+  box-shadow: 0 6px 18px rgba(10, 47, 87, 0.12);
+  transform: translateY(-1px);
+}
+
+.kd-the-lien-ket.dang-chon .sp-chi-so {
+  border-color: var(--sp-navy-2);
+  box-shadow: inset 0 0 0 1px var(--sp-navy-2);
+}
+
+[data-bs-theme='dark'] .kd-the-lien-ket:hover .sp-chi-so,
+[data-bs-theme='dark'] .kd-the-lien-ket.dang-chon .sp-chi-so {
+  border-color: #3b82c4;
+  box-shadow: inset 0 0 0 1px #3b82c4;
+}
+
+/* ---------- Danh sach ---------- */
+.kd-ma-don {
+  font-family: Consolas, monospace;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-decoration: none;
+}
+
+.kd-gia {
+  font-weight: 600;
+  color: #c2410c;
+}
+
+[data-bs-theme='dark'] .kd-gia {
+  color: #fdba74;
+}
+
+/* Dong da ngung cung cap / da xu ly: mo di cho de phan biet */
+.kd-dong-ngung {
+  opacity: 0.62;
+}
+
+/* Cat mot dong cho o mo ta / noi dung dai */
+.kd-mot-dong {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- Chan the chi tiet booking ---------- */
+.kd-tong-don {
+  font-size: 0.92rem;
+}
+
+.kd-tong-lon b {
+  font-size: 1.25rem;
+  color: #c2410c;
+}
+
+[data-bs-theme='dark'] .kd-tong-lon b {
+  color: #fdba74;
+}
+
+/* ---------- Tin tuc ---------- */
+.kd-anh-nho {
+  width: 46px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--sp-vien, #e2e8f0);
+}
+
+.kd-anh-trong {
+  display: inline-block;
+  background: linear-gradient(135deg, #0d3b66, #1173c4);
+}
+
+.kd-anh-bia-xem {
+  width: 100%;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--sp-vien, #e2e8f0);
+}
+
+.kd-o-noi-dung {
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.kd-xem-truoc img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.75rem;
+}
+
+.kd-xem-truoc h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.kd-xem-truoc p,
+.kd-xem-truoc li {
+  line-height: 1.7;
+}
+
+/* ---------- Thu vien anh ---------- */
+.kd-anh-xem {
+  height: 130px;
+  border-radius: 10px;
+  background-color: #0d3b66;
+  background-image: linear-gradient(135deg, #0d3b66, #1173c4);
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--sp-vien, #e2e8f0);
+}
+
+.kd-o-url {
+  font-size: 0.72rem;
+}
+
+/* ---------- Hop thu lien he ---------- */
+.kd-noi-dung-thu {
+  white-space: pre-wrap;
+  line-height: 1.7;
+  background: var(--bs-body-bg);
+  border: 1px solid var(--sp-vien, #e2e8f0);
+  border-left: 4px solid var(--sp-navy-2, #1173c4);
+  border-radius: 0 8px 8px 0;
+  padding: 0.75rem 1rem;
+}
+
+/* =====================================================================
+   HOA DON IN (ban in: luon nen giay trang, chu dam — khong theo giao dien toi)
+   ===================================================================== */
+.kd-hd {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #111827;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.kd-hd-dau {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 3px double #0a2f57;
+  padding-bottom: 12px;
+}
+
+.kd-hd-dau h1 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0a2f57;
+  letter-spacing: 1px;
+  margin: 0 0 2px;
+}
+
+.kd-hd-ct {
+  font-size: 11.5px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.kd-hd-so {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.kd-hd-nhan {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 2px;
+  color: #64748b;
+}
+
+.kd-hd-so b {
+  display: block;
+  font-size: 19px;
+  font-family: Consolas, monospace;
+  color: #c2410c;
+}
+
+.kd-hd-ngay {
+  font-size: 11.5px;
+  color: #475569;
+}
+
+.kd-hd h2 {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #0a2f57;
+  margin: 16px 0 2px;
+}
+
+.kd-hd-phu {
+  text-align: center;
+  font-size: 11px;
+  font-style: italic;
+  color: #64748b;
+  margin-bottom: 16px;
+}
+
+.kd-hd-luoi {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.kd-hd-o {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.kd-hd-o h6 {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: #1173c4;
+  margin-bottom: 6px;
+}
+
+.kd-hd-o p {
+  margin: 2px 0;
+  font-size: 12.5px;
+}
+
+.kd-hd-dong {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 4px;
+}
+
+.kd-hd-dong th {
+  background: #0a2f57;
+  color: #fff;
+  padding: 7px 9px;
+  font-size: 11.5px;
+  text-align: left;
+}
+
+.kd-hd-dong td {
+  padding: 6px 9px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 12.5px;
+  background: #fff;
+}
+
+.kd-hd-dong tr:nth-child(even) td {
+  background: #f6f9fd;
+}
+
+.kd-hd-dong .giua {
+  text-align: center;
+}
+
+.kd-hd-dong .phai {
+  text-align: right;
+}
+
+.kd-hd-cong {
+  margin-left: auto;
+  width: 320px;
+  margin-top: 10px;
+  font-size: 12.5px;
+}
+
+.kd-hd-cong .hang {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.kd-hd-cong .hang.tong {
+  border-top: 2px solid #0a2f57;
+  margin-top: 6px;
+  padding-top: 8px;
+  font-weight: 800;
+  font-size: 16px;
+  color: #c2410c;
+}
+
+.kd-hd-chu {
+  font-style: italic;
+  color: #33506e;
+  margin-top: 14px;
+  background: #f4f9ff;
+  border-left: 4px solid #1173c4;
+  padding: 8px 13px;
+  border-radius: 0 8px 8px 0;
+  font-size: 12.5px;
+}
+
+.kd-hd-ky {
+  display: flex;
+  margin-top: 34px;
+  text-align: center;
+}
+
+.kd-hd-ky > div {
+  flex: 1;
+  font-size: 12px;
+}
+
+.kd-hd-ky strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.kd-hd-ky em {
+  display: block;
+  color: #94a3b8;
+  font-size: 10.5px;
+  margin-bottom: 56px;
+}
+
+.kd-hd-chan {
+  margin-top: 10px;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 8px;
+  font-size: 10.5px;
+  color: #64748b;
+  text-align: center;
+}
+
+@media (max-width: 575.98px) {
+  .kd-hd-luoi {
+    grid-template-columns: 1fr;
+  }
+
+  .kd-hd-cong {
+    width: 100%;
+  }
+}

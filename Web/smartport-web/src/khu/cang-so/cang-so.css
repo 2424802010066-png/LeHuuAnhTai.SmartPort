@@ -1,0 +1,148 @@
+/* ================= KHU CANG SO & TUAN THU ================= */
+.cs-ma {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* the dich vu (trang giam sat microservices) */
+.cs-dich-vu {
+  border: 1px solid var(--bs-border-color);
+  border-left: 4px solid #10b981;
+  border-radius: 0.6rem;
+  padding: 0.75rem 0.9rem;
+  height: 100%;
+  background: var(--bs-body-bg);
+}
+.cs-dich-vu.loi {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.04);
+}
+.cs-dich-vu.suy-giam {
+  border-left-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.06);
+}
+.cs-dich-vu .small + .small {
+  margin-top: 0.15rem;
+}
+.cs-giai-thich li + li {
+  margin-top: 0.35rem;
+}
+
+/* ban do nhiet khung gio (TAS) */
+.cs-luoi th,
+.cs-luoi td {
+  border: 0;
+  vertical-align: middle;
+}
+.cs-o {
+  width: 100%;
+  min-width: 46px;
+  border: 0;
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+.cs-o.thap,
+.cs-chu.thap { background: #d1fae5; }
+.cs-o.vua,
+.cs-chu.vua { background: #fef3c7; }
+.cs-o.cao,
+.cs-chu.cao { background: #fed7aa; }
+.cs-o.day,
+.cs-chu.day { background: #fecaca; color: #991b1b; }
+.cs-o.qua { background: var(--bs-tertiary-bg); color: var(--bs-secondary-color); }
+.cs-o:not(:disabled):hover { outline: 2px solid #3b82f6; }
+.cs-chu {
+  padding: 0 0.4rem;
+  border-radius: 0.3rem;
+  color: #0f172a;
+}
+
+.cs-qr {
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: var(--bs-tertiary-bg);
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+}
+.cs-anh-nho {
+  width: 64px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 0.3rem;
+}
+
+/* AI video: khung AI ve de len video (canvas phu dung kich thuoc the video) */
+.cs-video {
+  position: relative;
+  background: #000;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.cs-video video {
+  display: block;
+  width: 100%;
+  max-height: 540px;
+  background: #000;
+}
+.cs-video canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+/* dong thoi gian: doan xuat hien cua tung doi tuong, bam de tua toi */
+.cs-dong-thoi-gian {
+  position: relative;
+  height: 14px;
+  border-radius: 7px;
+  background: var(--bs-tertiary-bg);
+  overflow: hidden;
+}
+.cs-dtg-da-xu-ly {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: rgba(59, 130, 246, 0.18);
+  transition: width 0.4s;
+}
+.cs-dtg-doan {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  border: 0;
+  padding: 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.cs-dtg-doan.bien { background: #22c55e; }
+.cs-dtg-doan.cont { background: #f97316; }
+.cs-dtg-doan.nghi { background: #eab308; opacity: 0.8; }
+.cs-dtg-doan:hover,
+.cs-dtg-doan:focus-visible { outline: 2px solid var(--bs-emphasis-color); }
+/* the doi tuong da nhan dien */
+.cs-doi-tuong {
+  border: 1px solid var(--bs-border-color);
+  border-left: 4px solid #22c55e;
+  border-radius: 0.6rem;
+  overflow: hidden;
+  background: var(--bs-body-bg);
+}
+.cs-doi-tuong.nghi { border-left-color: #eab308; }
+.cs-doi-tuong-anh {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: #000;
+}
+.cs-doi-tuong-anh img {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+}

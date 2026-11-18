@@ -1,0 +1,431 @@
+/* ==========================================================================
+   Khu DICH VU KHACH (dat dich vu, thanh toan VietQR, hang cua toi)
+   Moi lop deu co tien to .dvk- de khong dung voi khu khac.
+   Mau lay tu bien dung chung -> dep ca giao dien sang lan toi.
+   ========================================================================== */
+
+.dvk-dau {
+  background: linear-gradient(120deg, var(--sp-navy), var(--sp-navy-2) 70%, #1173c4);
+  color: #fff;
+  padding: 1.4rem 0 1.2rem;
+}
+
+.dvk-dau h1 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.dvk-dau .breadcrumb {
+  --bs-breadcrumb-divider-color: rgba(255, 255, 255, 0.5);
+  --bs-breadcrumb-item-active-color: rgba(255, 255, 255, 0.85);
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+}
+
+.dvk-dau .breadcrumb a {
+  color: #cfe2f7;
+  text-decoration: none;
+}
+
+.dvk-dau .breadcrumb a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* ---------------- Khoi so lieu lon (it chu, ra tien) ---------------- */
+.dvk-so {
+  border: 1px solid var(--sp-vien);
+  border-radius: 14px;
+  background: var(--sp-the);
+  padding: 0.9rem 1rem;
+  height: 100%;
+}
+
+.dvk-so-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.dvk-so-nhan {
+  font-size: 0.78rem;
+  color: var(--sp-chu-phu);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ---------------- Chon phuong thuc thanh toan ---------------- */
+.dvk-pt {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.dvk-pt-mot {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  border: 2px solid var(--sp-vien);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  background: var(--sp-the);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.dvk-pt-mot:hover {
+  border-color: var(--sp-navy-2);
+}
+
+.dvk-pt-mot.chon {
+  border-color: var(--sp-navy-2);
+  box-shadow: 0 0 0 0.2rem rgba(13, 79, 139, 0.15);
+}
+
+.dvk-pt-ico {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.dvk-pt-ten {
+  font-weight: 700;
+}
+
+.dvk-pt-mo {
+  font-size: 0.85rem;
+  color: var(--sp-chu-phu);
+}
+
+.dvk-the-nho {
+  display: inline-block;
+  font-size: 0.7rem;
+  border: 1px solid var(--sp-vien);
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+  color: var(--sp-chu-phu);
+  margin: 0.25rem 0.25rem 0 0;
+}
+
+/* ---------------- Ma QR ---------------- */
+.dvk-qr {
+  border: 1px solid var(--sp-vien);
+  border-radius: 16px;
+  padding: 0.9rem;
+  background: #fff; /* QR phai luon nen trang de may quet doc duoc */
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.dvk-qr img {
+  display: block;
+  width: 240px;
+  max-width: 62vw;
+  height: auto;
+}
+
+.dvk-qr-trong {
+  width: 240px;
+  max-width: 62vw;
+  height: 240px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: #64748b;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 0.75rem;
+}
+
+.dvk-hang {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed var(--sp-vien);
+}
+
+.dvk-hang:last-child {
+  border-bottom: 0;
+}
+
+.dvk-hang > span:first-child {
+  color: var(--sp-chu-phu);
+  flex-shrink: 0;
+}
+
+.dvk-hang > :last-child {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.dvk-chep {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  text-align: right;
+}
+
+.dvk-chep:hover {
+  color: var(--bs-primary);
+}
+
+/* ---------------- Dong ho giu don ---------------- */
+.dvk-dongho {
+  font-size: 2.1rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.dvk-dongho.sap-het {
+  color: #dc2626;
+}
+
+.dvk-thanh {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--bs-secondary-bg);
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.dvk-thanh > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--sp-navy-2), var(--sp-cam));
+  transition: width 1s linear;
+}
+
+/* ---------------- Cac buoc thanh toan ---------------- */
+.dvk-buoc {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+}
+
+.dvk-buoc-mot {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--sp-chu-phu);
+}
+
+.dvk-buoc-cham {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid var(--sp-vien);
+  background: var(--sp-the);
+}
+
+.dvk-buoc-mot.xong .dvk-buoc-cham,
+.dvk-buoc-mot.dang .dvk-buoc-cham {
+  background: var(--sp-navy-2);
+  border-color: var(--sp-navy-2);
+  color: #fff;
+}
+
+.dvk-buoc-mot.xong,
+.dvk-buoc-mot.dang {
+  color: var(--sp-chu);
+  font-weight: 600;
+}
+
+.dvk-buoc-vach {
+  flex: 1 1 24px;
+  min-width: 18px;
+  height: 2px;
+  background: var(--sp-vien);
+}
+
+/* ---------------- Bien lai ---------------- */
+.dvk-bien-lai {
+  max-width: 620px;
+  margin: 0 auto;
+  border: 1px solid var(--sp-vien);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--sp-the);
+}
+
+.dvk-bien-lai-dau {
+  background: linear-gradient(120deg, #0f5132, #198754 70%, #20c997);
+  color: #fff;
+  text-align: center;
+  padding: 1.5rem 1rem 1.2rem;
+}
+
+.dvk-bien-lai-dau.cho {
+  background: linear-gradient(120deg, #7c4a03, #d97706 70%, #f59e0b);
+}
+
+.dvk-bien-lai-ico {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  margin: 0 auto 0.5rem;
+}
+
+.dvk-dau-mong {
+  display: inline-block;
+  border: 2px solid #198754;
+  color: #198754;
+  border-radius: 10px;
+  padding: 0.3rem 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  transform: rotate(-6deg);
+}
+
+/* ---------------- Anh hang AI ---------------- */
+.dvk-anh {
+  width: 158px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--sp-vien);
+  background: var(--sp-the);
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.dvk-anh img {
+  width: 100%;
+  height: 104px;
+  object-fit: cover;
+  display: block;
+  background: var(--bs-secondary-bg);
+}
+
+.dvk-anh figcaption {
+  font-size: 0.72rem;
+  color: var(--sp-chu-phu);
+  padding: 0.3rem 0.4rem;
+  text-align: center;
+}
+
+/* ---------------- Ban in hoa don ---------------- */
+.dvk-in {
+  font-size: 0.92rem;
+  color: #12263a;
+}
+
+.dvk-in h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0a2f57;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.dvk-in-dau {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-bottom: 3px solid #0a2f57;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.dvk-in-hop {
+  border: 1px solid #e3eaf3;
+  border-radius: 8px;
+  padding: 0.7rem 0.85rem;
+}
+
+.dvk-in-hop h6 {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #1173c4;
+  margin-bottom: 0.45rem;
+}
+
+.dvk-in table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dvk-in table th {
+  background: #0a2f57;
+  color: #fff;
+  padding: 0.45rem 0.5rem;
+  font-size: 0.78rem;
+  text-align: left;
+}
+
+.dvk-in table td {
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid #edf2f8;
+}
+
+.dvk-in-tong {
+  margin-left: auto;
+  width: 320px;
+  max-width: 100%;
+}
+
+.dvk-in-tong > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+}
+
+.dvk-in-tong > div.cong {
+  border-top: 2px solid #0a2f57;
+  margin-top: 0.3rem;
+  padding-top: 0.5rem;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #c2410c;
+}
+
+.dvk-in-chu {
+  font-style: italic;
+  color: #33506e;
+  background: #f4f9ff;
+  border-left: 4px solid #1173c4;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0 8px 8px 0;
+  margin-top: 0.8rem;
+}
+
+.dvk-in-ky {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+  gap: 0.6rem;
+  margin-top: 2rem;
+}
+
+.dvk-in-ky small {
+  color: #5b6b7c;
+  font-style: italic;
+}
+
+.dvk-in-ky .cho-ky {
+  height: 62px;
+}

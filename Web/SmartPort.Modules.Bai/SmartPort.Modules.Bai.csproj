@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    MODULE BAI — so huu: trang thai container trong bai (vao bai, roi bai).
+    Nghe: cong.xe-da-qua-cong. Phat: bai.container-da-vao-bai / da-roi-bai / khong-doi.
+    KHONG tham chieu module khac (chi Contracts).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>SmartPort.Modules.Bai</RootNamespace>
+    <AssemblyName>SmartPort.Modules.Bai</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartPort.Core\SmartPort.Core.csproj" />
+    <ProjectReference Include="..\SmartPort.Contracts\SmartPort.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

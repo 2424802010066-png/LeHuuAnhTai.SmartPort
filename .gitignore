@@ -33,6 +33,21 @@ _Cu_KhongDung/
 # Thu muc tam gom file cho Claude Design (ban sao CSS + anh)
 _ThietKe_ChoClaudeDesign/
 
+# ---------- Du lieu cong cu AI (Orion tu sinh ho so du an) — khong phai ma nguon ----------
+.agent/
+
+# ---------- Front-end React (smartport-web) — tu sinh lai bang "npm install" / "npm run build" ----------
+node_modules/
+# Ban build React ghi thang vao wwwroot cua API (1 ung dung khi deploy) — tu sinh lai bang "npm run build"
+SmartPort.Api/wwwroot/assets/
+SmartPort.Api/wwwroot/index.html
+dist/
+.vite/
+npm-debug.log*
+
+# ---------- Ban sao luu ma nguon truoc khi tach Front-end / Back-end (chi luu tren may) ----------
+_SaoLuu/
+
 # ---------- File tam / he dieu hanh ----------
 Thumbs.db
 desktop.ini
@@ -41,3 +56,19 @@ desktop.ini
 
 # ---------- Model AI: CO day (app can chung de chay offline) ----------
 # Khong ignore *.onnx / *.wasm / tessdata — chung la mot phan cua san pham.
+
+# ---------- Bo sung 19/11/2026 — repo cong khai LeHuuAnhTai.SmartPort ----------
+# Ma nguon chay web doi vao Web/ tu 19/09 -> cap nhat duong dan ban build React cho dung
+Web/SmartPort.Api/wwwroot/assets/
+Web/SmartPort.Api/wwwroot/index.html
+# Du lieu sinh ra LUC CHAY (video camera, anh bien so xe, email/SMS co ma OTP + so dien thoai) — khong phai ma nguon
+Web/SmartPort.Api/wwwroot/Uploads/
+**/App_Data/Outbox/
+**/App_Data/OutboxSms/
+# Ban nen ma nguon tam (trung lap)
+_claude_doc_ma_nguon.zip
+# Ho so khoi nghiep (ke hoach kinh doanh, nghien cuu thi truong) va file APK da build — chi luu tren may
+Khac/HoSo/KhoiNghiep/
+Khac/HoSo/AppMobile/*.apk
+# Cau hinh cong cu Claude Code tren may
+.claude/

@@ -1,0 +1,631 @@
+/* ==========================================================================
+   Khu DIEU HANH THONG MINH — lop rieng tien to "dh-"
+   (agent tu dong, AI agent, hoc may, quy trinh, cang xanh, gia tri AI)
+   ========================================================================== */
+
+/* ---------------- O so lon (con so quy ra tien / CO2) ---------------- */
+.dh-o-so {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  border-radius: 14px;
+  padding: 0.95rem 1.1rem;
+  color: #fff;
+  background: linear-gradient(120deg, #0a2f57, #1c5fa8);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.dh-o-so.la { background: linear-gradient(120deg, #14532d, #16a34a); }
+.dh-o-so.la-sang { background: linear-gradient(120deg, #166534, #22c55e); }
+.dh-o-so.cam { background: linear-gradient(120deg, #9a3412, #ea580c); }
+.dh-o-so.vang { background: linear-gradient(120deg, #92400e, #d97706); }
+.dh-o-so.do { background: linear-gradient(120deg, #7f1d1d, #dc2626); }
+.dh-o-so.tim { background: linear-gradient(120deg, #312e81, #6366f1); }
+.dh-o-so.tim-dam { background: linear-gradient(120deg, #4c1d95, #7c3aed); }
+.dh-o-so.ngoc { background: linear-gradient(120deg, #0c4a6e, #0284c7); }
+
+.dh-o-so-so {
+  position: relative;
+  z-index: 1;
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.dh-o-so-don-vi {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-left: 0.3rem;
+  opacity: 0.9;
+}
+
+.dh-o-so-nhan {
+  position: relative;
+  z-index: 1;
+  font-size: 0.82rem;
+  margin-top: 0.2rem;
+  opacity: 0.92;
+}
+
+.dh-o-so-phu {
+  position: relative;
+  z-index: 1;
+  font-size: 0.72rem;
+  opacity: 0.8;
+}
+
+.dh-o-so-icon {
+  position: absolute;
+  right: 0.6rem;
+  bottom: -0.35rem;
+  font-size: 3.2rem;
+  opacity: 0.2;
+}
+
+/* ---------------- The bam duoc (mo module) ---------------- */
+.dh-the-bam {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.dh-the-bam:hover,
+.dh-the-bam:focus-visible {
+  color: inherit;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(10, 47, 87, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dh-the-bam,
+  .dh-the-bam:hover,
+  .dh-the-bam:focus-visible {
+    transition: none;
+    transform: none;
+  }
+}
+
+.dh-so-dam {
+  font-weight: 700;
+  color: var(--sp-chu);
+}
+
+.dh-chu-tim { color: #4338ca; }
+.dh-chu-xanh-la { color: #15803d; }
+[data-bs-theme='dark'] .dh-chu-tim { color: #a5b4fc; }
+[data-bs-theme='dark'] .dh-chu-xanh-la { color: #4ade80; }
+
+.dh-bieu-do {
+  height: 260px;
+}
+
+.dh-bieu-do-nho {
+  height: 210px;
+}
+
+/* ---------------- Agent tu dong ---------------- */
+.dh-nhan-tim {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+[data-bs-theme='dark'] .dh-nhan-tim {
+  background: rgba(139, 92, 246, 0.2);
+  color: #c4b5fd;
+}
+
+.dh-ky-nang {
+  border: 1px solid var(--sp-vien);
+  border-radius: 10px;
+  padding: 0.65rem 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.dh-ky-nang.dang-tu-lam {
+  border-left: 3px solid #7c3aed;
+}
+
+.dh-ky-nang-mo-ta {
+  font-size: 0.75rem;
+  color: var(--sp-chu-phu);
+  line-height: 1.4;
+}
+
+.dh-nut-tu-lam {
+  color: #6d28d9;
+  border-color: #8b5cf6;
+}
+
+.dh-nut-tu-lam:hover {
+  color: #fff;
+  background: #7c3aed;
+  border-color: #7c3aed;
+}
+
+.btn-check:checked + .dh-nut-tu-lam {
+  color: #fff;
+  background: #7c3aed;
+  border-color: #7c3aed;
+}
+
+[data-bs-theme='dark'] .dh-nut-tu-lam {
+  color: #c4b5fd;
+}
+
+.dh-o-nho {
+  max-width: 7.5rem;
+}
+
+.dh-viec {
+  border-left: 3px solid #7c3aed;
+  background: rgba(124, 58, 237, 0.04);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+[data-bs-theme='dark'] .dh-viec {
+  background: rgba(124, 58, 237, 0.1);
+}
+
+.dh-viec.cho-duyet { border-left-color: #d97706; }
+.dh-viec.loi { border-left-color: #dc2626; }
+.dh-viec.da-huy { border-left-color: #94a3b8; }
+.dh-viec.da-hoan-tac { opacity: 0.6; }
+
+.dh-viec.moi {
+  animation: dh-hien-ra 2.4s ease-out;
+}
+
+@keyframes dh-hien-ra {
+  from {
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.55);
+  }
+  to {
+    box-shadow: 0 0 0 3px transparent;
+  }
+}
+
+.dh-ly-do {
+  font-size: 0.8rem;
+  color: var(--sp-chu-phu);
+  line-height: 1.5;
+  margin-top: 0.35rem;
+}
+
+.dh-hanh-dong {
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-top: 0.2rem;
+}
+
+.dh-ket-qua {
+  font-size: 0.78rem;
+  color: #15803d;
+  margin-top: 0.15rem;
+  white-space: pre-line;
+}
+
+[data-bs-theme='dark'] .dh-ket-qua {
+  color: #86efac;
+}
+
+.dh-danh-sach-viec {
+  max-height: 900px;
+  overflow-y: auto;
+}
+
+/* ---------------- AI Agent dieu phoi ---------------- */
+.dh-ket-luan {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #dcfce7, #f0fdf4);
+  border: 1px solid #86efac;
+}
+
+.dh-ket-luan.khan-cap {
+  background: linear-gradient(120deg, #fee2e2, #fef2f2);
+  border-color: #fca5a5;
+}
+
+[data-bs-theme='dark'] .dh-ket-luan {
+  background: linear-gradient(120deg, #0f2e1c, #12271b);
+  border-color: #166534;
+}
+
+[data-bs-theme='dark'] .dh-ket-luan.khan-cap {
+  background: linear-gradient(120deg, #2d1414, #291313);
+  border-color: #7f1d1d;
+}
+
+.dh-ket-luan-icon {
+  font-size: 2rem;
+  color: #15803d;
+}
+
+.dh-ket-luan.khan-cap .dh-ket-luan-icon {
+  color: #dc2626;
+}
+
+.dh-the-viec {
+  border: 1px solid var(--sp-vien);
+  border-left: 5px solid var(--sp-vien);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.75rem;
+  background: var(--sp-the);
+}
+
+.dh-the-viec.muc-danger { border-left-color: #dc2626; }
+.dh-the-viec.muc-warning { border-left-color: #ea580c; }
+.dh-the-viec.muc-info { border-left-color: #1c5fa8; }
+
+.dh-hang {
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #fff;
+  background: var(--sp-navy);
+}
+
+[data-bs-theme='dark'] .dh-hang {
+  background: #1c5fa8;
+}
+
+.dh-tieu-de-viec {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.dh-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  color: var(--sp-chu-phu);
+  background: var(--bs-tertiary-bg);
+  border-radius: 999px;
+  padding: 0.12rem 0.55rem;
+}
+
+.dh-diem {
+  flex: 0 0 52px;
+  text-align: center;
+}
+
+.dh-diem-so {
+  font-size: 1.4rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--sp-cam);
+}
+
+.dh-diem-nhan {
+  font-size: 0.65rem;
+  color: var(--sp-chu-phu);
+}
+
+.dh-suy-luan {
+  margin: 0.6rem 0 0;
+  padding: 0.6rem 0.8rem 0.6rem 1.9rem;
+  border-radius: 10px;
+  background: var(--bs-tertiary-bg);
+  font-size: 0.84rem;
+  color: var(--sp-chu-phu);
+}
+
+.dh-suy-luan li {
+  margin-bottom: 0.2rem;
+}
+
+.dh-tac-dong {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #15803d;
+}
+
+[data-bs-theme='dark'] .dh-tac-dong {
+  color: #86efac;
+}
+
+.dh-quan-sat li {
+  display: flex;
+  gap: 0.35rem;
+  font-size: 0.86rem;
+  color: var(--sp-chu-phu);
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed var(--sp-vien);
+}
+
+.dh-quan-sat li:last-child {
+  border-bottom: 0;
+}
+
+.dh-vong-agent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+}
+
+/* ---------------- Hoc may ---------------- */
+.dh-cum {
+  height: 100%;
+  border: 1px solid var(--sp-vien);
+  border-top: 4px solid var(--sp-vien);
+  border-radius: 12px;
+  padding: 0.8rem;
+  background: var(--sp-the);
+}
+
+.dh-cum-cham {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dh-cum-so {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem;
+  margin: 0.6rem 0;
+}
+
+.dh-cum-so > div {
+  background: var(--bs-tertiary-bg);
+  border-radius: 8px;
+  padding: 0.35rem 0.4rem;
+  text-align: center;
+  min-width: 0;
+}
+
+.dh-cum-so span {
+  display: block;
+  font-size: 0.64rem;
+  color: var(--sp-chu-phu);
+}
+
+.dh-cum-so b {
+  display: block;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dh-cum-ds {
+  max-height: 210px;
+  overflow-y: auto;
+  border-top: 1px dashed var(--sp-vien);
+}
+
+.dh-cum-kh {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 0.82rem;
+  border-bottom: 1px solid var(--sp-vien);
+}
+
+.dh-cum-kh:last-child {
+  border-bottom: 0;
+}
+
+.dh-cay ul {
+  list-style: none;
+  padding-left: 1.3rem;
+  margin-bottom: 0;
+  border-left: 2px dashed var(--sp-vien);
+}
+
+.dh-cay > ul {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.dh-cay li {
+  padding: 0.2rem 0;
+}
+
+.dh-cay-hoi {
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.dh-cay-meta {
+  font-size: 0.72rem;
+  color: var(--sp-chu-phu);
+  margin-left: 0.35rem;
+}
+
+.dh-cay-nhanh {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #0891b2;
+  margin-right: 0.25rem;
+}
+
+.dh-la {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+}
+
+.dh-la.an-toan { background: #dcfce7; color: #15803d; }
+.dh-la.nguy-co { background: #fee2e2; color: #b91c1c; }
+[data-bs-theme='dark'] .dh-la.an-toan { background: rgba(16, 185, 129, 0.16); color: #6ee7b7; }
+[data-bs-theme='dark'] .dh-la.nguy-co { background: rgba(239, 68, 68, 0.16); color: #fca5a5; }
+
+.dh-du-doan {
+  border: 1px solid var(--sp-vien);
+  border-left: 4px solid #15803d;
+  border-radius: 10px;
+  padding: 0.45rem 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.dh-du-doan.nguy-co {
+  border-left-color: #dc2626;
+}
+
+/* ---------------- Quy trinh van hanh ---------------- */
+.dh-buoc {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--sp-vien);
+  border-radius: 12px;
+  padding: 0.75rem 0.85rem;
+  background: var(--sp-the);
+}
+
+.dh-buoc.can-xu-ly {
+  border-color: rgba(234, 88, 12, 0.55);
+}
+
+.dh-buoc-so {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, #0d4f8b, #1c8fd6);
+}
+
+.dh-buoc-ten {
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+.dh-buoc-vai-tro {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #b45309;
+}
+
+[data-bs-theme='dark'] .dh-buoc-vai-tro {
+  color: #fbbf24;
+}
+
+.dh-buoc-chi-so {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.dh-buoc-chi-so b {
+  font-size: 1.35rem;
+  line-height: 1.1;
+}
+
+.dh-buoc.can-xu-ly .dh-buoc-chi-so b {
+  color: #c2410c;
+}
+
+[data-bs-theme='dark'] .dh-buoc.can-xu-ly .dh-buoc-chi-so b {
+  color: #fb923c;
+}
+
+.dh-buoc-mo-ta {
+  font-size: 0.76rem;
+  color: var(--sp-chu-phu);
+  line-height: 1.45;
+  margin-top: 0.35rem;
+}
+
+.dh-nhan-ai {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #fff;
+  background: #8b5cf6;
+  border-radius: 999px;
+  padding: 0.05rem 0.4rem;
+  vertical-align: middle;
+}
+
+.dh-nhom-dong td {
+  background: rgba(13, 79, 139, 0.07) !important;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--sp-navy);
+}
+
+[data-bs-theme='dark'] .dh-nhom-dong td {
+  background: rgba(127, 208, 245, 0.08) !important;
+  color: #cfe3fb;
+}
+
+.dh-stt {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: #0d4f8b;
+  background: rgba(13, 79, 139, 0.1);
+}
+
+[data-bs-theme='dark'] .dh-stt {
+  color: #9fd8ff;
+  background: rgba(127, 208, 245, 0.12);
+}
+
+/* ---------------- Tieu chi cang xanh + cach tinh ---------------- */
+.dh-tieu-chi {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.86rem;
+}
+
+.dh-cach-tinh > summary {
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+/* ---------------- In bao cao (Cang xanh): an menu + thanh tren cua khung dieu hanh ---------------- */
+@media print {
+  body:has(.dh-in-duoc) .sp-menu,
+  body:has(.dh-in-duoc) .sp-dau,
+  body:has(.dh-in-duoc) .sp-toast-vung {
+    display: none !important;
+  }
+
+  body:has(.dh-in-duoc) .sp-trang {
+    padding: 0 !important;
+  }
+
+  body:has(.dh-in-duoc) {
+    background: #fff !important;
+  }
+}

@@ -1,0 +1,14 @@
+# Dich vu AI thi giac — chi day MA NGUON .py len git; moi truong, du lieu, mo hinh da huan luyen (GB) giu tren may
+.venv/
+runs/
+du_lieu/
+data/
+trong_so/
+weights/
+__pycache__/
+*.pt
+*.pth
+*.log
+
+# video tai len tam thoi (xoa ngay khi xu ly xong)
+tam_video/

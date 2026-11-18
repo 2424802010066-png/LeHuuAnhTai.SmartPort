@@ -1,0 +1,35 @@
+# Ha tang microservices chay bang Docker: chi RabbitMQ (message broker).
+# Dich vu .NET chay truc tiep tren may (dotnet), SQL Server dung ban cai san (.\MSSQLSERVER01).
+# Chay: docker compose -f MicroServices/docker-compose.yml up -d   (mat khau lay tu bien RABBITMQ_MAT_KHAU)
+#
+# CHAY KHONG CO INTERNET:
+#  - Image GHIM phien ban cu the (khong dung the troi "4-management"): moi may chay dung ban da kiem thu.
+#  - pull_policy: never -> compose KHONG BAO GIO tai tu mang. Thieu image thi chay_microservices.ps1 tu
+#    "docker load" tu MicroServices/goi/rabbitmq_<the>.tar (script tu "docker save" lan dau khi image da co).
+#  - SMARTPORT_ANH_RABBITMQ: chay_microservices.ps1 chi dat khi may CHUA co ban ghim nhung con image RabbitMQ 4.x
+#    cu (vd rabbitmq:4-management, chua du lieu hang doi trong volume) -> dung tam ban do, khong pull.
+#  - Doi phien ban: sua the duoi day + "docker pull" 1 lan khi co mang (RabbitMQ khong cho ha phien ban tren
+#    cung volume du lieu: chi tang, va 4.3.x chi nang tu 4.2.x).
+name: smartport
+services:
+  rabbitmq:
+    image: ${SMARTPORT_ANH_RABBITMQ:-rabbitmq:4.3.6-management}
+    pull_policy: never
+    container_name: smartport-rabbitmq
+    hostname: smartport-rabbitmq
+    ports:
+      - "127.0.0.1:5672:5672"     # AMQP: dich vu gui / nhan su kien
+      - "127.0.0.1:15672:15672"   # trang quan tri: http://localhost:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: smartport
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_MAT_KHAU:?Chua dat RABBITMQ_MAT_KHAU}
+    volumes:
+      - smartport-rabbitmq:/var/lib/rabbitmq   # hang doi ben vung: tat may khong mat su kien
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+volumes:
+  smartport-rabbitmq:

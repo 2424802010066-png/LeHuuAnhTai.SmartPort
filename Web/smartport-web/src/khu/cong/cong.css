@@ -1,0 +1,640 @@
+/* ==========================================================================
+   Khu CONG · LENH GIAO NHAN · TRAM CAN · KHO CHUNG TU
+   Moi lop co tien to "cg-" (khong dung lop cua khu khac).
+   Mau nen / vien lay tu bien --sp-* de dep ca giao dien toi (data-bs-theme="dark").
+   ========================================================================== */
+
+/* ---------- Ma (so lenh, so cont, so chung tu, hash) ---------- */
+.cg-ma {
+  font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.cg-ma-mo {
+  font-family: Consolas, 'Cascadia Mono', 'Courier New', monospace;
+  color: var(--sp-chu-phu);
+}
+
+/* ---------- The chi so bam duoc (loc nhanh) ---------- */
+.cg-nut-chi-so {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
+.cg-nut-chi-so .sp-chi-so {
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+
+.cg-nut-chi-so:hover .sp-chi-so,
+.cg-nut-chi-so:focus-visible .sp-chi-so {
+  border-color: var(--sp-navy-2, #1c5fa8);
+  box-shadow: 0 6px 18px rgba(10, 47, 87, 0.12);
+  transform: translateY(-1px);
+}
+
+.cg-nut-chi-so.dang-chon .sp-chi-so {
+  border-color: var(--sp-navy-2, #1c5fa8);
+  box-shadow: inset 0 0 0 1px var(--sp-navy-2, #1c5fa8);
+}
+
+[data-bs-theme='dark'] .cg-nut-chi-so:hover .sp-chi-so,
+[data-bs-theme='dark'] .cg-nut-chi-so.dang-chon .sp-chi-so {
+  border-color: #3b82c4;
+  box-shadow: inset 0 0 0 1px #3b82c4;
+}
+
+/* ---------- Anh xe phong to trong hop thoai ---------- */
+.cg-anh-lon {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--sp-vien);
+}
+
+/* ---------- Luoi slot cong 24 gio (TAS) ---------- */
+.cg-luoi-slot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.cg-slot {
+  min-width: 88px;
+  padding: 0.3rem 0.4rem;
+  border-radius: 8px;
+  border: 1px solid var(--sp-vien);
+  background: var(--sp-the);
+  color: inherit;
+  font-size: 0.78rem;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.cg-slot b {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.cg-slot.con-cho {
+  border-color: rgba(21, 128, 61, 0.55);
+}
+
+.cg-slot.sap-day {
+  border-color: rgba(180, 83, 9, 0.6);
+  color: #b45309;
+}
+
+.cg-slot.het-cho {
+  border-color: rgba(185, 28, 28, 0.6);
+  color: #b91c1c;
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.cg-slot.dang-chon {
+  border-color: var(--sp-navy-2, #1c5fa8);
+  box-shadow: inset 0 0 0 2px var(--sp-navy-2, #1c5fa8);
+}
+
+[data-bs-theme='dark'] .cg-slot.sap-day {
+  color: #fbbf24;
+}
+
+[data-bs-theme='dark'] .cg-slot.het-cho {
+  color: #f87171;
+}
+
+/* ---------- Dong thoi gian cua xe (ho so xe 360°) ---------- */
+.cg-dtg {
+  position: relative;
+  padding-left: 1.6rem;
+  max-height: 620px;
+  overflow-y: auto;
+}
+
+.cg-dtg::before {
+  content: '';
+  position: absolute;
+  left: 0.62rem;
+  top: 0.2rem;
+  bottom: 0.2rem;
+  width: 2px;
+  background: var(--sp-vien);
+}
+
+.cg-dtg-muc {
+  position: relative;
+  padding: 0 0 0.9rem 0.35rem;
+}
+
+.cg-dtg-cham {
+  position: absolute;
+  left: -1.6rem;
+  top: 0.05rem;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 0.72rem;
+  box-shadow: 0 0 0 3px var(--sp-the);
+}
+
+.cg-dtg-gio {
+  font-size: 0.74rem;
+  color: var(--sp-chu-phu);
+}
+
+.cg-dtg-td {
+  font-weight: 600;
+}
+
+.cg-dtg-mt {
+  font-size: 0.82rem;
+  color: var(--sp-chu-phu);
+}
+
+/* ---------- Man hinh CHOT BAO VE (chu to, tuong phan cao, doc duoc ban dem) ---------- */
+.cg-chot {
+  min-height: 100vh;
+  background: #0f172a;
+  color: #f8fafc;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.cg-chot-thanh {
+  background: #0a2f57;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cg-chot-thanh h1 {
+  font-size: 1.4rem;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.cg-chot-dem {
+  display: flex;
+  gap: 18px;
+  font-size: 1.05rem;
+}
+
+.cg-chot-dem b {
+  font-size: 1.5rem;
+}
+
+.cg-chot-mang {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.cg-chot-mang.on {
+  background: #16a34a;
+}
+
+.cg-chot-mang.off {
+  background: #dc2626;
+}
+
+.cg-chot-khung {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 18px 40px;
+}
+
+.cg-chot-nhan {
+  display: block;
+  font-size: 1rem;
+  color: #94a3b8;
+  font-weight: 700;
+  margin: 18px 0 8px;
+  letter-spacing: 1px;
+}
+
+.cg-chot-o {
+  width: 100%;
+  font-size: 3rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 3px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 4px solid #38bdf8;
+  background: #fff;
+  color: #0f172a;
+  text-transform: uppercase;
+}
+
+.cg-chot-hang {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.cg-chot-hang button {
+  font-size: 1.6rem;
+  font-weight: 800;
+  padding: 26px 10px;
+  border: 0;
+  border-radius: 18px;
+  color: #fff;
+}
+
+.cg-chot-hang button:active {
+  transform: scale(0.97);
+}
+
+.cg-chot-vao {
+  background: #16a34a;
+}
+
+.cg-chot-ra {
+  background: #b45309;
+}
+
+.cg-chot-phu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.cg-chot-phu button,
+.cg-chot-phu a {
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 16px 8px;
+  border: 0;
+  border-radius: 14px;
+  background: #334155;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+}
+
+.cg-chot-kq {
+  margin-top: 20px;
+  border-radius: 20px;
+  padding: 22px;
+}
+
+.cg-chot-kq.co {
+  background: #14532d;
+  border: 4px solid #22c55e;
+}
+
+.cg-chot-kq.khong {
+  background: #7f1d1d;
+  border: 4px solid #ef4444;
+}
+
+.cg-chot-kq-tieu {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.cg-chot-kq-ct {
+  font-size: 1.1rem;
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.cg-chot-bang {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  background: #78350f;
+  border: 2px solid #f59e0b;
+}
+
+.cg-chot-bang.xong {
+  background: #14532d;
+  border-color: #22c55e;
+}
+
+.cg-chot-dong {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 12px 14px;
+  background: #1e293b;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+}
+
+.cg-chot-huong {
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.cg-chot-huong.v {
+  background: #16a34a;
+}
+
+.cg-chot-huong.r {
+  background: #b45309;
+}
+
+.cg-chot-ghi {
+  color: #94a3b8;
+  font-size: 0.82rem;
+  text-align: center;
+  margin-top: 24px;
+  line-height: 1.8;
+}
+
+.cg-chot-ghi a {
+  color: #7dd3fc;
+}
+
+/* ==========================================================================
+   BAN IN (phieu can, lenh giao nhan, phieu tay) — trong khung .sp-trang-in
+   ========================================================================== */
+.cg-in {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #111827;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.cg-in-dau {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 3px double #0a2f57;
+  padding-bottom: 10px;
+}
+
+.cg-in-dau h1 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0a2f57;
+  letter-spacing: 0.5px;
+  margin: 0 0 2px;
+}
+
+.cg-in-ct {
+  font-size: 11.5px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.cg-in-so {
+  text-align: right;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.cg-in-so b {
+  display: block;
+  font-size: 16px;
+  font-family: Consolas, monospace;
+  color: #b91c1c;
+}
+
+.cg-in h2 {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #0a2f57;
+  margin: 16px 0 2px;
+}
+
+.cg-in-en {
+  text-align: center;
+  font-size: 11px;
+  color: #64748b;
+  margin-bottom: 14px;
+}
+
+.cg-in table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12px;
+}
+
+.cg-in th,
+.cg-in td {
+  border: 1px solid #94a3b8;
+  padding: 6px 9px;
+  font-size: 12.5px;
+  text-align: left;
+  color: #111827;
+  background: #fff;
+}
+
+.cg-in th {
+  width: 34%;
+  font-weight: 600;
+  color: #334155;
+  background: #f1f5f9;
+}
+
+.cg-in-lon {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.cg-in .cg-in-tong td {
+  background: #fffbeb;
+  font-weight: 800;
+  font-size: 15px;
+  color: #b45309;
+}
+
+.cg-in-pin {
+  text-align: center;
+  background: #fff7ed;
+  border: 2px dashed #f59e0b;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+
+.cg-in-pin b {
+  font-size: 26px;
+  letter-spacing: 8px;
+  font-family: Consolas, monospace;
+  color: #b45309;
+}
+
+.cg-in-pin span {
+  display: block;
+  font-size: 10.5px;
+  color: #92400e;
+}
+
+.cg-in-qr {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.cg-in-qr-chu {
+  font-size: 11px;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.cg-in-ky {
+  display: flex;
+  margin-top: 22px;
+  text-align: center;
+}
+
+.cg-in-ky > div {
+  flex: 1;
+  font-size: 12px;
+}
+
+.cg-in-ky b {
+  display: block;
+  margin-bottom: 52px;
+}
+
+.cg-in-ky em {
+  color: #94a3b8;
+  font-size: 10.5px;
+  font-style: normal;
+}
+
+.cg-in-luuy {
+  font-size: 10.5px;
+  color: #64748b;
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 8px;
+  line-height: 1.7;
+}
+
+/* ---------- Phieu ra vao cong GHI TAY (2 lien, giay ke dong) ---------- */
+.cg-tay {
+  font-family: 'Times New Roman', serif;
+  color: #000;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.cg-tay-huongdan {
+  font-size: 11px;
+  color: #334155;
+  background: #fffbeb;
+  padding: 10px 12px;
+  border-left: 4px solid #f59e0b;
+  margin-bottom: 14px;
+}
+
+.cg-tay-lien {
+  border: 2px solid #000;
+  padding: 14px;
+  margin-bottom: 14px;
+  page-break-inside: avoid;
+}
+
+.cg-tay-dau {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #000;
+  padding-bottom: 8px;
+}
+
+.cg-tay-dau h1 {
+  font-size: 16px;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.cg-tay-phu {
+  font-size: 11px;
+}
+
+.cg-tay-canhbao {
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  margin: 8px 0;
+}
+
+.cg-tay table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin-top: 8px;
+}
+
+.cg-tay td {
+  border-bottom: 1px dotted #555;
+  padding: 9px 5px;
+}
+
+.cg-tay td.nhan {
+  width: 34%;
+  color: #333;
+}
+
+.cg-tay-o {
+  display: inline-block;
+  min-width: 150px;
+  border-bottom: 1px solid #000;
+}
+
+.cg-tay-to {
+  font-size: 17px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.cg-tay-ky {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  font-size: 11.5px;
+  text-align: center;
+}
+
+.cg-tay-ky > div {
+  width: 45%;
+}
+
+.cg-tay-ky .cho {
+  height: 55px;
+}
+
+@media print {
+  .cg-tay-huongdan {
+    display: none;
+  }
+}

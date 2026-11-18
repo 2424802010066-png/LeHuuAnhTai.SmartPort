@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    MODULE CONG — so huu: luot xe qua cong, lenh giao nhan tai cong, dieu phoi dock, anh xe.
+    Phat su kien: cong.xe-da-qua-cong. KHONG tham chieu module khac (chi Contracts).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>SmartPort.Modules.Cong</RootNamespace>
+    <AssemblyName>SmartPort.Modules.Cong</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartPort.Core\SmartPort.Core.csproj" />
+    <ProjectReference Include="..\SmartPort.Contracts\SmartPort.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

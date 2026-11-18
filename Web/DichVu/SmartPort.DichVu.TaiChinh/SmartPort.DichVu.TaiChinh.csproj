@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    DICH VU TÀI CHÍNH — MICROSERVICE: tien trinh rieng (cong 5106), CSDL rieng (SmartPortMS_TaiChinh),
+    chi ghi bang minh so huu; doc du lieu dich vu khac qua BAN SAO cap nhat bang su kien RabbitMQ.
+    Thu phí cổng, thẻ xe, phí lưu bãi, báo cáo thống kê.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>SmartPort.Api</RootNamespace>
+    <AssemblyName>SmartPort.DichVu.TaiChinh</AssemblyName>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591;CS0618</NoWarn>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SmartPort.NenTang\SmartPort.NenTang.csproj" />
+    <ProjectReference Include="..\..\SmartPort.Contracts\SmartPort.Contracts.csproj" />
+    <ProjectReference Include="..\..\SmartPort.Modules.TaiChinh\SmartPort.Modules.TaiChinh.csproj" />
+  </ItemGroup>
+
+</Project>
