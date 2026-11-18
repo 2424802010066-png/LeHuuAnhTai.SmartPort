@@ -7,7 +7,10 @@
 | | |
 |---|---|
 | Mã nguồn | https://github.com/2424802010066-png/LeHuuAnhTai.SmartPort |
-| Sản phẩm chạy thật | _đang đưa lên hosting, link sẽ cập nhật tại đây_ |
+| Sản phẩm chạy thật | https://diane-dating-alexander-originally.trycloudflare.com |
+
+> Bản chạy thật được đưa ra Internet bằng **Cloudflare Tunnel** từ máy chủ của sinh viên (ASP.NET Core chế độ
+> Production + SQL Server). Link tạm này đổi mỗi khi khởi động lại tunnel; link mới nhất luôn được cập nhật tại đây.
 
 ---
 
