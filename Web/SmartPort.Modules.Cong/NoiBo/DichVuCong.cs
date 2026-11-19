@@ -176,6 +176,21 @@ namespace SmartPort.Modules.Cong.NoiBo
                 var loaiLenh = lenh?.LoaiLenh;
                 var soLenh = lenh?.SoLenh;
 
+                // ---- 2a. QT15: container dang TAM GIU do su co chua dong (bang SuCo) -> KHONG giao ra cong (giao hang / lay rong).
+                // Luot thuong: tu choi ngay, khong luu gi. Luot GHI TRE (xe da ra luc tram mat mang): van ghi + can doi soat.
+                if (huongDi == "Ra" && (loaiLenh == "GiaoCont" || loaiLenh == "LayRong"))
+                {
+                    var tamGiu = TuanThuCongService.LyDoTamGiu(db, soCont);
+                    if (tamGiu != null && !ghiTre)
+                    {
+                        await giaoDich.RollbackAsync(ct);
+                        db.ChangeTracker.Clear();
+                        XoaAnh(anh);
+                        return new KetQuaGhiLuotXe { Ok = false, MaThaoTac = maThaoTac, ThongBao = "KHÔNG CHO RA CỔNG: " + tamGiu };
+                    }
+                    if (tamGiu != null) lyDo.Add("QT15: " + tamGiu);
+                }
+
                 // ---- 2. TUAN THU truoc khi GIAO container ra khoi cang: eDO hop le (chu ky, han, chua dung) + to khai da
                 // thong quan (VASSCM). Luot thuong bi chan -> tra loi ngay, khong luu gi. Luot GHI TRE: van ghi + can doi soat
                 // (xe da ra that; tu choi chi lam mat dau vet). Kiem theo GIO XAY RA, khong theo gio dong bo.

@@ -7,7 +7,7 @@ import { dinhDangNgayGio, dinhDangTien } from '../../utils/dinhDang'
 import DauTrangKhach from './DauTrangKhach'
 import './dich-vu-khach.css'
 
-const TRANG_THAI = ['Chờ thanh toán', 'Đã thanh toán', 'Quá hạn', 'Đã hủy']
+const TRANG_THAI = ['Chờ thanh toán', 'Đã thanh toán', 'Quá hạn', 'Đã hủy', 'Đã hoàn tiền']
 
 /** /payment/history — lich su thanh toan cua khach (thay Views/Payment/History.cshtml). */
 export default function LichSuThanhToan() {
@@ -28,14 +28,20 @@ export default function LichSuThanhToan() {
     { khoa: 'pt', ten: 'Phương thức', an: 'md', hien: (t) => t.tenPhuongThuc },
     { khoa: 'tien', ten: 'Số tiền', canPhai: true, hien: (t) => <span className="fw-semibold">{dinhDangTien(t.soTien)}</span> },
     { khoa: 'ngay', ten: 'Ngày tạo', an: 'lg', hien: (t) => dinhDangNgayGio(t.ngayTao) },
-    { khoa: 'tt', ten: 'Trạng thái', hien: (t) => <NhanTrangThai giaTri={t.trangThai} mau={t.trangThai === 'Quá hạn' ? 'do' : undefined} /> },
+    {
+      khoa: 'tt',
+      ten: 'Trạng thái',
+      hien: (t) => <NhanTrangThai giaTri={t.trangThai} mau={t.trangThai === 'Quá hạn' ? 'do' : t.trangThai === 'Đã hoàn tiền' ? 'off' : undefined} />,
+    },
     {
       khoa: 'thaoTac',
       ten: '',
       canPhai: true,
       rong: 130,
       hien: (t) =>
-        t.trangThai === 'Đã thanh toán' ? (
+        t.trangThai === 'Đã hoàn tiền' ? (
+          <span className="small text-body-secondary">Cảng đã hoàn tiền</span>
+        ) : t.trangThai === 'Đã thanh toán' ? (
           <Link className="btn btn-sm btn-outline-success" to={'/payment/receipt/' + t.maTT}>
             <i className="bi bi-receipt me-1" />
             Biên lai

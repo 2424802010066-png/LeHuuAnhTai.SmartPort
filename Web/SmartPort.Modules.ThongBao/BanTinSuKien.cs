@@ -99,6 +99,29 @@ namespace SmartPort.Modules.ThongBao
                 case "an-ninh.su-co-da-bao":
                     return (S("mucDo") == "Nguy hiểm" ? "⚠ NGUY HIỂM: " : "Chú ý: ") + (S("moTa") ?? S("loaiSuCo"))
                            + " — " + S("viTri") + " (sự cố #" + N("maSC").ToString("0", vi) + ")";
+                case "an-ninh.su-co-chung-da-bao":
+                    // QT14: su co NguyHiem -> bao dong toan cang, phai tiep nhan trong 5 phut
+                    return (S("mucDo") == "NguyHiem" ? "⚠ NGUY HIỂM: " : B("laKhachHang") ? "Phản ánh mới của khách: " : "Sự cố mới: ")
+                           + S("tieuDe")
+                           + (S("viTri") != null ? " — " + S("viTri") : "")
+                           + (S("soContainer") != null ? " · cont " + S("soContainer") : "")
+                           + " (sự cố #" + N("maSuCo").ToString("0", vi) + ")"
+                           + (S("mucDo") == "NguyHiem" ? " · cần tiếp nhận trong 5 phút" : "");
+                case "an-ninh.su-co-chung-da-cap-nhat":
+                    {
+                        var ma = " #" + N("maSuCo").ToString("0", vi);
+                        var cont = S("soContainer") != null ? " (cont " + S("soContainer") + ")" : "";
+                        switch (S("thaoTac"))
+                        {
+                            case "tiep-nhan": return S("nguoiThaoTac") + " đã tiếp nhận sự cố" + ma + ": " + S("tieuDe");
+                            case "tam-giu": return "Tạm giữ container" + cont + " do sự cố" + ma + " — không giao ra cổng";
+                            case "go-tam-giu": return "Gỡ tạm giữ container" + cont + " — sự cố" + ma;
+                            case "ket-qua": return "Đã ghi kết quả xử lý sự cố" + ma + ": " + S("tieuDe");
+                            case "dong": return "Đã đóng sự cố" + ma + ": " + S("tieuDe");
+                            case "bao-gia": return "Sự cố" + ma + " được xác định là báo giả";
+                            default: return "Sự cố" + ma + " cập nhật";
+                        }
+                    }
                 default:
                     return loai;
             }

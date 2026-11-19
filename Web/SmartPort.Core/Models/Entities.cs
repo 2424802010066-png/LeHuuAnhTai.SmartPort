@@ -990,7 +990,7 @@ namespace SmartPort.Models
         [StringLength(50), Display(Name = "Nội dung CK")]
         public string NoiDungCK { get; set; }
 
-        /// <summary>Chờ thanh toán / Đã thanh toán / Đã hủy / Quá hạn</summary>
+        /// <summary>Chờ thanh toán / Đã thanh toán / Đã hủy / Quá hạn / Đã hoàn tiền (UC25.3, QT16)</summary>
         [StringLength(30), Display(Name = "Trạng thái")]
         public string TrangThai { get; set; }
 

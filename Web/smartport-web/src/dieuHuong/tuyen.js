@@ -28,6 +28,7 @@ import heThong from '../khu/he-thong/tuyen'
 import khachHang from '../khu/khach-hang/tuyen'
 import kiemDem from '../khu/kiem-dem/tuyen'
 import kinhDoanh from '../khu/kinh-doanh/tuyen'
+import suCo from '../khu/su-co/tuyen'
 import taiChinh from '../khu/tai-chinh/tuyen'
 import taiXe from '../khu/tai-xe/tuyen'
 import tauBen from '../khu/tau-ben/tuyen'
@@ -50,6 +51,7 @@ export const TUYEN = [
   ...kinhDoanh,
   ...aiThiGiac,
   ...anNinh,
+  ...suCo,
   ...kiemDem,
   ...dieuHanh, ...dieuPhoi,
   ...aiVanHanh,

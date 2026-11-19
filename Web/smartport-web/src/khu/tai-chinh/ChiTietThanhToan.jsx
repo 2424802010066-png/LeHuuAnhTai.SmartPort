@@ -24,6 +24,7 @@ export default function ChiTietThanhToan() {
   const xacNhan = useXacNhan()
   const [maGiaoDich, setMaGiaoDich] = useState('')
   const [lyDo, setLyDo] = useState('')
+  const [lyDoHoan, setLyDoHoan] = useState('')
 
   async function guiXacNhan(e) {
     e.preventDefault()
@@ -48,6 +49,23 @@ export default function ChiTietThanhToan() {
     })
     if (!dong) return
     if (await chay(() => goiApi(`/api/doi-soat-thanh-toan/${t.maTT}/tu-choi`, { method: 'POST', body: { lyDo } }))) taiLai({ im: true })
+  }
+
+  // UC25.3 / QT16: da tru tien ma lenh khong kich hoat duoc -> ghi nhan HOAN TIEN (ban ghi nghiep vu, khong chuyen tien that)
+  async function guiHoanTien(e) {
+    e.preventDefault()
+    const dong = await xacNhan({
+      tieuDe: 'Hoàn tiền cho khách',
+      noiDung: `Ghi nhận đã hoàn ${dinhDangTien(t.soTien)} cho giao dịch #${t.maTT}?
+Giao dịch chuyển sang "Đã hoàn tiền" và rời khỏi doanh thu đã thu. Việc chuyển khoản trả khách làm theo quy trình ngân hàng.`,
+      nutDongY: 'Ghi nhận hoàn tiền',
+      mau: 'warning',
+    })
+    if (!dong) return
+    if (await chay(() => goiApi(`/api/doi-soat-thanh-toan/${t.maTT}/hoan-tien`, { method: 'POST', body: { lyDo: lyDoHoan } }))) {
+      setLyDoHoan('')
+      taiLai({ im: true })
+    }
   }
 
   if (dangTai && !t) return <DangTai chu="Đang tải giao dịch…" />
@@ -162,7 +180,7 @@ export default function ChiTietThanhToan() {
             </TheNoiDung>
           )}
 
-          {!t.coTheXacNhan && !t.coTheTuChoi && (
+          {!t.coTheXacNhan && !t.coTheTuChoi && t.trangThai !== 'Đã hoàn tiền' && (
             <TheNoiDung>
               <div className="text-center py-2">
                 <div className="fs-4 text-success">
@@ -173,6 +191,42 @@ export default function ChiTietThanhToan() {
                   Đã thu {dinhDangTien(t.soTien)} lúc {dinhDangNgayGio(t.ngayThanhToan)}
                 </div>
                 <div className="small text-body-secondary">Muốn trả lại tiền phải làm nghiệp vụ hoàn tiền, không hủy giao dịch.</div>
+              </div>
+            </TheNoiDung>
+          )}
+
+          {t.coTheHoanTien && (
+            <TheNoiDung tieuDe="Hoàn tiền cho khách (UC25.3)" icon="bi-arrow-counterclockwise">
+              <p className="small text-body-secondary">
+                <b>QT16:</b> giao dịch đã trừ tiền nhưng lệnh chưa hiệu lực phải đối soát trong ngày; không kích hoạt được lệnh thì hoàn tiền cho
+                khách. Thao tác này chỉ <b>ghi nhận</b> hoàn tiền (người làm, thời điểm, lý do) — không tự chuyển tiền.
+              </p>
+              <form onSubmit={guiHoanTien}>
+                <Truong nhan="Lý do hoàn tiền" batBuoc lop="mb-2">
+                  <input
+                    className="form-control form-control-sm"
+                    maxLength={240}
+                    placeholder="VD: Lệnh không kích hoạt được, đã CK trả khách FT26…"
+                    value={lyDoHoan}
+                    onChange={(e) => setLyDoHoan(e.target.value)}
+                  />
+                </Truong>
+                <button type="submit" className="btn btn-outline-warning w-100" disabled={dangChay || !lyDoHoan.trim()}>
+                  <i className="bi bi-arrow-counterclockwise me-1" />
+                  Hoàn tiền cho khách
+                </button>
+              </form>
+            </TheNoiDung>
+          )}
+
+          {t.trangThai === 'Đã hoàn tiền' && (
+            <TheNoiDung>
+              <div className="text-center py-2">
+                <div className="fs-5 text-body-secondary">
+                  <i className="bi bi-arrow-counterclockwise me-1" />
+                  Giao dịch đã hoàn tiền cho khách
+                </div>
+                {t.ghiChu && <div className="small text-body-secondary mt-2">{t.ghiChu}</div>}
               </div>
             </TheNoiDung>
           )}

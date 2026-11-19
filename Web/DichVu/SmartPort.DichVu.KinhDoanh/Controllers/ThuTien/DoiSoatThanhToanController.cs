@@ -26,6 +26,8 @@ namespace SmartPort.Api.Controllers.ThuTien
         private const string DA_THANH_TOAN = "Đã thanh toán";
         private const string QUA_HAN = "Quá hạn";
         private const string DA_HUY = "Đã hủy";
+        /// <summary>UC25.3 / QT16: da thu tien nhung lenh khong kich hoat duoc -> hoan tien cho khach (chi GHI NHAN, khong chuyen tien that)</summary>
+        private const string DA_HOAN_TIEN = "Đã hoàn tiền";
 
         private readonly AppDb db;
 
@@ -137,7 +139,8 @@ namespace SmartPort.Api.Controllers.ThuTien
                 BankAccount = PaymentService.BankAccount,
                 BankAccountName = PaymentService.BankAccountName,
                 CoTheXacNhan = tt.TrangThai == CHO_THANH_TOAN || tt.TrangThai == QUA_HAN,
-                CoTheTuChoi = tt.TrangThai != DA_THANH_TOAN,
+                CoTheTuChoi = tt.TrangThai != DA_THANH_TOAN && tt.TrangThai != DA_HOAN_TIEN,
+                CoTheHoanTien = tt.TrangThai == DA_THANH_TOAN,
                 Booking = bk == null ? null : new DonCuaThanhToanDto
                 {
                     MaBooking = bk.MaBooking,
@@ -207,10 +210,12 @@ namespace SmartPort.Api.Controllers.ThuTien
 
             // Guard: giao dich DA THU TIEN khong duoc huy bang 1 click
             if (tt.TrangThai == DA_THANH_TOAN) return Loi(LOI_HUY_DA_THANH_TOAN);
+            // Da hoan tien: giu nguyen ban ghi hoan tien (khong de "huy" ghi de len)
+            if (tt.TrangThai == DA_HOAN_TIEN) return Loi("Giao dịch #" + id + " đã hoàn tiền cho khách — không hủy được.");
 
             var ghiChu = string.IsNullOrWhiteSpace(yc?.LyDo) ? "Kế toán từ chối đối soát." : "Từ chối: " + yc.LyDo.Trim();
             var soDong = db.ThanhToans
-                .Where(t => t.MaTT == id && t.TrangThai != DA_THANH_TOAN)
+                .Where(t => t.MaTT == id && t.TrangThai != DA_THANH_TOAN && t.TrangThai != DA_HOAN_TIEN)
                 .ExecuteUpdate(s => s
                     .SetProperty(t => t.TrangThai, DA_HUY)
                     .SetProperty(t => t.GhiChu, ghiChu));
@@ -219,6 +224,42 @@ namespace SmartPort.Api.Controllers.ThuTien
 
             GhiNhatKy("Từ chối giao dịch thanh toán #" + id + " — " + TienTe.Tien(tt.SoTien) + " · " + ghiChu);
             return XongViec("Đã hủy giao dịch #" + id + ".", id);
+        }
+
+        /// <summary>
+        /// UC25.3 — HOÀN TIỀN cho khách (QT16: đã trừ tiền nhưng lệnh không kích hoạt được). Chỉ từ "Đã thanh toán" → "Đã hoàn tiền";
+        /// bắt buộc lý do, ghi người làm + thời điểm vào ghi chú. Đây là BẢN GHI nghiệp vụ — không chuyển tiền thật (kế toán chuyển
+        /// khoản trả khách theo quy trình ngân hàng rồi ghi mã tham chiếu vào lý do). Giao dịch rời khỏi doanh thu "Đã thu".
+        /// </summary>
+        [HttpPost("{id:int}/hoan-tien")]
+        [ProducesResponseType(typeof(ThaoTacDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ThongBaoDto), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ThongBaoDto), StatusCodes.Status404NotFound)]
+        public IActionResult HoanTien(int id, [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] HoanTienThanhToanDto yc)
+        {
+            var lyDo = (yc?.LyDo ?? "").Trim();
+            if (lyDo.Length == 0) return Loi("Nhập lý do hoàn tiền (vd: lệnh không kích hoạt được — QT16).");
+            var tt = db.ThanhToans.AsNoTracking().FirstOrDefault(t => t.MaTT == id);
+            if (tt == null) return KhongThay("Không tìm thấy giao dịch #" + id + ".");
+            if (tt.TrangThai == DA_HOAN_TIEN) return Loi("Giao dịch #" + id + " đã hoàn tiền trước đó.");
+            if (tt.TrangThai != DA_THANH_TOAN)
+                return Loi("Giao dịch đang ở trạng thái \"" + tt.TrangThai + "\" — chỉ hoàn tiền được giao dịch đã thanh toán.");
+
+            var bayGio = DateTime.Now;
+            var nguoi = !string.IsNullOrWhiteSpace(User.HoTen()) ? User.HoTen() : NguoiDung;
+            var ghiChu = ("Hoàn tiền " + bayGio.ToString("HH:mm dd/MM/yyyy") + " bởi " + nguoi + ": " + lyDo);
+            if (ghiChu.Length > 300) ghiChu = ghiChu.Substring(0, 300);
+            // Cap nhat CO DIEU KIEN: hai ke toan bam cung luc thi chi mot nguoi hoan tien duoc
+            var soDong = db.ThanhToans
+                .Where(t => t.MaTT == id && t.TrangThai == DA_THANH_TOAN)
+                .ExecuteUpdate(s => s
+                    .SetProperty(t => t.TrangThai, DA_HOAN_TIEN)
+                    .SetProperty(t => t.GhiChu, ghiChu));
+            SmartPort.BuildingBlocks.SaoChep.PhatLaiDong.SauCapNhat(db, db.ThanhToans.Where(t => t.MaTT == id));   // microservices: bao ban sao (ExecuteUpdate khong qua ChangeTracker)
+            if (soDong == 0) return Loi("Giao dịch #" + id + " vừa được người khác cập nhật — tải lại rồi thử lại.");
+
+            GhiNhatKy("Hoàn tiền giao dịch #" + id + " — " + TienTe.Tien(tt.SoTien) + " · " + lyDo);
+            return XongViec("Đã ghi nhận hoàn tiền " + TienTe.Tien(tt.SoTien) + " cho giao dịch #" + id + ".", id);
         }
 
         /// <summary>
@@ -306,6 +347,8 @@ namespace SmartPort.Api.Controllers.ThuTien
         public bool CoTheXacNhan { get; set; }
         /// <summary>true khi chưa thanh toán</summary>
         public bool CoTheTuChoi { get; set; }
+        /// <summary>true khi Đã thanh toán — được ghi nhận hoàn tiền (UC25.3 / QT16)</summary>
+        public bool CoTheHoanTien { get; set; }
         public DonCuaThanhToanDto Booking { get; set; }
     }
 
@@ -328,6 +371,13 @@ namespace SmartPort.Api.Controllers.ThuTien
     public class TuChoiThanhToanDto
     {
         [StringLength(250, ErrorMessage = "Lý do từ chối tối đa 250 ký tự.")]
+        public string LyDo { get; set; }
+    }
+
+    public class HoanTienThanhToanDto
+    {
+        /// <summary>Lý do hoàn tiền (bắt buộc) — vd "Lệnh không kích hoạt được (QT16), đã CK trả khách FT26...".</summary>
+        [StringLength(240, ErrorMessage = "Lý do hoàn tiền tối đa 240 ký tự.")]
         public string LyDo { get; set; }
     }
 }

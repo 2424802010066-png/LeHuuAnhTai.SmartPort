@@ -55,6 +55,8 @@ namespace SmartPort.Models
 
         public DbSet<PhanHoiAI> PhanHoiAIs { get; set; }
         public DbSet<SuCoAnNinh> SuCoAnNinhs { get; set; }
+        /// <summary>Su co chung UC22–UC28 (Database/Add_SuCo.sql)</summary>
+        public DbSet<SuCo> SuCos { get; set; }
         public DbSet<KiemDem> KiemDems { get; set; }
         public DbSet<MediaAI> MediaAIs { get; set; }
         public DbSet<NhatKy> NhatKys { get; set; }

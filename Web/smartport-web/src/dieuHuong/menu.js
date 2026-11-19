@@ -95,6 +95,7 @@ export const NHOM_MENU = [
       { den: '/admin/an-toan-ai', ten: 'Cảnh báo nguy hiểm AI', icon: 'bi-cone-striped', nhan: 'TTC' },
       { den: '/admin/vision/pose', ten: 'SafePose AI', icon: 'bi-person-arms-up', nhan: 'POSE' },
       { den: '/admin/security/media', ten: 'Kho media AI', icon: 'bi-collection-play' },
+      { den: '/admin/su-co', ten: 'Quản lý sự cố', icon: 'bi-exclamation-diamond', nhan: 'MỚI' },
     ],
   },
   {

@@ -54,6 +54,31 @@ namespace SmartPort.Services.CangSo
             return v == "chan" || v == "canh-bao" ? v : "tat";
         }
 
+        /// <summary>
+        /// QT15 (UC24.2): container dang bi TAM GIU do su co (SuCo.TamGiuContainer = 1, su co chua Dong / BaoGia)
+        /// thi KHONG duoc giao ra cong cho toi khi go tam giu hoac dong su co. Tra ly do chan (null = khong bi giu).
+        /// Luon ap dung (khong tuy cau hinh nhu eDO / hai quan): day la quyet dinh cua dieu do vien tren mot su co cu the.
+        /// CSDL chua chay Database/Add_SuCo.sql (vd CSDL rieng cua dich vu Cong o che do microservices) -> bo qua.
+        /// </summary>
+        public static string LyDoTamGiu(AppDb db, string soCont)
+        {
+            if (string.IsNullOrWhiteSpace(soCont)) return null;
+            var so = soCont.Trim().ToUpperInvariant();
+            try
+            {
+                var ma = db.SuCos.AsNoTracking()
+                    .Where(s => s.SoContainer == so && s.TamGiuContainer && s.TrangThai != SuCo.TT_DONG && s.TrangThai != SuCo.TT_BAO_GIA)
+                    .OrderBy(s => s.MaSuCo)
+                    .Select(s => (int?)s.MaSuCo)
+                    .FirstOrDefault();
+                return ma == null ? null : "Container " + so + " đang bị tạm giữ do sự cố #" + ma + "; liên hệ điều độ viên.";
+            }
+            catch (SqlException ex) when (ex.Number == 208)
+            {
+                return null;
+            }
+        }
+
         public static KetQua KiemTraKhiGiaoContainer(AppDb db, string soCont, DateTime luc)
         {
             var kq = new KetQua();

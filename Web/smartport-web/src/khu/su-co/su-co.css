@@ -1,0 +1,221 @@
+/* ==========================================================================
+   Khu XU LY SU CO (UC22 -> UC28): quan ly su co (nhan vien) + bao su co, phan anh (khach hang)
+   Moi lop co tien to "sc-" (khong dung lop cua khu khac). Mau lay tu bien --sp-* -> dep ca giao dien toi.
+   ========================================================================== */
+
+/* ---------- Thanh quy tac tren dau trang nhan vien ---------- */
+.sc-quy-tac {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.sc-quy-tac .sc-qt {
+  font-size: 0.75rem;
+  border: 1px solid var(--sp-vien);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  background: var(--sp-the);
+  color: var(--sp-chu-phu);
+}
+
+.sc-quy-tac .sc-qt b {
+  color: var(--sp-chu);
+}
+
+/* ---------- Thong ke: thanh ngang theo nhom ---------- */
+.sc-tk-nhom h6 {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sp-chu-phu);
+  margin-bottom: 0.5rem;
+}
+
+.sc-tk-dong {
+  display: grid;
+  grid-template-columns: minmax(96px, 38%) 1fr 2.2em;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  margin-bottom: 0.35rem;
+}
+
+.sc-tk-thanh {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--sp-vien);
+  overflow: hidden;
+}
+
+.sc-tk-thanh > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: #1d6fd1;
+  min-width: 2px;
+}
+
+.sc-tk-thanh.do > span { background: #dc2626; }
+.sc-tk-thanh.cam > span { background: #f59e0b; }
+.sc-tk-thanh.xam > span { background: #94a3b8; }
+.sc-tk-thanh.la > span { background: #16a34a; }
+.sc-tk-thanh.ngoc > span { background: #0891b2; }
+
+.sc-tk-so {
+  text-align: right;
+  font-weight: 700;
+}
+
+.sc-qt14 {
+  border: 1px dashed var(--sp-vien);
+  border-radius: 10px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.82rem;
+}
+
+/* ---------- Bang danh sach ---------- */
+.sc-dong-chon > td {
+  background: rgba(29, 111, 209, 0.08) !important;
+}
+
+.sc-dong-nguy > td:first-child {
+  box-shadow: inset 4px 0 0 #dc2626;
+}
+
+.sc-tieu-de {
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.sc-mo-ta-ngan {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.78rem;
+  color: var(--sp-chu-phu);
+}
+
+/* ---------- Khung chi tiet (ben phai) ---------- */
+.sc-chi-tiet {
+  position: sticky;
+  top: 76px;
+}
+
+.sc-dong-tt {
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px dashed var(--sp-vien);
+}
+
+.sc-dong-tt > span {
+  color: var(--sp-chu-phu);
+}
+
+.sc-ket-qua {
+  border-left: 4px solid #16a34a;
+  background: rgba(22, 163, 74, 0.07);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.86rem;
+  white-space: pre-line;
+}
+
+.sc-ket-qua.gia {
+  border-left-color: #94a3b8;
+  background: rgba(148, 163, 184, 0.12);
+}
+
+.sc-moc {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.sc-moc li {
+  position: relative;
+  padding: 0 0 0.55rem 1.2rem;
+}
+
+.sc-moc li::before {
+  content: '';
+  position: absolute;
+  left: 0.2rem;
+  top: 0.35rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--sp-vien);
+}
+
+.sc-moc li.xong::before {
+  background: #16a34a;
+}
+
+.sc-moc li.tre::before {
+  background: #dc2626;
+}
+
+.sc-anh-lon {
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--sp-vien);
+  cursor: zoom-in;
+}
+
+.sc-anh-nho {
+  width: 72px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--sp-vien);
+}
+
+.sc-tam-giu {
+  border: 1px solid #fca5a5;
+  background: rgba(220, 38, 38, 0.07);
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.82rem;
+}
+
+[data-bs-theme='dark'] .sc-tam-giu {
+  color: #fca5a5;
+  border-color: rgba(248, 113, 113, 0.4);
+}
+
+/* ---------- Trang khach: the phan anh ---------- */
+.sc-phan-anh {
+  border: 1px solid var(--sp-vien);
+  border-left: 5px solid #1d6fd1;
+  border-radius: 12px;
+  padding: 0.75rem 0.95rem;
+  margin-bottom: 0.75rem;
+  background: var(--sp-the);
+}
+
+.sc-phan-anh.xong {
+  border-left-color: #16a34a;
+}
+
+.sc-phan-anh.dong {
+  border-left-color: #94a3b8;
+}
+
+.sc-phan-anh.tre {
+  border-left-color: #dc2626;
+}
+
+.sc-trong {
+  text-align: center;
+  color: var(--sp-chu-phu);
+  padding: 2rem 1rem;
+}

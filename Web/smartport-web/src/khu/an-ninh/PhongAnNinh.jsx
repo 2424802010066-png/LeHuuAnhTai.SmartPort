@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { duongDanAnh, goiApi, taoQuery } from '../../api/client'
 import { useApi } from '../../api/useApi'
 import { BaoLoi, HopThoai, PhanTrang, TheChiSo, TheNoiDung } from '../../components/ui'
@@ -69,7 +69,7 @@ function SoDoCang({ khuNong }) {
 }
 
 /** Mot the su co trong danh sach ben phai */
-function TheSuCo({ s, dangChay, xemAnh, xuLy }) {
+function TheSuCo({ s, dangChay, xemAnh, xuLy, lapSuCo }) {
   const moi = s.trangThai === 'Mới'
   return (
     <div className={'an-su-co' + (moi ? ' moi' : '')}>
@@ -98,6 +98,11 @@ function TheSuCo({ s, dangChay, xemAnh, xuLy }) {
             Video
           </a>
         )}
+        {/* UC23: camera AI -> lap SU CO chung de theo doi tiep nhan / ket qua / dong (QT14 neu nguy hiem) */}
+        <button type="button" className="btn btn-sm btn-outline-danger" disabled={dangChay} onClick={() => lapSuCo(s)} title="Chuyển cảnh báo này thành sự cố để xử lý tới khi đóng">
+          <i className="bi bi-journal-plus me-1" />
+          Lập sự cố
+        </button>
         {moi ? (
           <button type="button" className="btn btn-sm btn-success" disabled={dangChay} onClick={() => xuLy(s)}>
             <i className="bi bi-check2 me-1" />
@@ -124,6 +129,7 @@ export default function PhongAnNinh() {
   const [loc, datLoc] = useBoLoc(LOC_RONG)
   const { duLieu, loi, dangTai, taiLai } = useApi('/api/an-ninh/su-co' + taoQuery(loc))
   const { chay, dangChay } = useThaoTac()
+  const dieuHuong = useNavigate()
 
   const [nhip, setNhip] = useState(null) // { soMoi, khuNong, luc } — ket qua hoi nhe
   const [anh, setAnh] = useState(null) // { maSC, src } dang xem
@@ -188,6 +194,24 @@ export default function PhongAnNinh() {
       taiLai({ im: true })
       hoi()
     }
+  }
+
+  // UC23: chuyen canh bao camera AI thanh su co chung (/api/su-co, maSCAnNinh) roi mo man hinh Quan ly su co
+  async function lapSuCo(s) {
+    const kq = await chay(() =>
+      goiApi('/api/su-co', {
+        method: 'POST',
+        body: {
+          loai: 'AnNinhAnToan',
+          mucDo: s.mucDo === 'Nguy hiểm' ? 'NguyHiem' : 'TrungBinh',
+          tieuDe: (s.tenLoai + ' — ' + s.viTri).slice(0, 150),
+          moTa: ((s.moTa || s.tenLoai) + ' (chuyển từ cảnh báo camera AI #' + s.maSC + ')').slice(0, 1000),
+          viTri: s.viTri,
+          maSCAnNinh: s.maSC,
+        },
+      }),
+    )
+    if (kq?.id) dieuHuong('/admin/su-co?id=' + kq.id)
   }
 
   const nutLoc = (khoa, gt, nhan) => (
@@ -269,7 +293,7 @@ export default function PhongAnNinh() {
                   Không có sự cố nào khớp bộ lọc.
                 </div>
               ) : (
-                duLieu.items.map((s) => <TheSuCo key={s.maSC} s={s} dangChay={dangChay} xemAnh={xemAnh} xuLy={xuLy} />)
+                duLieu.items.map((s) => <TheSuCo key={s.maSC} s={s} dangChay={dangChay} xemAnh={xemAnh} xuLy={xuLy} lapSuCo={lapSuCo} />)
               )}
             </div>
 

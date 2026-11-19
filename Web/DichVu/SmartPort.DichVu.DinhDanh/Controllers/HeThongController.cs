@@ -39,7 +39,24 @@ namespace SmartPort.Api.Controllers
             if (kq.DonChoDuyet > 0) kq.Items.Add(new MucThongBaoDto("bi-receipt-cutoff", "warning", kq.DonChoDuyet + " đơn dịch vụ chờ duyệt", "/admin/bookings"));
             if (kq.TauSapCap > 0) kq.Items.Add(new MucThongBaoDto("bi-water", "info", kq.TauSapCap + " chuyến tàu cập cảng trong 24h tới", "/admin/vesselcalls"));
             if (kq.LienHeMoi > 0) kq.Items.Add(new MucThongBaoDto("bi-chat-left-text", "secondary", kq.LienHeMoi + " liên hệ mới từ khách", "/admin/contacts"));
-            kq.Tong = kq.SuCoMoi + kq.DonChoDuyet + kq.TauSapCap + kq.LienHeMoi;
+            // Su co chung (UC22–UC28): QT14 nguy hiem chua tiep nhan + QT17 phan anh cua khach chua tra loi
+            try
+            {
+                kq.SuCoChungCanXuLy = db.SuCos.AsNoTracking().Count(s => s.TrangThai == SuCo.TT_MOI && s.MucDo == SuCo.MUC_NGUY_HIEM);
+                var phanAnh = db.SuCos.AsNoTracking().Count(s => s.KetQua == null && s.TrangThai != SuCo.TT_DONG && s.TrangThai != SuCo.TT_BAO_GIA
+                                                                 && s.NguoiBao.VaiTro == "KhachHang");
+                if (kq.SuCoChungCanXuLy > 0)
+                    kq.Items.Insert(0, new MucThongBaoDto("bi-exclamation-octagon-fill", "danger",
+                        kq.SuCoChungCanXuLy + " sự cố NGUY HIỂM chưa tiếp nhận (QT14: ≤ 5 phút)", "/admin/su-co?mucDo=NguyHiem&trangThai=Moi"));
+                if (phanAnh > 0)
+                    kq.Items.Add(new MucThongBaoDto("bi-megaphone", "warning", phanAnh + " phản ánh của khách chưa trả lời (≤ 24 giờ)", "/admin/su-co?chiDangMo=true"));
+                kq.Tong += kq.SuCoChungCanXuLy + phanAnh;
+            }
+            catch (Microsoft.Data.SqlClient.SqlException ex) when (ex.Number == 208)
+            {
+                // CSDL chua chay Database/Add_SuCo.sql (vd CSDL rieng cua dich vu Dinh danh o che do microservices) -> bo qua
+            }
+            kq.Tong += kq.SuCoMoi + kq.DonChoDuyet + kq.TauSapCap + kq.LienHeMoi;
             return kq;
         }
 
@@ -69,6 +86,8 @@ namespace SmartPort.Api.Controllers
         public int DonChoDuyet { get; set; }
         public int TauSapCap { get; set; }
         public int LienHeMoi { get; set; }
+        /// <summary>Sự cố chung mức NGUY HIỂM chưa tiếp nhận (QT14)</summary>
+        public int SuCoChungCanXuLy { get; set; }
         public List<MucThongBaoDto> Items { get; set; } = new List<MucThongBaoDto>();
     }
 

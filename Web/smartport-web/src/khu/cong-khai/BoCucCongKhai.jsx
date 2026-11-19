@@ -34,6 +34,7 @@ const KHACH = [
   { duong: '/booking', ten: 'Đặt dịch vụ', icon: 'bi-plus-circle' },
   { duong: '/booking/my', ten: 'Booking của tôi', icon: 'bi-receipt' },
   { duong: '/payment/history', ten: 'Lịch sử thanh toán', icon: 'bi-clock-history' },
+  { duong: '/bao-su-co', ten: 'Báo sự cố, phản ánh', icon: 'bi-megaphone' },
 ]
 
 /**

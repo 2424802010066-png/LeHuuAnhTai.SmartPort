@@ -327,7 +327,7 @@
       "tenHienThi": "An ninh & thị giác",
       "cong": 5107,
       "coSoDuLieu": "SmartPortMS_AnNinh",
-      "moTa": "Sự cố an ninh, kho media AI, camera IP, nhận diện AI, kiểm đếm.",
+      "moTa": "Sự cố an ninh, kho media AI, camera IP, nhận diện AI, kiểm đếm, xử lý sự cố chung (UC22–UC28).",
       "duongDan": [
         "/api/an-ninh",
         "/api/camera",
@@ -335,7 +335,8 @@
         "/api/doi-chieu-container",
         "/api/giam-sat-tai-xe",
         "/api/kho-media",
-        "/api/kiem-dem"
+        "/api/kiem-dem",
+        "/api/su-co"
       ],
       "soHuu": [
         "CameraIP",
@@ -345,7 +346,8 @@
         "NhanDienAI",
         "NhanDienChiTiet",
         "PhanHoiAI",
-        "SuCoAnNinh"
+        "SuCoAnNinh",
+        "SuCo"
       ],
       "banSao": [
         "KhachHang",

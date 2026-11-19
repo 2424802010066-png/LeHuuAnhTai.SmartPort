@@ -35,7 +35,7 @@ export const PHUONG_THUC_TT = [
   { giaTri: 'TienMat', nhan: 'Tiền mặt' },
 ]
 
-export const TRANG_THAI_TT = ['Chờ thanh toán', 'Đã thanh toán', 'Đã hủy', 'Quá hạn']
+export const TRANG_THAI_TT = ['Chờ thanh toán', 'Đã thanh toán', 'Đã hủy', 'Quá hạn', 'Đã hoàn tiền']
 
-/** Mau nhan trang thai giao dich: "Quá hạn" la no can xu ly -> do */
-export const mauTrangThaiTT = (tt) => (tt === 'Quá hạn' ? 'do' : undefined)
+/** Mau nhan trang thai giao dich: "Quá hạn" la no can xu ly -> do; "Đã hoàn tiền" (UC25.3) -> xam */
+export const mauTrangThaiTT = (tt) => (tt === 'Quá hạn' ? 'do' : tt === 'Đã hoàn tiền' ? 'off' : undefined)
