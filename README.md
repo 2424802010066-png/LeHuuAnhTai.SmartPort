@@ -52,7 +52,14 @@ Cần: .NET SDK 10, Node.js 20 trở lên, SQL Server có sẵn CSDL `SmartPortD
 
 1. **CSDL:** chuỗi kết nối khi chạy trên máy nằm ở `Web/SmartPort.Api/appsettings.Development.json`
    (mặc định `.\MSSQLSERVER01`, đăng nhập Windows). Bản sao lưu CSDL đầy đủ không đưa lên repo công khai
-   vì có tài khoản người dùng và dữ liệu khuôn mặt; các script tạo bảng nằm ở `Web/Database/`.
+   vì có tài khoản người dùng và dữ liệu khuôn mặt; các script tạo bảng nằm ở `Web/Database/`:
+   - CSDL mới: chạy `SmartPort_DB.sql` trước (**script này XÓA rồi tạo lại `SmartPortDB`**, chỉ dùng khi cài lần đầu).
+   - Sau đó chạy **tất cả** các tệp `Add_*.sql` theo thứ tự tên (đủ 61 bảng). Mỗi tệp tự kiểm tra bảng đã có hay chưa,
+     chạy lại nhiều lần không mất dữ liệu; thiếu tệp nào thì trang dùng bảng đó báo lỗi 500.
+     ```powershell
+     Get-ChildItem Web/Database/Add_*.sql | Sort-Object Name | ForEach-Object { sqlcmd -S .\MSSQLSERVER01 -E -d SmartPortDB -i $_.FullName }
+     ```
+   - `Seed_*.sql` là dữ liệu mẫu, tùy chọn (ví dụ `Seed_SuCo_Mau.sql` cho trang quản lý sự cố).
 2. **Khóa ký JWT** (lần đầu, không ghi vào file cấu hình):
    ```bash
    dotnet user-secrets set "Jwt:Key" "<chuỗi ngẫu nhiên từ 32 ký tự trở lên>" --project Web/SmartPort.Api
@@ -74,6 +81,7 @@ Cần: .NET SDK 10, Node.js 20 trở lên, SQL Server có sẵn CSDL `SmartPortD
 - **Website công khai:** trang chủ số liệu thời gian thực, tra cứu container (thử `MSCU2201417`), lịch tàu, dịch vụ – bảng giá, ước tính chi phí, tin tức, liên hệ, chatbot PortBot.
 - **Khu khách hàng:** đăng ký lệnh giao nhận, theo dõi hàng của tôi, thanh toán bằng mã QR, hóa đơn.
 - **Khu điều hành `/admin`:** bảng điều khiển, điều độ chuyến tàu – cầu bến, sơ đồ bãi container, cổng tự động (camera AI đọc biển số, số container), kiểm đếm, an ninh, tài chính – phí cổng – phí lưu bãi, báo cáo, quản lý tài khoản và phân quyền.
+- **Xử lý sự cố:** mọi người dùng báo sự cố, phản ánh; nhân viên tiếp nhận, tạm giữ container (cổng chặn không cho ra), ghi kết quả, đóng, thống kê; sự cố nguy hiểm phát báo động toàn cảng; hoàn tiền giao dịch lỗi.
 - **Thông báo tức thời** qua Server-Sent Events: xe qua cổng → bãi cập nhật container → tài chính tính phí, cùng được ghi trong một giao dịch nhờ Outbox.
 
 Tài khoản dùng thử trên bản chạy thật được gửi kèm bài nộp, không ghi công khai ở đây.
