@@ -350,7 +350,9 @@
         "SuCo"
       ],
       "banSao": [
+        "Container",
         "KhachHang",
+        "LenhGiaoNhan",
         "TaiKhoan"
       ]
     },

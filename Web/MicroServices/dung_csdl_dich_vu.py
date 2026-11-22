@@ -314,13 +314,52 @@ def dung_moi(dm, dv, csdl_nguon, xoa_cu):
                                                                        sum(tong.values()), time.time() - t0))
 
 
-def cap_nhat_da_co(dm, dv):
-    """CSDL da co (GIU du lieu): bo sung bang so huu moi + bang cuc bo bang script idempotent"""
+def csdl_chu_so_huu(dm, bang):
+    """CSDL cua dich vu SO HUU bang (nguon su that hien tai cua ban sao); None neu khong ai so huu"""
+    for d in dm["dichVu"]:
+        if bang in (d.get("soHuu") or []) and d.get("coSoDuLieu"):
+            return d["coSoDuLieu"]
+    return None
+
+
+def them_ban_sao_thieu(dm, dv, cn_dich, csdl_nguon):
+    """
+    Ban sao MOI khai trong dich-vu.json cho CSDL da co (vd 22/11/2026: an-ninh them Container, LenhGiaoNhan cho phan he
+    su co). Luoc do + du lieu lay tu CSDL cua dich vu SO HUU (du lieu HIEN TAI, khong phai ngay seed); chu so huu chua co
+    CSDL thi lay tu CSDL nguon mau. Ve sau ban sao tu cap nhat qua su kien du-lieu.<bang>.
+    """
+    them = []
+    cn = ket_noi()
+    for bang in (dv.get("banSao") or []):
+        if co_bang(cn_dich, bang):
+            continue
+        tu = csdl_chu_so_huu(dm, bang)
+        if not tu or cn.cursor().execute("SELECT DB_ID(?)", tu).fetchone()[0] is None:
+            tu = csdl_nguon
+        cn_tu = ket_noi(tu)
+        try:
+            cot, cm = lay_luoc_do(cn_tu, bang)
+        except RuntimeError:
+            chay_script_tao_bang(cn_dich, bang)          # bang moi chua co o dau ca: tao rong, du lieu den qua su kien
+            them.append(bang + " (rỗng)")
+            continue
+        finally:
+            cn_tu.close()
+        tao_bang(cn_dich, bang, cot, cm, giu_identity=False, so_huu=False)
+        n = chep_du_lieu(cn_dich, tu, bang, cot, giu_identity=False)
+        them.append("%s (%d dòng từ %s)" % (bang, n, tu))
+    cn.close()
+    return them
+
+
+def cap_nhat_da_co(dm, dv, csdl_nguon):
+    """CSDL da co (GIU du lieu): bo sung bang so huu moi, ban sao moi + bang cuc bo bang script idempotent"""
     ten_csdl = dv["coSoDuLieu"]
     cn_dich = ket_noi(ten_csdl)
     thieu = [b for b in (dv.get("soHuu") or []) if not co_bang(cn_dich, b)]
     for bang in thieu:
         chay_script_tao_bang(cn_dich, bang)
+    ban_sao_moi = them_ban_sao_thieu(dm, dv, cn_dich, csdl_nguon)
     cuc_bo = []
     for bang in bang_cuc_bo_cua(dm, dv):
         kq = dam_bao_bang_cuc_bo(cn_dich, dv["ten"], bang)
@@ -330,6 +369,8 @@ def cap_nhat_da_co(dm, dv):
     them = []
     if thieu:
         them.append("bổ sung bảng: " + ", ".join(thieu))
+    if ban_sao_moi:
+        them.append("bổ sung bản sao: " + ", ".join(ban_sao_moi))
     if cuc_bo:
         them.append("bảng cục bộ: " + ", ".join(cuc_bo))
     print("= %-11s %s đã có%s" % (dv["ten"], ten_csdl, (" — " + "; ".join(them)) if them else ""))
@@ -405,7 +446,7 @@ def main():
     print("CSDL nguồn dữ liệu mẫu (chỉ đọc): %s" % csdl_nguon)
     for dv in chon:
         if co[dv["ten"]]:
-            cap_nhat_da_co(dm, dv)
+            cap_nhat_da_co(dm, dv, csdl_nguon)
     return 0
 
 
